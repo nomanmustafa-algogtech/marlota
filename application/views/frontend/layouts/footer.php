@@ -163,7 +163,7 @@ if($this->session->userdata('user_loggedin')){
                                         
                                         <li>
                                             <a href="<?=base_url();?>products/?category=<?=$row0['slug']; ?>">
-                                                <img src="<?=base_url();?>/uploads/categories/<?=$row0['icon']; ?>" alt="<?=$row0['name']; ?>" style="width:1.5rem;height:1.5rem"/> <?=$row0['name']; ?>
+                                                <img src="<?=base_url();?>/uploads/categories/<?=$row0['icon']; ?>" alt="<?=$row0['name']; ?>" style="width:24px;height:24px"/> <?=$row0['name']; ?>
                                             </a>
                                             <?php $cat1 = $this->db->query("SELECT * FROM app_categories WHERE level=1 && parent_id = '{$row0['id']}'")->result_array();
                                             if(count($cat1) > 0) {?>
