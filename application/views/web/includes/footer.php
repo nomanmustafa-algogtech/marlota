@@ -7,115 +7,84 @@ if($this->session->userdata('user_loggedin')){
  $userData = $this->db->select('*')->from('app_users')->where('id', $this->session->userdata('user_id'))->get()->row_array();   
 }
 ?>
-<footer class="footer appear-animate" data-animation-options="{
-            'name': 'fadeIn'
-        }">
-            <div class="footer-newsletter bg-primary">
-                <div class="container">
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-xl-5 col-lg-6">
-                            <div class="icon-box icon-box-side text-white">
-                                <div class="icon-box-icon d-inline-flex">
-                                    <i class="w-icon-envelop3"></i>
-                                </div>
-                                <div class="icon-box-content">
-                                    <h4 class="icon-box-title text-white text-uppercase font-weight-bold">Subscribe To
-                                        Our Newsletter</h4>
-                                    <p class="text-white">Get all the latest information on Events, Sales and Offers.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-7 col-lg-6 col-md-9 mt-4 mt-lg-0 ">
-                            <form action="#" method="get"
-                                class="input-wrapper input-wrapper-inline input-wrapper-rounded">
-                                <input type="email" class="form-control mr-2 bg-white" name="email" id="email"
-                                    placeholder="Your E-mail Address" />
-                                <button class="btn btn-dark btn-rounded" type="submit">Subscribe<i
-                                        class="w-icon-long-arrow-right"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="footer-top">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="widget widget-about">
-                                <a href="<?=base_url();?>" class="logo-footer">
-                                    <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>" alt="<?=$settings['site_title'];?>" width="144"
-                                        height="45" />
-                                </a>
-                                <div class="widget-body">
-                                    <p class="widget-about-title">Got Question? Call us 24/7</p>
-                                    <a href="tel:<?=$settings['site_phone'];?>" class="widget-about-call"><?=$settings['site_phone'];?></a>
-                                    <p class="widget-about-desc">Register now to get updates</p>
 
-                                    <div class="social-icons social-icons-colored">
-                                        <a href="https://www.facebook.com/beatersonline/" target="_blank" class="social-icon social-facebook w-icon-facebook"></a>
-                                        <a href="https://www.instagram.com/beatersonlineshopping/" target="_blank" class="social-icon social-instagram w-icon-instagram"></a>
-                                        <a href="https://youtube.com/channel/UCrHlbKMM9BGkXyfxE6lDjpA" target="_blank" class="social-icon social-youtube w-icon-youtube"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="widget">
-                                <h3 class="widget-title">Company</h3>
-                                <ul class="widget-body">
-                                    <li><a href="<?=base_url('web/about');?>">About Us</a></li>
-                                    <li><a href="<?=base_url('web/contact');?>">Contact Us</a></li>
-                                    <li><a href="<?=base_url('web/career');?>">Career</a></li>
-                                    <li><a href=""<?=base_url('web/contact');?>"">Contact Us</a></li>
-                                    <li><a href="#">Affilate</a></li>
-                                    <li><a href="#">Order History</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4>
-                                <ul class="widget-body">
-                                    <li><a href="#">Track My Order</a></li>
-                                    <li><a href="#">View Cart</a></li>
-                                    <li><a href="#">Sign In</a></li>
-                                    <li><a href="#">Help</a></li>
-                                    <li><a href="#">My Wishlist</a></li>
-                                    <li><a href="<?=base_url();?>privacy_policy">Privacy Policy</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4>
-                                <ul class="widget-body">
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Product Returns</a></li>
-                                    <li><a href="#">Support Center</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Term and Conditions</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="footer-bottom">
-                    <div class="footer-left">
-                        <p class="copyright"><?=$settings['copyright_message'];?> - Developed by <a href="https://oxijan.co.uk/" target="_blank">oxijan.co.uk</a></p>
-                    </div>
-                    <div class="footer-right">
-                        <span class="payment-label mr-lg-8">We're using safe payment for</span>
-                        <figure class="payment">
-                            <img src="<?=base_url();?>webfiles/images/payment.png" alt="Payment Methods" width="159" height="25" />
-                        </figure>
-                    </div>
+<!-- ==================== MARLOTA FOOTER ==================== -->
+<footer class="marlota-footer">
+    <div class="container">
+        <div class="row">
+            <!-- Col 1: Logo + tagline + social -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <a href="<?=base_url();?>">
+                    <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>"
+                         alt="<?=$settings['site_title'];?>"
+                         class="footer-logo" />
+                </a>
+                <p class="footer-tagline">Your trusted partner for premium packaging, labels, and office essentials.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="https://twitter.com/" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
                 </div>
             </div>
-        </footer>
-        <!-- End of Footer -->
+
+            <!-- Col 2: Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                <p class="footer-col-title">Quick Links</p>
+                <ul class="footer-links">
+                    <li><a href="<?=base_url();?>">Home</a></li>
+                    <li><a href="<?=base_url('products');?>">Products</a></li>
+                    <li><a href="<?=base_url('web/about');?>">About Us</a></li>
+                    <li><a href="<?=base_url('web/contact');?>">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Customer Service -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <p class="footer-col-title">Customer Service</p>
+                <ul class="footer-links">
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns &amp; Refunds</a></li>
+                    <li><a href="#">Terms &amp; Conditions</a></li>
+                    <li><a href="<?=base_url();?>privacy_policy">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <p class="footer-col-title">Contact Info</p>
+                <div class="footer-contact-item">
+                    <span class="fc-icon"><i class="fa fa-map-marker"></i></span>
+                    <span>Manchester, United Kingdom</span>
+                </div>
+                <div class="footer-contact-item">
+                    <span class="fc-icon"><i class="fa fa-envelope"></i></span>
+                    <span>support@marlota.co.uk</span>
+                </div>
+                <div class="footer-contact-item">
+                    <span class="fc-icon"><i class="fa fa-phone"></i></span>
+                    <span><?=$settings['site_phone'];?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom Bar -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p>&copy; <?= date('Y'); ?> Marlota Limited. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p>VAT No: GB123 4567 89</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End of Marlota Footer -->
+
     </div>
     <!-- End of Page-wrapper-->
 
@@ -222,9 +191,8 @@ if($this->session->userdata('user_loggedin')){
     <div class="newsletter-popup mfp-hide">
         <div class="newsletter-content">
             <h4 class="text-uppercase font-weight-normal ls-25">Get Up to<span class="text-primary">25% Off</span></h4>
-            <h2 class="ls-25">Sign up to Beaters</h2>
-            <p class="text-light ls-10">Subscribe to the Beaters market newsletter to
-                receive updates on special offers.</p>
+            <h2 class="ls-25">Sign up to Marlota</h2>
+            <p class="text-light ls-10">Subscribe to the Marlota newsletter to receive updates on special offers.</p>
             <form action="#" method="get" class="input-wrapper input-wrapper-inline input-wrapper-round">
                 <input type="email" class="form-control email font-size-md" name="email" id="email2"
                     placeholder="Your email address" required="">
@@ -241,22 +209,22 @@ if($this->session->userdata('user_loggedin')){
         /* Sticky Circular Button Style */
         .whatsapp-button {
             position: fixed;
-            bottom: 20px; /* Distance from the bottom */
-            right: 20px; /* Distance from the right */
+            bottom: 20px;
+            right: 20px;
             background-color: #25D366;
             color: white;
             font-size: 16px;
             font-weight: bold;
-            width: 60px; /* Button width */
-            height: 60px; /* Button height */
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             text-decoration: none;
-            border-radius: 50%; /* Makes the button circular */
+            border-radius: 50%;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000; /* Ensure it's above other elements */
+            z-index: 1000;
         }
 
         .whatsapp-button:hover {
@@ -396,16 +364,9 @@ if($this->session->userdata('user_loggedin')){
                           $("#btnSignup").html('Sign Up');
                           $("#btnSignup").removeAttr("disabled");
                           if(data=='SUCCESS'){
-                            //   form.trigger("reset");
-                            //   $("#sign-up-success").html("Your account has been created. Please verify your email to signin.");
-                            //   $("#sign-up-success").show();
                               $("#email-otp").html($("#email-register").val());
-                            //   $("#phone-otp").html($("#phone-register").val());
                               $("#sign-up").removeClass("active");
                               $("#otp-section").addClass("active");
-                            //   setTimeout(function() {
-                            //         window.location.href='<?=base_url();?>user/account';
-                            //   }, 15000);
                           }else{
                               $("#sign-up-error").html(data);
                               $("#sign-up-error").show();
@@ -466,133 +427,62 @@ if($this->session->userdata('user_loggedin')){
     });
     
     
-	Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function(e) {
-		e.preventDefault();
-		var i = $(this),
-			a = i.closest(".product, .product-popup");
-		i.hasClass("disabled") ? alert("Please select some product options before adding this product to your cart.") : (i.toggleClass("added").addClass("load-more-overlay loading"), setTimeout((function() {
-				var product_id = $("#product_id").val();
-				var qty = $("#user_qty").val();
-				var regex = /[+-]?\d+(\.\d+)?/g;
-				var price = $("#product-price .new-price").html().match(regex).map(function(v) { return parseFloat(v); }); 
-				
-				var cart_old_total = $(".cart-total .price").html().match(regex).map(function(v) { return parseFloat(v); });
-				// price =  parseFloat(price)
-			if (parseInt(qty) < 10) {
-				alert("Minimum order quantity is 10. Please select at least 10 products.");
-				i.removeClass("load-more-overlay loading"); // FIX HERE
-				return;
-			}
+Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function(e) {
+e.preventDefault();
+var i = $(this),
+a = i.closest(".product, .product-popup");
+i.hasClass("disabled") ? alert("Please select some product options before adding this product to your cart.") : (i.toggleClass("added").addClass("load-more-overlay loading"), setTimeout((function() {
+var product_id = $("#product_id").val();
+var qty = $("#user_qty").val();
+var regex = /[+-]?\d+(\.\d+)?/g;
+var price = $("#product-price .new-price").html().match(regex).map(function(v) { return parseFloat(v); }); 
 
-				var formdata = $("#choice_options_form").serialize();
+var cart_old_total = $(".cart-total .price").html().match(regex).map(function(v) { return parseFloat(v); });
+if (parseInt(qty) < 10) {
+alert("Minimum order quantity is 10. Please select at least 10 products.");
+i.removeClass("load-more-overlay loading");
+return;
+}
 
-				formdata += '&product_id='+product_id+'&qty='+qty;
-				
-				$.ajax({
-				type:"POST",
-				url:'<?=base_url();?>products/add_to_cart/',
-				data:formdata,
-				success: function(data) {
-					
-					if(data == 'ERROR_QTY'){
-						alert('Product qty must be equal or less than available qty.');
-						i.removeClass("load-more-overlay loading");
-					}else{
-						console.log(data);
-						var oldcart = parseInt($(".cart-count").html());
-						
-						$(".cart-count").html((oldcart+1));
-						$(".cart-total .price").html("£ "+(parseInt(cart_old_total)+(parseInt(price)*qty)))
-						$(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'" class="product-name">'+a.find(".product-name, .product-title").text()+'</a><div class="price-box"><span class="product-quantity">'+qty+'</span><span class="product-price">£ '+price+'</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'"><img src="'+a.find(".product-media img, .product-image:first-child img").attr("src")+'" alt="'+a.find(".product-name, .product-title").text()+'" height="84" width="94" /></a></figure></div>');
-						i.removeClass("load-more-overlay loading"), Wolmart.Minipopup.open({
-						productClass: " product-cart",
-						name: a.find(".product-name, .product-title").text(),
-						nameLink: a.find(".product-name > a, .product-title > a").attr("href"),
-						imageSrc: a.find(".product-media img, .product-image:first-child img").attr("src"),
-						imageLink: a.find(".product-name > a").attr("href"),
-						message: "<p>has been added to cart:</p>",
-						actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">View Cart</a><a href="<?=base_url();?>checkout" class="btn btn-dark btn-rounded btn-sm">Checkout</a>'
-					})
-					}
-				}
-			});
-			
-			
-			
-		}), 500))
-	}));
+var formdata = $("#choice_options_form").serialize();
+
+formdata += '&product_id='+product_id+'&qty='+qty;
+
+$.ajax({
+type:"POST",
+url:'<?=base_url();?>products/add_to_cart/',
+data:formdata,
+success: function(data) {
+
+if(data == 'ERROR_QTY'){
+alert('Product qty must be equal or less than available qty.');
+i.removeClass("load-more-overlay loading");
+}else{
+console.log(data);
+var oldcart = parseInt($(".cart-count").html());
+
+$(".cart-count").html((oldcart+1));
+$(".cart-total .price").html("£ "+(parseInt(cart_old_total)+(parseInt(price)*qty)))
+$(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'" class="product-name">'+a.find(".product-name, .product-title").text()+'</a><div class="price-box"><span class="product-quantity">'+qty+'</span><span class="product-price">£ '+price+'</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'"><img src="'+a.find(".product-media img, .product-image:first-child img").attr("src")+'" alt="'+a.find(".product-name, .product-title").text()+'" height="84" width="94" /></a></figure></div>');
+i.removeClass("load-more-overlay loading"), Wolmart.Minipopup.open({
+productClass: " product-cart",
+name: a.find(".product-name, .product-title").text(),
+nameLink: a.find(".product-name > a, .product-title > a").attr("href"),
+imageSrc: a.find(".product-media img, .product-image:first-child img").attr("src"),
+imageLink: a.find(".product-name > a").attr("href"),
+message: "<p>has been added to cart:</p>",
+actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">View Cart</a><a href="<?=base_url();?>checkout" class="btn btn-dark btn-rounded btn-sm">Checkout</a>'
+})
+}
+}
+});
+
+
+
+}), 500))
+}));
                     
                   
-    //                 Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function (e) {
-    //     e.preventDefault();
-    //     var i = $(this),
-    //         a = i.closest(".product, .product-popup");
-    //     i.hasClass("disabled") ? alert("Please select some product options before adding this product to your cart.") : (i.toggleClass("added").addClass("load-more-overlay loading"), setTimeout((function () {
-    //         var product_id = $("#product_id").val();
-    //         var qty = $("#user_qty").val();
-    //         var regex = /[+-]?\d+(\.\d+)?/g;
-    //         var price = $("#product-price .new-price").html().match(regex).map(function (v) { return parseFloat(v); });
-    //         var discountPercentage = 0;
-
-    //         // Define discount conditions based on quantity
-    //         if (parseInt(qty) >= 10 && parseInt(qty) < 50) {
-    //             discountPercentage = 5;
-    //         } else if (parseInt(qty) >= 50 && parseInt(qty) < 100) {
-    //             discountPercentage = 10;
-    //         } else if (parseInt(qty) >= 100 && parseInt(qty) < 150) {
-    //             discountPercentage = 15;
-    //         } else if (parseInt(qty) >= 150 && parseInt(qty) <= 200) {
-    //             discountPercentage = 20;
-    //         }
-
-    //         if (parseInt(qty) < 10) {
-    //             alert("Minimum order quantity is 10. Please select at least 10 products.");
-    //             return;
-    //         }
-
-    //         var formdata = $("#choice_options_form").serialize();
-    //         formdata += '&product_id=' + product_id + '&qty=' + qty;
-
-    //         $.ajax({
-    //             type: "POST",
-    //             url: '<?=base_url();?>products/add_to_cart/',
-    //             data: formdata,
-    //             success: function (data) {
-    //                 if (data == 'ERROR_QTY') {
-    //                     alert('Product qty must be equal or less than available qty.');
-    //                     i.removeClass("load-more-overlay loading");
-    //                 } else {
-    //                     console.log(data);
-    //                     var oldcart = parseInt($(".cart-count").html());
-    //                     var discountedPrice = calculateDiscountedPrice(price, discountPercentage);
-
-    //                     $(".cart-count").html((oldcart + 1));
-    //                     $(".cart-total .price").html("£ " + (parseFloat($(".cart-total .price").html()) + (discountedPrice * qty)))
-    //                     $(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/' + $("#product-slug").val() + '" class="product-name">' + a.find(".product-name, .product-title").text() + '</a><div class="price-box"><span class="product-quantity">' + qty + '</span><span class="product-price">£ ' + discountedPrice + '</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/' + $("#product-slug").val() + '"><img src="' + a.find(".product-media img, .product-image:first-child img").attr("src") + '" alt="' + a.find(".product-name, .product-title").text() + '" height="84" width="94" /></a></figure></div>');
-    //                     i.removeClass("load-more-overlay loading"), Wolmart.Minipopup.open({
-    //                         productClass: " product-cart",
-    //                         name: a.find(".product-name, .product-title").text(),
-    //                         nameLink: a.find(".product-name > a, .product-title > a").attr("href"),
-    //                         imageSrc: a.find(".product-media img, .product-image:first-child img").attr("src"),
-    //                         imageLink: a.find(".product-name > a").attr("href"),
-    //                         message: "<p>has been added to cart:</p>",
-    //                         actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">View Cart</a><a href="<?=base_url();?>checkout" class="btn btn-dark btn-rounded btn-sm">Checkout</a>'
-    //                     });
-
-    //                     // Display discounted price in the console
-    //                     console.log("Discounted Price: £" + discountedPrice);
-    //                 }
-    //             }
-    //         });
-
-    //     }), 500))
-    // }));
-
-    // // Function to calculate discounted price
-    // function calculateDiscountedPrice(originalPrice, discountPercentage) {
-    //     return originalPrice - (originalPrice * (discountPercentage / 100));
-    // }  
-                    
     
 </script>
 
