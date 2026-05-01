@@ -1,343 +1,546 @@
-<!--------------- hero-section --------------->
-<section id="hero" class="hero hero-two">
-	<div class="container">
-		<div class="hero-section-two">
-			<div class="row g-5">
-			<?php
-			// Get first slider (latest one by sorting DESC)
-			$slider1 = $this->db->query("SELECT * FROM app_sliders ORDER BY sorting DESC LIMIT 1")->row_array();
+<?php /* Keep OWL and other slider scripts */ ?>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 
-			// Get second slider (next one)
-			$slider2 = $this->db->query("SELECT * FROM app_sliders ORDER BY sorting DESC LIMIT 1 OFFSET 1")->row_array();
-			?>
+<style>
+    /* ---- Product slider overrides for new clean design ---- */
+    .custom-slider-container {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        padding: 20px 0 40px 0;
+        overflow: hidden;
+    }
 
-			<!-- Left Slider -->
-			<?php if (!empty($slider1)) { ?>
-			<div class="col-lg-7">
-				<div class="hero-left hero-wrapper-two" 
-					style="background-image: url('<?= base_url(); ?>uploads/sliders/<?= $slider1['image']; ?>');
-							background-size: cover;
-							background-position: center;">
-					<div class="wrapper-content">
-						
-							<h1 class="wrapper-title"><?= $slider1['title']; ?></h1>
-							<h5 class="wrapper-details"><?= $slider1['subtitle']; ?></h5>
-							<p><?= $slider1['text']; ?></p>
-							<a href="<?= $slider1['link']; ?>" class="shop-btn">
-								<?= $slider1['button_title']; ?>
-								<span>
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M11.6667 13.3333L15 9.99992M15 9.99992L11.6667 6.66658M15 9.99992L5 9.99992"
-											stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-									</svg>
-								</span>
-							</a>
+    .custom-slider {
+        display: flex;
+        transition: transform 0.5s ease;
+        text-align: center;
+    }
 
-					</div>
-				</div>
-			</div>
-			<?php } ?>
+    .custom-product {
+        margin: 0 1%;
+        text-align: center;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid #e8e8e8 !important;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,.05);
+        transition: box-shadow .25s, transform .2s;
+    }
 
-			<!-- Right Slider -->
-			<?php if (!empty($slider2)) { ?>
-			<div class="col-lg-5">
-				<div class="hero-right hero-wrapper-two" 
-					style="background-image: url('<?= base_url(); ?>uploads/sliders/<?= $slider2['image']; ?>');
-							background-size: cover;
-							background-position: center;">
-					<div class="wrapper-content" data-aos="zoom-in" data-aos-duration="500">
+    .custom-product:hover {
+        box-shadow: 0 8px 24px rgba(45, 27, 105, .1) !important;
+        transform: translateY(-2px);
+    }
 
-							<h2 class="wrapper-title"><?= $slider2['title']; ?></h2>
-							<h5 class="wrapper-details"><?= $slider2['subtitle']; ?></h5>
-							<a href="<?= $slider2['link']; ?>" class="shop-btn">
-								<?= $slider2['button_title']; ?>
-								<span>
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M11.6667 13.3333L15 9.99992M15 9.99992L11.6667 6.66658M15 9.99992L5 9.99992"
-											stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-									</svg>
-								</span>
-							</a>
-					</div>
-				</div>
-			</div>
-			<?php } ?>
+    .custom-product img {
+        max-width: 100%;
+        height: 220px;
+        object-fit: contain;
+    }
 
+    .fix-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
 
-			</div>
-		</div>
+    .product-wrap {
+        padding: 14px;
+        margin: 8px;
+        border-radius: 12px;
+        border: 1px solid #e8e8e8 !important;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,.04);
+        transition: box-shadow .25s, transform .2s;
+    }
 
-	</div>
-</section>
-<!--------------- hero-section-end --------------->
+    .product-wrap:hover {
+        box-shadow: 0 8px 24px rgba(45, 27, 105, .1) !important;
+        transform: translateY(-2px);
+    }
 
-<!--------------- category-section--------------->
-<section class="product-category product-category-two">
-	<div class="container">
-		<div class="section-title">
-			<h5>Our Categories</h5>
-			
-		</div>
-		<div class="category-section category-section-two">
-			<?php
-			$categories = $this->db->query("SELECT * FROM app_categories WHERE level = 0");
-			foreach ($categories->result_array() as $row) {
-				// Ensure there is an image and a name for the category
-				if (!empty($row['image']) && !empty($row['name'])) {
-			?>
-						<div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
-							<a href="<?= base_url(); ?>products/?category=<?= $row['slug']; ?>">
-							<div class="wrapper-img">
-								<img src="<?= base_url(); ?>uploads/categories/<?= $row['image']; ?>" alt="<?= $row['name']; ?>" />
-							</div>
-							<div class="wrapper-info">
-								<a href="<?= base_url(); ?>products/?category=<?= $row['slug']; ?>" class="wrapper-details"><?= $row['name']; ?></a>
-							</div>
-						</a>
-						</div>
-			<?php }
-			} ?>
-		</div>
-	</div>
-</section>
-<!--------------- category-section-end--------------->
+    .category-card-home {
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        overflow: hidden;
+        text-align: center;
+        transition: box-shadow .25s, transform .2s;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+        background: #fff;
+    }
 
-<!--------------- arrival-section--------------->
-<section class="product arrival arrival-two">
-	<div class="container">
-		<div class="section-title">
-			<h5>NEW ARRIVALS</h5>
-			<a href="<?= base_url("products/"); ?>" class="view">View All</a>
-		</div>
-		<div class="arrival-section">
-			<div class="row g-5">
-				<?php
-				$new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && featured = '1' ORDER by id DESC LIMIT 0,20")->result_array();
-				foreach ($new_arrivals as $row) {
-					$stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-					$words = explode(' ', $row['name']);
-					$shortName = implode(' ', array_slice($words, 0, 7)); // 8 words max
-					$productName = $shortName . (count($words) > 7 ? '...' : '');
-				?>
-					<div class="col-lg-3 col-sm-6">
-						<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-							<div class="product-wrapper product-wrapper-two" data-aos="fade-up">
-								<div class="product-img">
-									<img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="product-img" />
+    .category-card-home:hover {
+        box-shadow: 0 8px 28px rgba(45, 27, 105, .12);
+        transform: translateY(-4px);
+        color: inherit;
+        text-decoration: none;
+    }
 
-								</div>
-								<div class="product-info">
-									<?php
-												$rating = $row['rating']; // rating value 0–5
-												$reviews = $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows();
-												$ratingFormatted = number_format($rating, 1);
-												?>
-												<div class="ratings flex items-center gap-1">
-													<span class="stars flex">
-														<?php for ($i = 1; $i <= 5; $i++): ?>
-															<svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-																<path
-																	d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-																	fill="<?= ($i <= floor($rating)) ? '#FFA800' : '#E0E0E0'; ?>" />
-															</svg>
-														<?php endfor; ?>
-													</span>
-													<span class="ml-1">(<?= $ratingFormatted; ?>)</span>
-													<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews ml-2">
-														(<?= $reviews; ?> Reviews)
-													</a>
-												</div>
-									<div class="product-description">
-										<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="product-details"> <?= $productName; ?> </a>
+    .category-card-home img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
 
+    .category-card-home .card-body-cat {
+        padding: 14px 16px;
+    }
 
-										<?php if ($stocks->num_rows() > 1) {
-											// Multiple stock variations
-											$low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-											if ($low_price->discount > 0) { ?>
-												<div class="price">
-													<span class="price-cut">£<?= $low_price->price; ?></span>
-													<span class="new-price">£<?= $low_price->discount; ?></span>
-												</div>
-											<?php } else { ?>
-												<div class="price">
-													<span class="new-price">£<?= $low_price->price; ?></span>
-												</div>
-											<?php } ?>
+    .category-card-home h5 {
+        font-size: .95rem;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
 
-											<?php } else {
-											// Single stock variation
-											$singleStock = $stocks->row();  // ✅ use this instead of $low_price
-											if ($singleStock->discount > 0) { ?>
-												<div class="price">
-													<span class="price-cut">£<?= $singleStock->price; ?></span>
-													<span class="new-price">£<?= $singleStock->discount; ?></span>
-												</div>
-											<?php } else { ?>
-												<div class="price">
-													<span class="new-price">£<?= $singleStock->price; ?></span>
-												</div>
-											<?php } ?>
-										<?php } ?>
+    .category-card-home .browse-link {
+        font-size: .8rem;
+        color: #D4A017;
+        font-weight: 600;
+    }
 
+    /* Slideshow */
+    .mySlides { display: none; }
+    .mySlides img { width: 100%; }
+    .dot {
+        height: 12px; width: 12px;
+        margin: 0 3px;
+        background-color: #ccc;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.4s ease;
+    }
+    .dot.active { background-color: #2D1B69; }
+    .fade { animation-name: fade; animation-duration: 1.5s; }
+    @keyframes fade { from { opacity:.4 } to { opacity:1 } }
+</style>
 
-									</div>
-								</div>
-								<div class="product-cart-btn">
-									<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="product-btn">Add To Cart</a>
-								</div>
-							</div>
-						</a>
-					</div>
+<div class="main" id="main">
 
-				<?php } ?>
-			</div>
-		</div>
-	</div>
-</section>
-<!--------------- arrival-section-end--------------->
+    <!-- ========================================
+         HERO SECTION
+    ========================================= -->
+    <section class="marlota-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12">
+                    <span class="badge-hero">Premium Packaging &amp; Supplies</span>
+                    <h1>
+                        E-Commerce Solutions for<br>
+                        <span class="accent">Your Business</span>
+                    </h1>
+                    <p class="hero-sub">Premium packaging, labels, and office essentials delivered fast across the UK.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="<?= base_url('products'); ?>" class="btn-hero-primary">Shop Products</a>
+                        <a href="<?= base_url('web/about'); ?>" class="btn-hero-outline">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 hero-image mt-4 mt-lg-0">
+                    <img src="<?= base_url(); ?>uploads/newimgs/Shopping.jpg"
+                         onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
+                         alt="Premium Packaging Products" />
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- ========================================
+         SHOP BY CATEGORY
+    ========================================= -->
+    <section class="marlota-categories">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Shop By Category</h2>
+                <div class="section-underline-center"></div>
+                <p class="section-sub">Browse our wide range of quality packaging and supplies.</p>
+            </div>
+            <div class="row g-4">
+                <?php
+                $categories = $this->db->query("SELECT * FROM app_categories WHERE level = 0 LIMIT 0,8");
+                foreach ($categories->result_array() as $row) {
+                    if (!empty($row['name'])) {
+                ?>
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <a href="<?= base_url(); ?>products/?category=<?= $row['slug']; ?>" class="category-card-home">
+                            <?php if (!empty($row['image'])) { ?>
+                                <img src="<?= base_url(); ?>uploads/categories/<?= $row['image']; ?>" alt="<?= $row['name']; ?>" />
+                            <?php } else { ?>
+                                <div style="height:180px;background:#f0eaf8;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2D1B69;">📦</div>
+                            <?php } ?>
+                            <div class="card-body-cat">
+                                <h5><?= $row['name']; ?></h5>
+                                <span class="browse-link">Browse Now →</span>
+                            </div>
+                        </a>
+                    </div>
+                <?php } } ?>
+            </div>
+        </div>
+    </section>
 
-<!--------------- weekly-section--------------->
-<section class="product weekly-sale weekly-sale-two">
-	<div class="container">
+    <!-- ========================================
+         WHY CHOOSE MARLOTA
+    ========================================= -->
+    <section class="marlota-why">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title-white">Why Choose Marlota?</h2>
+                <div class="section-underline-center"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="icon-circle"><i class="fa fa-truck"></i></div>
+                        <h5>Fast UK Shipping</h5>
+                        <p>Fast and reliable shipping across the United Kingdom.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="icon-circle"><i class="fa fa-star"></i></div>
+                        <h5>Top Quality Products</h5>
+                        <p>High-quality packaging products you can trust.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="feature-card">
+                        <div class="icon-circle"><i class="fa fa-check-circle"></i></div>
+                        <h5>Trusted By Sellers</h5>
+                        <p>Thousands of businesses trust Marlota.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- ========================================
+         TRENDING PRODUCTS
+    ========================================= -->
+    <section class="marlota-products-section">
+        <div class="container">
+            <h2 class="section-title mb-4">Trending Products</h2>
+            <div class="custom-slider-container">
+                <div class="custom-slider owl-carousel">
+                    <?php
+                    $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && featured = '1' ORDER by id DESC LIMIT 0,20")->result_array();
+                    foreach ($new_arrivals as $row) {
+                        $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                    ?>
+                        <div class="custom-product">
+                            <div class="fix-box">
+                                <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                    <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
+                                </a>
+                            </div>
+                            <h4 class="product-name text-center" style="overflow:hidden;font-size:.9rem;margin:8px 0 4px;">
+                                <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a>
+                            </h4>
+                            <div class="ratings-container text-center">
+                                <div class="ratings-full" style="display:flex;justify-content:center;align-items:center;">
+                                    <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
+                                </div>
+                                <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
+                            </div>
+                            <div class="product-price text-center">
+                                <?php if ($stocks->num_rows() > 1) {
+                                    $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+                                    if ($low_price->discount > 0) { ?>
+                                        <del class="old-price">£<?= $low_price->price; ?></del>
+                                        <ins class="new-price">£<?= $low_price->discount; ?></ins>
+                                    <?php } else { ?>
+                                        <ins class="new-price">£<?= $low_price->price; ?></ins>
+                                    <?php }
+                                } else {
+                                    if ($stocks->row()->discount > 0) { ?>
+                                        <del class="old-price">£<?= $stocks->row()->price; ?></del>
+                                        <ins class="new-price">£<?= $stocks->row()->discount; ?></ins>
+                                    <?php } else { ?>
+                                        <ins class="new-price">£<?= $stocks->row()->price; ?></ins>
+                                    <?php }
+                                } ?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
 
-		<div class="style-section style-section-two">
-			<div class="row gy-4 gx-5 gy-lg-0">
-				<div class="col-lg-6">
-					<div class="product-wrapper wrapper-one" data-aos="fade-right">
-						<div class="wrapper-info">
-							<span class="wrapper-subtitle">NEW STYLE</span>
-							<h4 class="wrapper-details">Get 65% Offer <span class="wrapper-inner-title">& Make New</span> Fusion.</h4>
-						
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="product-wrapper wrapper-two" data-aos="fade-up">
-						<div class="wrapper-info">
-							<span class="wrapper-subtitle">Mega OFFER</span>
-							<h4 class="wrapper-details">
-								Make your New
-								<span class="wrapper-inner-title">Styles with Our</span>
-								Products
-							</h4>
-						
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!--------------- weekly-section-end--------------->
+            <!-- ========================================
+                 POPULAR DEPARTMENTS TABS
+            ========================================= -->
+            <h2 class="section-title mb-3 mt-5">Popular Departments</h2>
+            <div class="tab tab-nav-boxed tab-nav-outline appear-animate">
+                <ul class="nav nav-tabs justify-content-center" role="tablist">
+                    <li class="nav-item mr-2 mb-2">
+                        <a class="nav-link active br-sm font-size-md ls-normal" href="#tab1-1">New Arrivals</a>
+                    </li>
+                    <li class="nav-item mr-2 mb-2">
+                        <a class="nav-link br-sm font-size-md ls-normal" href="#tab1-2">Best Seller</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content product-wrapper appear-animate">
+                <!-- New Arrivals -->
+                <div class="tab-pane pt-4" id="tab1-1">
+                    <div class="row roww cols-xl-5 cols-md-4 cols-sm-3 cols-2">
+                        <?php
+                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by id DESC LIMIT 0,20")->result_array();
+                        foreach ($new_arrivals as $row) {
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                        ?>
+                            <div class="product-wrap">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" style="width:300px;height:230px;object-fit:contain;" alt="<?= $row['name']; ?>" width="68%" />
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings-full">
+                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
+                                        </div>
+                                        <div class="product-price">
+                                            <?php if ($stocks->num_rows() > 1) {
+                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
+                                                if ($low_price->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
+                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($stocks->row()->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
+                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <!-- Best Seller Tab -->
+                <div class="tab-pane pt-4" id="tab1-2">
+                    <div class="row roww cols-xl-5 cols-md-4 cols-sm-3 cols-2">
+                        <?php
+                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by rating DESC LIMIT 0,20")->result_array();
+                        foreach ($new_arrivals as $row) {
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                        ?>
+                            <div class="product-wrap">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" style="width:300px;height:230px;object-fit:contain;" alt="<?= $row['name']; ?>" width="68%" />
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings-full">
+                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
+                                        </div>
+                                        <div class="product-price">
+                                            <?php if ($stocks->num_rows() > 1) {
+                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
+                                                if ($low_price->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
+                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($stocks->row()->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
+                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
 
-<!--------------- flash-section--------------->
-<section class="product best-product best-product-two">
-	<div class="container">
-		<div class="section-title">
-			<h5>Top Selling Prodcuts</h5>
-			<a href="<?= base_url("products/"); ?>" class="view">View All</a>
-		</div>
-		<div class="best-product-section">
-			<div class="row g-4">
-				<?php
-				$new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by id DESC LIMIT 0,12")->result_array();
-				// echo 'new_arrivals: <pre>' .print_r($new_arrivals,true). '</pre>'; die;
-				foreach ($new_arrivals as $row) {
-					$stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-					
-					// echo 'Data: <pre>' .print_r($stocks,true). '</pre>'; 
-					$words = explode(' ', $row['name']);
-					$shortName = implode(' ', array_slice($words, 0, 4)); // 8 words max
-					$productName = $shortName . (count($words) > 4 ? '...' : '');
-				?>
+            <!-- ========================================
+                 BEST SELLER PRODUCTS
+            ========================================= -->
+            <h2 class="section-title mb-4 mt-5">Best Seller Products</h2>
+            <div class="row">
+                <div class="col-md-3 d-none d-md-block">
+                    <div style="border-radius:12px;overflow:hidden;">
+                        <div class="mySlides fade">
+                            <img src="<?php echo base_url(); ?>uploads/newimgs/Shopping.jpg" style="width:100%;border-radius:12px;" />
+                        </div>
+                        <div class="mySlides fade">
+                            <img src="<?php echo base_url(); ?>uploads/newimgs/Shoping2.jpg" style="width:100%;border-radius:12px;" />
+                        </div>
+                        <div style="text-align:center;margin-top:8px;">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="slider-bottom owl-carousel">
+                        <?php
+                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && bestseller = '1' ORDER by id DESC LIMIT 0,20")->result_array();
+                        foreach ($new_arrivals as $row) {
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                        ?>
+                            <div class="product-wrap">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>" width="68%" style="max-height:200px;object-fit:contain;" />
+                                        </a>
+                                    </figure>
+                                    <div class="product-details content">
+                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings-full">
+                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
+                                        </div>
+                                        <div class="product-price">
+                                            <?php if ($stocks->num_rows() > 1) {
+                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
+                                                if ($low_price->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
+                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($stocks->row()->discount > 0) { ?>
+                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
+                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
+                                                <?php } else { ?>
+                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-					<div class="col-xl-3 col-md-4">
-						<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-							<div class="product-wrapper product-wrapper-two" data-aos="fade-up">
-								<div class="product-img">
-									<img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="product-img" />
-								</div>
-								<div class="product-info">
-									<?php
-									$rating = $row['rating']; // rating value 0–5
-									$reviews = $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows();
-									$ratingFormatted = number_format($rating, 1);
-									?>
-									<div class="ratings flex items-center gap-1">
-										<span class="stars flex">
-											<?php for ($i = 1; $i <= 5; $i++): ?>
-												<svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-													xmlns="http://www.w3.org/2000/svg">
-													<path
-														d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-														fill="<?= ($i <= floor($rating)) ? '#FFA800' : '#E0E0E0'; ?>" />
-												</svg>
-											<?php endfor; ?>
-										</span>
-										<span class="ml-1">(<?= $ratingFormatted; ?>)</span>
-										<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews ml-2">
-											(<?= $reviews; ?> Reviews)
-										</a>
-									</div>
-									<div class="product-description">
-										<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="product-details"> <?= $productName; ?> </a>
+    <!-- ========================================
+         NEWSLETTER SECTION
+    ========================================= -->
+    <section class="marlota-newsletter">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="nl-icon">✉️</div>
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe to get the latest updates on new products and offers.</p>
+                </div>
+                <div class="col-lg-6">
+                    <form action="#" method="get" class="nl-form">
+                        <input type="email" name="email" placeholder="Your email address" required />
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-										<?php 
-										if ($stocks->num_rows() > 1) {
-											// ✅ Multiple stock variations
-											$low_price = $this->db->query("
-												SELECT price, discount 
-												FROM app_product_stocks 
-												WHERE product_id = '{$row['id']}' 
-												ORDER BY price ASC 
-												LIMIT 1
-											")->row();
+</div>
+<!-- End of Main -->
 
-											if ($low_price) {
-												if (!empty($low_price->discount) && $low_price->discount > 0) { ?>
-													<div class="price">
-														<span class="price-cut">£<?= $low_price->price; ?></span>
-														<span class="new-price">£<?= $low_price->discount; ?></span>
-													</div>
-												<?php } else { ?>
-													<div class="price">
-														<span class="new-price">£<?= $low_price->price; ?></span>
-													</div>
-												<?php }
-											}
+<script>
+    $(document).ready(function () {
+        $(".slider").owlCarousel({
+            loop: true,
+            items: 6,
+            autoplay: true,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true,
+            responsive: {
+                0:    { items: 2 },
+                600:  { items: 3 },
+                1000: { items: 6 }
+            }
+        });
+        $(".slider-bottom").owlCarousel({
+            loop: true,
+            items: 4,
+            autoplay: true,
+            autoplayTimeout: 2500,
+            autoplayHoverPause: true,
+            responsive: {
+                0:    { items: 2 },
+                600:  { items: 3 },
+                1000: { items: 4 }
+            }
+        });
+        $(".custom-slider").owlCarousel({
+            items: 5,
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            responsive: {
+                0:    { items: 1 },
+                600:  { items: 2 },
+                1000: { items: 5 }
+            }
+        });
+    });
+</script>
 
-										} elseif ($stocks->num_rows() == 1) {
-											// ✅ Single stock variation
-											$singleStock = $stocks->row();
+<script>
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots   = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1; }
+        for (i = 0; i < dots.length; i++) { dots[i].className = dots[i].className.replace(" active",""); }
+        if (slides[slideIndex-1]) {
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+        setTimeout(showSlides, 2000);
+    }
+</script>
 
-											if (!empty($singleStock->discount) && $singleStock->discount > 0) { ?>
-												<div class="price">
-													<span class="price-cut">£<?= $singleStock->price; ?></span>
-													<span class="new-price">£<?= $singleStock->discount; ?></span>
-												</div>
-											<?php } else { ?>
-												<div class="price">
-													<span class="new-price">£<?= $singleStock->price; ?></span>
-												</div>
-											<?php }
-
-										} else {
-											// ✅ No stock at all
-											echo '<div class="price"><span class="new-price">Out of Stock</span></div>';
-										}
-										?>
-									</div>
-								</div>
-							</div>
-						</a>
-					</div>
-				<?php } ?>
-			</div>
-		</div>
-	</div>
-</section>
-<!--------------- flash-section-end--------------->
+<!-- Google Tag Manager -->
+<script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TLPTH5RL');
+</script>
+<!-- End Google Tag Manager -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLPTH5RL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
