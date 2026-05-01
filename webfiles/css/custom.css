@@ -1,0 +1,11 @@
+.newsletter-popup {
+display: none !important;
+}
+.appear-animate {
+    visibility: visible !important;
+     opacity: 1 !important;
+}
+
+.bg-primary {
+    background-color: #871919 !important;
+}
