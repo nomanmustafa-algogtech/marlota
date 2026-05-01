@@ -486,16 +486,16 @@ actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">V
 
 <script>
     // Scroll-to-top button visibility
-    window.addEventListener('scroll', function () {
-        var scrollTop = document.getElementById('scroll-top');
-        if (scrollTop) {
+    var scrollTopBtn = document.getElementById('scroll-top');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', function () {
             if (window.scrollY > 300) {
-                scrollTop.classList.add('show');
+                scrollTopBtn.classList.add('show');
             } else {
-                scrollTop.classList.remove('show');
+                scrollTopBtn.classList.remove('show');
             }
-        }
-    });
+        });
+    }
 </script>
 
 </body>
