@@ -131,11 +131,9 @@ if($this->session->userdata('user_loggedin')){
     <!-- End of Sticky Footer -->
 
     <!-- Start of Scroll Top -->
-    <a id="scroll-top" class="scroll-top" href="#top" title="Top" role="button"> <i class="w-icon-angle-up"></i> <svg
-            version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70">
-            <circle id="progress-indicator" fill="transparent" stroke="#000000" stroke-miterlimit="10" cx="35" cy="35"
-                r="34" style="stroke-dasharray: 16.4198, 400;"></circle>
-        </svg> </a>
+    <a id="scroll-top" class="scroll-top" href="#top" title="Top" role="button">
+        <i class="fa fa-chevron-up"></i>
+    </a>
     <!-- End of Scroll Top -->
 
     <!-- Start of Mobile Menu -->
@@ -486,6 +484,19 @@ actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">V
     
 </script>
 
+<script>
+    // Scroll-to-top button visibility
+    window.addEventListener('scroll', function () {
+        var scrollTop = document.getElementById('scroll-top');
+        if (scrollTop) {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        }
+    });
+</script>
 
 </body>
 

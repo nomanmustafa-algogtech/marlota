@@ -1080,3 +1080,81 @@ body {
         margin-top: 28px;
     }
 }
+
+/* =============================================
+   LEGACY ELEMENT FIXES
+   These elements come from header.php / footer.php
+   and previously relied on style.min.css / custom.css
+   which are no longer loaded. These rules restore the
+   correct behaviour without that stylesheet.
+   ============================================= */
+
+/* Magnific Popup hidden class */
+.mfp-hide {
+    display: none !important;
+}
+
+/* Newsletter popup */
+.newsletter-popup {
+    display: none !important;
+}
+
+/* Mobile menu wrapper – fixed overlay, hidden until activated */
+.mobile-menu-wrapper {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2400;
+    overflow: hidden;
+}
+.mmenu-active .mobile-menu-wrapper {
+    visibility: visible;
+}
+
+/* Sticky footer (Wolmart mobile nav bar) –
+   the new design has its own responsive header,
+   so hide this legacy component */
+.sticky-footer,
+.sticky-content.fix-bottom {
+    display: none !important;
+}
+
+/* Scroll-to-top button */
+#scroll-top {
+    position: fixed;
+    right: 2rem;
+    bottom: 4rem;
+    z-index: 1100;
+    width: 42px;
+    height: 42px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #2D1B69;
+    color: #fff !important;
+    border-radius: 50%;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .22);
+    text-decoration: none;
+    transition: background .2s, opacity .3s;
+}
+#scroll-top.show {
+    display: flex;
+}
+#scroll-top i {
+    font-size: 16px;
+    line-height: 1;
+}
+#scroll-top svg {
+    display: none;
+}
+
+/* Ensure Bootstrap 5 tab-panes are shown when active */
+.tab-content > .tab-pane {
+    display: none;
+}
+.tab-content > .tab-pane.active {
+    display: block;
+}

@@ -273,14 +273,14 @@ $function  = $this->uri->segment(2);
                             <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-4">
                                 <div class="cart-overlay"></div>
                                 <a href="#" class="cart-toggle label-down link nav-link" style="color:#1a1a2e; position:relative;">
-                                    <i class="w-icon-cart"></i>
+                                    <i class="fa fa-shopping-cart" style="font-size:18px;"></i>
                                     <span class="customcart"><?= count($cart); ?></span>
                                     <span class="cart-label" style="margin-left:8px;">Cart</span>
                                 </a>
                                 <div class="dropdown-box">
                                     <div class="cart-header">
                                         <span>Shopping Cart</span>
-                                        <a href="#" class="btn-close">Close<i class="w-icon-long-arrow-right"></i></a>
+                                        <a href="#" class="btn-close">Close <i class="fa fa-arrow-right"></i></a>
                                     </div>
                                     <div class="products" style="overflow-y: auto;overflow-x: hidden;">
                                         <?php
@@ -329,7 +329,7 @@ $function  = $this->uri->segment(2);
                         <div class="dropdown cart-dropdown cart-offcanvas">
                             <div class="cart-overlay"></div>
                             <a href="#" class="cart-toggle link" style="color:#2D1B69; position:relative; font-size:24px;">
-                                <i class="w-icon-cart"></i>
+                                <i class="fa fa-shopping-cart"></i>
                                 <span style="position:absolute;top:-6px;right:-10px;background:#D4A017;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;"><?= count($cart); ?></span>
                             </a>
                         </div>
