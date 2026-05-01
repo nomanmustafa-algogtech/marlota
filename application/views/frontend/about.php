@@ -3,10 +3,10 @@
 <!-- ========================================
      HERO SECTION
 ========================================= -->
-<section class="marlota-page-hero">
+<section class="marlota-page-hero marlota-page-hero-about">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-7 col-md-12">
+            <div class="col-lg-6 col-md-12">
                 <div class="breadcrumb-hero">
                     <a href="<?= base_url(); ?>">Home</a>
                     <span>&rsaquo;</span>
@@ -15,10 +15,12 @@
                 <h1>About Us</h1>
                 <p class="hero-sub">Driven by quality. Focused on service. Built for your business.</p>
             </div>
-            <div class="col-lg-5 col-md-12 hero-icons d-none d-lg-flex">
-                <div class="hero-icon-wrap">📦</div>
-                <div class="hero-icon-wrap">🏭</div>
-                <div class="hero-icon-wrap">🚚</div>
+            <div class="col-lg-6 col-md-12 d-none d-lg-block">
+                <div class="hero-visual text-end">
+                    <img src="<?= base_url(); ?>uploads/product-img-banner.jpeg"
+                         onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
+                         alt="Marlota products" />
+                </div>
             </div>
         </div>
     </div>
@@ -60,21 +62,21 @@
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
                 <div class="value-card">
-                    <div class="icon-circle">🚚</div>
+                    <div class="icon-circle"><i class="fa fa-truck"></i></div>
                     <h5>Fast Shipping</h5>
                     <p>We ensure fast and safe delivery across the UK.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="value-card">
-                    <div class="icon-circle">👥</div>
+                    <div class="icon-circle"><i class="fa fa-users"></i></div>
                     <h5>Customer Focused</h5>
                     <p>Our customers are at the heart of everything we do.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-12">
                 <div class="value-card">
-                    <div class="icon-circle">✅</div>
+                    <div class="icon-circle"><i class="fa fa-shield"></i></div>
                     <h5>Trusted by Sellers</h5>
                     <p>Thousands of businesses rely on our products and services.</p>
                 </div>
@@ -93,7 +95,7 @@
             <div class="section-underline-center"></div>
         </div>
         <div class="mission-card">
-            <div class="mission-icon-wrap">⭐</div>
+            <div class="mission-icon-wrap"><i class="fa fa-star"></i></div>
             <div>
                 <h4>Our Mission</h4>
                 <p>To deliver premium packaging and supplies that help businesses grow, operate efficiently, and leave a lasting impression. We strive to be the most reliable and trusted packaging partner for UK businesses.</p>

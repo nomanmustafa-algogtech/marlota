@@ -1,5 +1,5 @@
     <!--------------- products-sidebar-section--------------->
-    <section class="product product-sidebar footer-padding">
+	<section class="product product-sidebar footer-padding marlota-products-section" style="background:#fff;">
     	<div class="container">
     		<div class="row g-5">
     			<div class="col-lg-3">
@@ -80,87 +80,66 @@
     								</div>
     							</div>
     						</div>
-    						<?php if (count($products) == 0) { ?>
-    							<p style="color:red; text-align:center;">No products found with this criteria</p>
-    						<?php } ?>
+							<?php if (count($products) == 0) { ?>
+								<div class="col-12">
+									<p style="color:red; text-align:center;">No products found with this criteria</p>
+								</div>
+							<?php } ?>
     						<?php
 							foreach ($products as $product) {
 								$stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$product['id']}'");
-								$category = $this->db->query("SELECT * FROM app_categories WHERE id = '{$product['category_id']}'")->row_array();
 								$words = explode(' ', $product['name']);
 								$shortName = implode(' ', array_slice($words, 0, 7)); // 8 words max
 								$productName = $shortName . (count($words) > 7 ? '...' : '');
+
+									if ($stocks->num_rows() > 1) {
+										$stockRow = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$product['id']}' ORDER BY price ASC")->row();
+									} else {
+										$stockRow = $stocks->row();
+									}
+
+									$showOldPrice = ($stockRow && $stockRow->discount > 0);
+									$displayPrice = $showOldPrice ? $stockRow->discount : ($stockRow ? $stockRow->price : 0);
+									$oldPrice = $stockRow ? $stockRow->price : 0;
+									$pctOff = ($showOldPrice && $oldPrice > 0) ? round((($oldPrice - $displayPrice) / $oldPrice) * 100) : 0;
+
+									$rating = (float) $product['rating'];
+									$reviews = $this->db->query("SELECT COUNT(*) AS total FROM app_product_reviews WHERE product_id = '{$product['id']}' AND approved = '1'")->row()->total;
+									$filled = round($rating);
 							?>
 
-    							<div class="col-lg-4 col-sm-6">
-									<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>">
-										<div class="product-wrapper" data-aos="fade-up">
-											<div class="product-img">
+								<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
+									<div class="product-card-new product-card-listing" data-aos="fade-up">
+										<div class="pc-image-wrap">
+											<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>">
 												<img src="<?= base_url(); ?>uploads/products/<?= $product['thumbnail_img']; ?>" alt="<?= $product['name']; ?>">
-
-											</div>
-											<div class="product-info">
-												<?php
-												$rating = $product['rating']; // rating value 0–5
-												$reviews = $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$product['id']}' AND approved = '1'")->num_rows();
-												$ratingFormatted = number_format($rating, 1);
-												?>
-												<div class="ratings flex items-center gap-1">
-													<span class="stars flex">
-														<?php for ($i = 1; $i <= 5; $i++): ?>
-															<svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-																xmlns="http://www.w3.org/2000/svg">
-																<path
-																	d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-																	fill="<?= ($i <= floor($rating)) ? '#FFA800' : '#E0E0E0'; ?>" />
-															</svg>
-														<?php endfor; ?>
-													</span>
-													<span class="ml-1">(<?= $ratingFormatted; ?>)</span>
-													<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>" class="rating-reviews ml-2">
-														(<?= $reviews; ?> Reviews)
-													</a>
-												</div>
-
-												<div class="product-description">
-													<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>" class="product-details"><?= $productName; ?>
-													</a>
-													<?php if ($stocks->num_rows() > 1) {
-														// Multiple stock variations
-														$low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$product['id']}' ORDER BY price ASC")->row();
-														if ($low_price->discount > 0) { ?>
-															<div class="price">
-																<span class="price-cut">£<?= $low_price->price; ?></span>
-																<span class="new-price">£<?= $low_price->discount; ?></span>
-															</div>
-														<?php } else { ?>
-															<div class="price">
-																<span class="new-price">£<?= $low_price->price; ?></span>
-															</div>
-														<?php } ?>
-
-														<?php } else {
-														// Single stock variation
-														$singleStock = $stocks->row();  // ✅ use this instead of $low_price
-														if ($singleStock->discount > 0) { ?>
-															<div class="price">
-																<span class="price-cut">£<?= $singleStock->price; ?></span>
-																<span class="new-price">£<?= $singleStock->discount; ?></span>
-															</div>
-														<?php } else { ?>
-															<div class="price">
-																<span class="new-price">£<?= $singleStock->price; ?></span>
-															</div>
-														<?php } ?>
+											</a>
+											<?php if ($pctOff > 0) { ?><span class="pc-badge-off"><?= $pctOff; ?>% OFF</span><?php } ?>
+										</div>
+										<div class="pc-body">
+											<div class="pc-rating">
+												<div class="pc-stars">
+													<?php for ($i = 1; $i <= 5; $i++) { ?>
+														<i class="fa fa-star<?= ($i <= $filled) ? '' : ($i - 0.5 <= $rating ? '-half-o' : '-o'); ?>"></i>
 													<?php } ?>
 												</div>
+												<span class="pc-review-count"><?= $reviews; ?> Reviews</span>
 											</div>
-											<div class="product-cart-btn">
-												<a href="cart.html" class="product-btn">Add To Cart</a>
+											<div class="pc-name">
+												<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>"><?= $productName; ?></a>
+											</div>
+											<div class="pc-price-row">
+												<span class="pc-price">£<?= $displayPrice; ?></span>
+												<?php if ($showOldPrice) { ?><span class="pc-old-price">£<?= $oldPrice; ?></span><?php } ?>
+												<?php if ($pctOff > 0) { ?><span class="pc-pct-off"><?= $pctOff; ?>% OFF</span><?php } ?>
+											</div>
+											<div class="pc-fast-delivery">
+												<span class="pc-fd-fast">Fast</span>
+												<span class="pc-fd-label">Delivery</span>
 											</div>
 										</div>
-									</a>
-    							</div>
+									</div>
+								</div>
     						<?php } ?>
     						<div class="toolbox toolbox-pagination justify-content-between">
     							<p class="showing-info mb-2 mb-sm-0">

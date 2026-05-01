@@ -139,7 +139,7 @@
                     <p class="hero-sub">Premium packaging, labels, and office essentials delivered fast across the UK.</p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="<?= base_url('products'); ?>" class="btn-hero-primary">Shop Products</a>
-                        <a href="<?= base_url('web/about'); ?>" class="btn-hero-outline">Learn More</a>
+                        <a href="<?= base_url('about'); ?>" class="btn-hero-outline">Learn More</a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 hero-image mt-4 mt-lg-0">

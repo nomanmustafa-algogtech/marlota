@@ -3,7 +3,7 @@
 <!-- ========================================
      HERO SECTION
 ========================================= -->
-<section class="marlota-page-hero">
+<section class="marlota-page-hero marlota-page-hero-contact">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7 col-md-12">
@@ -15,19 +15,10 @@
                 <h1>Contact Us</h1>
                 <p class="hero-sub">We're here to help. Get in touch with our friendly team.</p>
             </div>
-            <div class="col-lg-5 col-md-12 hero-icons d-none d-lg-flex">
-                <!-- Phone icon outline -->
-                <div class="hero-icon-wrap">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.49 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.4 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.7A16 16 0 0 0 15.29 16l.7-.7a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                </div>
-                <!-- Envelope icon outline -->
-                <div class="hero-icon-wrap">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
+            <div class="col-lg-5 col-md-12 d-none d-lg-block">
+                <div class="hero-contact-icons">
+                    <i class="fa fa-phone"></i>
+                    <i class="fa fa-envelope-o"></i>
                 </div>
             </div>
         </div>
@@ -46,11 +37,11 @@
                     <h4>Send Us a Message</h4>
                     <form class="formm" action="#" method="post">
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <label for="name" class="form-label">Full Name</label>
                                 <input type="text" id="name" name="name" required class="form-control" placeholder="Your full name" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" id="email" name="email" required class="form-control" placeholder="your@email.com" />
                             </div>

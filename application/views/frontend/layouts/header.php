@@ -262,10 +262,10 @@ $function  = $this->uri->segment(2);
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('about'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">About Us</a>
+                            <a href="<?= base_url('web/about'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('contact'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Contact Us</a>
+                            <a href="<?= base_url('web/contact'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Contact Us</a>
                         </li>
                         <!-- Account -->
                         <?php if ($this->session->userdata('user_loggedin')) { ?>
@@ -409,6 +409,48 @@ $function  = $this->uri->segment(2);
                     document.getElementById("mySidebar").style.width = "0";
                     document.getElementById("main").style.marginLeft = "0";
                 }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    if (window.innerWidth < 992) return;
+
+                    var navbar = document.querySelector('.marlota-header .navbar');
+                    var panels = document.querySelectorAll('.megamenu-panel');
+
+                    function positionPanels() {
+                        if (!navbar) return;
+                        var rect = navbar.getBoundingClientRect();
+                        var bottom = rect.bottom + window.scrollY - window.scrollY; /* fixed is relative to viewport */
+                        panels.forEach(function(p) {
+                            p.style.top = rect.bottom + 'px';
+                        });
+                    }
+
+                    positionPanels();
+                    window.addEventListener('scroll', positionPanels);
+                    window.addEventListener('resize', positionPanels);
+
+                    var megaItems = document.querySelectorAll('.has-megamenu');
+                    megaItems.forEach(function (item) {
+                        var closeTimer;
+
+                        function openMenu() {
+                            clearTimeout(closeTimer);
+                            positionPanels();
+                            item.classList.add('menu-open');
+                        }
+
+                        function closeMenu() {
+                            closeTimer = setTimeout(function () {
+                                item.classList.remove('menu-open');
+                            }, 160);
+                        }
+
+                        item.addEventListener('mouseenter', openMenu);
+                        item.addEventListener('mouseleave', closeMenu);
+                        item.addEventListener('focusin', openMenu);
+                        item.addEventListener('focusout', closeMenu);
+                    });
+                });
             </script>
 
         </header>

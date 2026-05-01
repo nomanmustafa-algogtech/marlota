@@ -25,6 +25,23 @@ body {
     color: #333333;
 }
 
+:root {
+    --mx-space-2: 8px;
+    --mx-space-3: 12px;
+    --mx-space-4: 16px;
+    --mx-space-5: 20px;
+    --mx-space-6: 24px;
+    --mx-space-7: 28px;
+    --mx-space-8: 32px;
+    --mx-space-9: 40px;
+    --mx-space-10: 48px;
+    --mx-space-11: 56px;
+    --mx-space-12: 64px;
+    --mx-space-13: 72px;
+    --mx-space-14: 84px;
+    --mx-space-15: 96px;
+}
+
 /* Reset anchor properties inside all Marlota-designed sections */
 .marlota-header a,
 .marlota-hero a,
@@ -92,6 +109,7 @@ body {
    ============================================= */
 .marlota-header {
     background: #fff !important;
+    border-top: 6px solid #2D1B69;
     box-shadow: 0 2px 8px rgba(0,0,0,.06);
     position: relative;
     z-index: 999;
@@ -103,6 +121,11 @@ body {
     border-bottom: 1px solid #eee;
     padding: 12px 0;
     position: relative;
+    z-index: 1000;
+}
+
+.marlota-header .navbar-nav {
+    position: static;
 }
 
 .marlota-header .navbar .container {
@@ -187,12 +210,12 @@ body {
 .marlota-hero {
     background: #2D1B69;
     background: linear-gradient(135deg, #2D1B69 0%, #1a0e45 100%);
-    min-height: 520px;
+    min-height: 492px;
     display: flex;
     align-items: center;
-    padding: 80px 0 60px;
+    padding: var(--mx-space-13) 0 var(--mx-space-14);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .marlota-hero::after {
@@ -204,6 +227,26 @@ body {
     height: 500px;
     background: rgba(212, 160, 23, .07);
     border-radius: 50%;
+}
+
+.marlota-hero::before,
+.marlota-page-hero::before {
+    content: '';
+    position: absolute;
+    left: -3%;
+    right: -3%;
+    bottom: -30px;
+    height: 64px;
+    background: #fff;
+    border-top: 3px solid #D4A017;
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    z-index: 2;
+}
+
+.marlota-hero > .container,
+.marlota-page-hero > .container {
+    position: relative;
+    z-index: 3;
 }
 
 .marlota-hero .badge-hero {
@@ -292,9 +335,9 @@ body {
 /* Page hero (About / Contact) */
 .marlota-page-hero {
     background: linear-gradient(135deg, #2D1B69 0%, #1a0e45 100%);
-    padding: 70px 0 60px;
+    padding: var(--mx-space-11) 0 var(--mx-space-15);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .marlota-page-hero .breadcrumb-hero {
@@ -320,16 +363,38 @@ body {
 }
 
 .marlota-page-hero h1 {
-    font-size: 42px;
+    font-size: 46px;
     font-weight: 800;
     color: #fff;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    line-height: 1.1;
 }
 
 .marlota-page-hero .hero-sub {
-    font-size: 16px;
+    font-size: 17px;
     color: rgba(255,255,255,.7);
     max-width: 500px;
+    line-height: 1.6;
+}
+
+.marlota-page-hero-about .hero-visual img {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,.34));
+}
+
+.marlota-page-hero-contact .hero-contact-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 48px;
+}
+
+.marlota-page-hero-contact .hero-contact-icons i {
+    font-size: 92px;
+    color: rgba(255,255,255,.13);
+    line-height: 1;
 }
 
 .marlota-page-hero .hero-icons {
@@ -356,23 +421,24 @@ body {
    SECTION SHARED
    ============================================= */
 .section-title {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 700;
     color: #1a1a2e;
-    margin-bottom: 8px;
+    margin-bottom: var(--mx-space-2);
 }
 
 .section-title-white {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: var(--mx-space-2);
 }
 
 .section-sub {
-    font-size: 16px;
+    font-size: 15px;
     color: #666666;
-    margin-bottom: 40px;
+    margin-bottom: var(--mx-space-9);
+    line-height: 1.65;
 }
 
 .section-sub-white {
@@ -386,7 +452,7 @@ body {
     height: 4px;
     background: #D4A017;
     border-radius: 2px;
-    margin: 8px 0 20px;
+    margin: var(--mx-space-2) 0 var(--mx-space-5);
 }
 
 .section-underline-center {
@@ -394,7 +460,7 @@ body {
     height: 4px;
     background: #D4A017;
     border-radius: 2px;
-    margin: 8px auto 20px;
+    margin: var(--mx-space-2) auto var(--mx-space-5);
 }
 
 /* =============================================
@@ -402,7 +468,7 @@ body {
    ============================================= */
 .marlota-categories {
     background: #fff;
-    padding: 70px 0;
+    padding: var(--mx-space-12) 0;
 }
 
 .marlota-categories .category-card {
@@ -452,7 +518,7 @@ body {
    ============================================= */
 .marlota-why {
     background: #2D1B69;
-    padding: 70px 0;
+    padding: var(--mx-space-12) 0;
 }
 
 .marlota-why .feature-card {
@@ -499,7 +565,7 @@ body {
    ============================================= */
 .marlota-newsletter {
     background: #fff;
-    padding: 50px 0;
+    padding: var(--mx-space-10) 0;
     border-top: 1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
 }
@@ -566,7 +632,7 @@ body {
    ============================================= */
 .marlota-products-section {
     background: #f8f8f8;
-    padding: 60px 0;
+    padding: var(--mx-space-11) 0;
 }
 
 .marlota-products-section .section-title {
@@ -605,7 +671,7 @@ body {
 .marlota-footer {
     background: #2D1B69;
     color: rgba(255,255,255,.85);
-    padding: 60px 0 0;
+    padding: var(--mx-space-11) 0 0;
 }
 
 .marlota-footer .footer-logo {
@@ -695,7 +761,7 @@ body {
 
 .marlota-footer .footer-bottom {
     background: rgba(0,0,0,.2);
-    margin-top: 50px;
+    margin-top: var(--mx-space-10);
     padding: 18px 0;
 }
 
@@ -710,7 +776,7 @@ body {
    ============================================= */
 .marlota-about-who {
     background: #fff;
-    padding: 80px 0;
+    padding: var(--mx-space-11) 0;
 }
 
 .marlota-about-who .badge-section {
@@ -751,7 +817,7 @@ body {
 
 .marlota-core-values {
     background: #fff;
-    padding: 70px 0;
+    padding: var(--mx-space-11) 0;
     border-top: 1px solid #f0f0f0;
 }
 
@@ -797,7 +863,7 @@ body {
 
 .marlota-mission {
     background: #fff;
-    padding: 60px 0;
+    padding: var(--mx-space-11) 0;
 }
 
 .marlota-mission .mission-card {
@@ -844,14 +910,14 @@ body {
    ============================================= */
 .marlota-contact-section {
     background: #fff;
-    padding: 80px 0;
+    padding: var(--mx-space-11) 0;
 }
 
 .marlota-contact-section .contact-form-card {
     background: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 14px;
-    padding: 36px 32px;
+    padding: var(--mx-space-9) var(--mx-space-8);
     box-shadow: 0 4px 20px rgba(0,0,0,.05);
 }
 
@@ -903,7 +969,7 @@ body {
 .marlota-contact-section .contact-info-card {
     background: #f8f8f8;
     border-radius: 14px;
-    padding: 36px 32px;
+    padding: var(--mx-space-9) var(--mx-space-8);
     height: 100%;
 }
 
@@ -993,7 +1059,7 @@ body {
 /* CTA Banner */
 .marlota-cta {
     background: linear-gradient(135deg, #2D1B69 0%, #1a0e45 100%);
-    padding: 60px 0;
+    padding: var(--mx-space-10) 0;
 }
 
 .marlota-cta .cta-icon-wrap {
@@ -1045,19 +1111,42 @@ body {
    RESPONSIVE
    ============================================= */
 @media (max-width: 991px) {
+    :root {
+        --mx-space-10: 40px;
+        --mx-space-11: 48px;
+        --mx-space-12: 56px;
+        --mx-space-13: 60px;
+        --mx-space-14: 68px;
+        --mx-space-15: 76px;
+    }
+
     .marlota-hero h1 {
         font-size: 35px;
     }
     .marlota-hero {
         min-height: auto;
-        padding: 60px 0 40px;
+        padding: var(--mx-space-12) 0 var(--mx-space-14);
+    }
+    .marlota-page-hero {
+        padding: var(--mx-space-11) 0 var(--mx-space-15);
     }
     .marlota-hero .hero-image {
         margin-top: 36px;
     }
+    .marlota-hero::before,
+    .marlota-page-hero::before {
+        height: 54px;
+        bottom: -24px;
+    }
     .section-title,
     .section-title-white {
-        font-size: 27px;
+        font-size: 30px;
+    }
+    .marlota-page-hero h1 {
+        font-size: 40px;
+    }
+    .marlota-page-hero-about .hero-visual img {
+        max-height: 270px;
     }
     .marlota-mission .mission-card {
         flex-direction: column;
@@ -1065,11 +1154,52 @@ body {
 }
 
 @media (max-width: 767px) {
+    :root {
+        --mx-space-8: 24px;
+        --mx-space-9: 28px;
+        --mx-space-10: 32px;
+        --mx-space-11: 36px;
+        --mx-space-12: 40px;
+        --mx-space-13: 44px;
+        --mx-space-14: 52px;
+        --mx-space-15: 60px;
+    }
+
     .marlota-hero h1 {
-        font-size: 29px;
+        font-size: 30px;
+        line-height: 1.2;
     }
     .marlota-page-hero h1 {
-        font-size: 30px;
+        font-size: 32px;
+        line-height: 1.2;
+    }
+    .marlota-hero .hero-sub,
+    .marlota-page-hero .hero-sub {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .marlota-hero::before,
+    .marlota-page-hero::before {
+        height: 44px;
+        bottom: -18px;
+    }
+    .marlota-page-hero-contact .hero-contact-icons {
+        justify-content: center;
+        gap: 20px;
+    }
+    .marlota-page-hero-contact .hero-contact-icons i {
+        font-size: 48px;
+    }
+    .section-title,
+    .section-title-white {
+        font-size: 27px;
+    }
+    .marlota-header .logo img {
+        height: 40px;
+    }
+    .btn-shop-now {
+        padding: 8px 14px;
+        font-size: 13px;
     }
     .marlota-contact-section .contact-form-card,
     .marlota-contact-section .contact-info-card {
@@ -1176,7 +1306,9 @@ body {
     transition: transform .2s;
 }
 
-.marlota-header .has-megamenu:hover .megamenu-trigger .fa-chevron-down {
+.marlota-header .has-megamenu:hover .megamenu-trigger .fa-chevron-down,
+.marlota-header .has-megamenu:focus-within .megamenu-trigger .fa-chevron-down,
+.marlota-header .has-megamenu.menu-open .megamenu-trigger .fa-chevron-down {
     transform: rotate(180deg);
 }
 
@@ -1191,9 +1323,13 @@ body {
     border-top: 3px solid #D4A017;
     z-index: 1050;
     padding: 28px 0 24px;
+    max-height: 72vh;
+    overflow-y: auto;
 }
 
-.has-megamenu:hover .megamenu-panel {
+.has-megamenu:hover .megamenu-panel,
+.has-megamenu:focus-within .megamenu-panel,
+.has-megamenu.menu-open .megamenu-panel {
     display: block;
 }
 
@@ -1201,16 +1337,15 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px 18px;
 }
 
 .megamenu-col {
-    flex: 0 0 auto;
-    min-width: 160px;
-    max-width: 200px;
-    padding: 0 18px 0 0;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
     margin-bottom: 10px;
 }
 
@@ -1293,6 +1428,10 @@ body {
 .product-card-new:hover {
     box-shadow: 0 10px 30px rgba(45,27,105,.13);
     transform: translateY(-3px);
+}
+
+.product-card-listing {
+    border-color: #ececec;
 }
 
 .product-card-new .pc-image-wrap {
