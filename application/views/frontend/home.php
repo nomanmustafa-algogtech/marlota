@@ -232,39 +232,45 @@
                     $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && featured = '1' ORDER by id DESC LIMIT 0,20")->result_array();
                     foreach ($new_arrivals as $row) {
                         $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                        $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
+                        $filled = round($row['rating']);
+                        // compute price/discount
+                        if ($stocks->num_rows() > 1) {
+                            $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+                        } else {
+                            $lp = $stocks->row();
+                        }
+                        $show_old = ($lp && $lp->discount > 0);
+                        $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
+                        $old_price = $lp ? $lp->price : 0;
+                        $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
                     ?>
-                        <div class="custom-product">
-                            <div class="fix-box">
+                        <div class="product-card-new" style="margin:0 5px;">
+                            <div class="pc-image-wrap">
                                 <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
                                     <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
                                 </a>
+                                <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
                             </div>
-                            <h4 class="product-name text-center" style="overflow:hidden;font-size:14px;margin:8px 0 4px;">
-                                <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a>
-                            </h4>
-                            <div class="ratings-container text-center">
-                                <div class="ratings-full" style="display:flex;justify-content:center;align-items:center;">
-                                    <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
+                            <div class="pc-body">
+                                <div class="pc-rating">
+                                    <div class="pc-stars">
+                                        <?php for ($s = 1; $s <= 5; $s++) { ?>
+                                        <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
+                                        <?php } ?>
+                                    </div>
+                                    <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
                                 </div>
-                                <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
-                            </div>
-                            <div class="product-price text-center">
-                                <?php if ($stocks->num_rows() > 1) {
-                                    $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-                                    if ($low_price->discount > 0) { ?>
-                                        <del class="old-price">£<?= $low_price->price; ?></del>
-                                        <ins class="new-price">£<?= $low_price->discount; ?></ins>
-                                    <?php } else { ?>
-                                        <ins class="new-price">£<?= $low_price->price; ?></ins>
-                                    <?php }
-                                } else {
-                                    if ($stocks->row()->discount > 0) { ?>
-                                        <del class="old-price">£<?= $stocks->row()->price; ?></del>
-                                        <ins class="new-price">£<?= $stocks->row()->discount; ?></ins>
-                                    <?php } else { ?>
-                                        <ins class="new-price">£<?= $stocks->row()->price; ?></ins>
-                                    <?php }
-                                } ?>
+                                <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
+                                <div class="pc-price-row">
+                                    <span class="pc-price">£<?= $display_price; ?></span>
+                                    <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
+                                    <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                </div>
+                                <div class="pc-fast-delivery">
+                                    <span class="pc-fd-fast">Fast</span>
+                                    <span class="pc-fd-label">Delivery</span>
+                                </div>
                             </div>
                         </div>
                     <?php } ?>
@@ -288,46 +294,48 @@
             <div class="tab-content product-wrapper appear-animate">
                 <!-- New Arrivals -->
                 <div class="tab-pane show active pt-4" id="tab1-1">
-                    <div class="row roww cols-xl-5 cols-md-4 cols-sm-3 cols-2">
+                    <div class="product-cards-grid">
                         <?php
                         $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by id DESC LIMIT 0,20")->result_array();
                         foreach ($new_arrivals as $row) {
                             $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            if ($stocks->num_rows() > 1) {
+                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+                            } else {
+                                $lp = $stocks->row();
+                            }
+                            $show_old = ($lp && $lp->discount > 0);
+                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
+                            $old_price = $lp ? $lp->price : 0;
+                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
                         ?>
-                            <div class="product-wrap">
-                                <div class="product text-center">
-                                    <figure class="product-media">
-                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" style="width:300px;height:230px;object-fit:contain;" alt="<?= $row['name']; ?>" width="68%" />
-                                        </a>
-                                    </figure>
-                                    <div class="product-details">
-                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
-                                        <div class="ratings-container">
-                                            <div class="ratings-full">
-                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
-                                                <span class="tooltiptext tooltip-top"></span>
-                                            </div>
-                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
-                                        </div>
-                                        <div class="product-price">
-                                            <?php if ($stocks->num_rows() > 1) {
-                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
-                                                if ($low_price->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
-                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                                <?php if ($stocks->row()->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
-                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
-                                                <?php } ?>
+                            <div class="product-card-new">
+                                <div class="pc-image-wrap">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
+                                    </a>
+                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                </div>
+                                <div class="pc-body">
+                                    <div class="pc-rating">
+                                        <div class="pc-stars">
+                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
+                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
                                             <?php } ?>
                                         </div>
+                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
+                                    </div>
+                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
+                                    <div class="pc-price-row">
+                                        <span class="pc-price">£<?= $display_price; ?></span>
+                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
+                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                    </div>
+                                    <div class="pc-fast-delivery">
+                                        <span class="pc-fd-fast">Fast</span>
+                                        <span class="pc-fd-label">Delivery</span>
                                     </div>
                                 </div>
                             </div>
@@ -336,46 +344,48 @@
                 </div>
                 <!-- Best Seller Tab -->
                 <div class="tab-pane pt-4" id="tab1-2">
-                    <div class="row roww cols-xl-5 cols-md-4 cols-sm-3 cols-2">
+                    <div class="product-cards-grid">
                         <?php
                         $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by rating DESC LIMIT 0,20")->result_array();
                         foreach ($new_arrivals as $row) {
                             $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            if ($stocks->num_rows() > 1) {
+                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+                            } else {
+                                $lp = $stocks->row();
+                            }
+                            $show_old = ($lp && $lp->discount > 0);
+                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
+                            $old_price = $lp ? $lp->price : 0;
+                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
                         ?>
-                            <div class="product-wrap">
-                                <div class="product text-center">
-                                    <figure class="product-media">
-                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" style="width:300px;height:230px;object-fit:contain;" alt="<?= $row['name']; ?>" width="68%" />
-                                        </a>
-                                    </figure>
-                                    <div class="product-details">
-                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
-                                        <div class="ratings-container">
-                                            <div class="ratings-full">
-                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
-                                                <span class="tooltiptext tooltip-top"></span>
-                                            </div>
-                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
-                                        </div>
-                                        <div class="product-price">
-                                            <?php if ($stocks->num_rows() > 1) {
-                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
-                                                if ($low_price->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
-                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                                <?php if ($stocks->row()->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
-                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
-                                                <?php } ?>
+                            <div class="product-card-new">
+                                <div class="pc-image-wrap">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
+                                    </a>
+                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                </div>
+                                <div class="pc-body">
+                                    <div class="pc-rating">
+                                        <div class="pc-stars">
+                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
+                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
                                             <?php } ?>
                                         </div>
+                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
+                                    </div>
+                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
+                                    <div class="pc-price-row">
+                                        <span class="pc-price">£<?= $display_price; ?></span>
+                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
+                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                    </div>
+                                    <div class="pc-fast-delivery">
+                                        <span class="pc-fd-fast">Fast</span>
+                                        <span class="pc-fd-label">Delivery</span>
                                     </div>
                                 </div>
                             </div>
@@ -409,41 +419,43 @@
                         $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && bestseller = '1' ORDER by id DESC LIMIT 0,20")->result_array();
                         foreach ($new_arrivals as $row) {
                             $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
+                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            if ($stocks->num_rows() > 1) {
+                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+                            } else {
+                                $lp = $stocks->row();
+                            }
+                            $show_old = ($lp && $lp->discount > 0);
+                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
+                            $old_price = $lp ? $lp->price : 0;
+                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
                         ?>
-                            <div class="product-wrap">
-                                <div class="product text-center">
-                                    <figure class="product-media">
-                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                            <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>" width="68%" style="max-height:200px;object-fit:contain;" />
-                                        </a>
-                                    </figure>
-                                    <div class="product-details content">
-                                        <h4 class="product-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></h4>
-                                        <div class="ratings-container">
-                                            <div class="ratings-full">
-                                                <span class="ratings" style="width:<?= ($row['rating'] * 100 / 5); ?>%;"></span>
-                                                <span class="tooltiptext tooltip-top"></span>
-                                            </div>
-                                            <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="rating-reviews">(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?> Reviews)</a>
-                                        </div>
-                                        <div class="product-price">
-                                            <?php if ($stocks->num_rows() > 1) {
-                                                $low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price asc")->row();
-                                                if ($low_price->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $low_price->price; ?></del>
-                                                    <ins class="new-price">£ <?= $low_price->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $low_price->price; ?></ins>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                                <?php if ($stocks->row()->discount > 0) { ?>
-                                                    <del class="old-price">£ <?= $stocks->row()->price; ?></del>
-                                                    <ins class="new-price">£ <?= $stocks->row()->discount; ?></ins>
-                                                <?php } else { ?>
-                                                    <ins class="new-price">£ <?= $stocks->row()->price; ?></ins>
-                                                <?php } ?>
+                            <div class="product-card-new" style="margin:0 6px;">
+                                <div class="pc-image-wrap">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
+                                    </a>
+                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                </div>
+                                <div class="pc-body">
+                                    <div class="pc-rating">
+                                        <div class="pc-stars">
+                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
+                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
                                             <?php } ?>
                                         </div>
+                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
+                                    </div>
+                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
+                                    <div class="pc-price-row">
+                                        <span class="pc-price">£<?= $display_price; ?></span>
+                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
+                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+                                    </div>
+                                    <div class="pc-fast-delivery">
+                                        <span class="pc-fd-fast">Fast</span>
+                                        <span class="pc-fd-label">Delivery</span>
                                     </div>
                                 </div>
                             </div>

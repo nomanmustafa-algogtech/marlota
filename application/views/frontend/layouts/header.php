@@ -236,8 +236,30 @@ $function  = $this->uri->segment(2);
                         <li class="nav-item">
                             <a href="<?= base_url(); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('products'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Products</a>
+                        <li class="nav-item has-megamenu">
+                            <a href="<?= base_url('products'); ?>" class="nav-link fw-500 megamenu-trigger" style="color:#1a1a2e;">
+                                Products <i class="fa fa-chevron-down" style="font-size:11px;margin-left:3px;"></i>
+                            </a>
+                            <!-- MEGA MENU PANEL -->
+                            <div class="megamenu-panel">
+                                <div class="megamenu-inner">
+                                    <?php
+                                    $mega_cats = $this->db->query("SELECT * FROM app_categories WHERE level=0 ORDER BY name ASC")->result_array();
+                                    foreach ($mega_cats as $mcat) {
+                                        $mega_subs = $this->db->query("SELECT * FROM app_categories WHERE level=1 AND parent_id='{$mcat['id']}' ORDER BY name ASC")->result_array();
+                                    ?>
+                                    <div class="megamenu-col">
+                                        <a href="<?= base_url(); ?>products/?category=<?= $mcat['slug']; ?>" class="megamenu-cat-title"><?= $mcat['name']; ?></a>
+                                        <ul class="megamenu-sublist">
+                                            <?php foreach ($mega_subs as $msub) { ?>
+                                            <li><a href="<?= base_url(); ?>products/?category=<?= $msub['slug']; ?>"><?= $msub['name']; ?></a></li>
+                                            <?php } ?>
+                                            <li class="megamenu-see-all"><a href="<?= base_url(); ?>products/?category=<?= $mcat['slug']; ?>">See All <?= $mcat['name']; ?></a></li>
+                                        </ul>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('about'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">About Us</a>
