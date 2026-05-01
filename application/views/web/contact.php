@@ -95,7 +95,12 @@
                         <div class="ci-icon"><i class="fa fa-map-marker"></i></div>
                         <div>
                             <p class="ci-label">Address</p>
-                            <p class="ci-value">Marlota Limited, Manchester, United Kingdom</p>
+                            <?php
+                            $settingsd_c = $this->db->select("*")->from('app_settings')->get()->result_array();
+                            $settings_c = [];
+                            foreach ($settingsd_c as $s) { $settings_c[$s['name']] = $s['value']; }
+                            ?>
+                            <p class="ci-value"><?= !empty($settings_c['site_address']) ? $settings_c['site_address'] : 'Marlota Limited, Manchester, United Kingdom'; ?></p>
                         </div>
                     </div>
 
@@ -103,7 +108,7 @@
                         <div class="ci-icon"><i class="fa fa-envelope"></i></div>
                         <div>
                             <p class="ci-label">Email</p>
-                            <p class="ci-value">support@marlota.co.uk</p>
+                            <p class="ci-value"><?= !empty($settings_c['site_email']) ? $settings_c['site_email'] : 'support@marlota.co.uk'; ?></p>
                         </div>
                     </div>
 
@@ -111,7 +116,7 @@
                         <div class="ci-icon"><i class="fa fa-phone"></i></div>
                         <div>
                             <p class="ci-label">Phone</p>
-                            <p class="ci-value">01234 567 890</p>
+                            <p class="ci-value"><?= !empty($settings_c['site_phone']) ? $settings_c['site_phone'] : '01234 567 890'; ?></p>
                         </div>
                     </div>
 

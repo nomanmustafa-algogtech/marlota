@@ -55,11 +55,11 @@ if($this->session->userdata('user_loggedin')){
                 <p class="footer-col-title">Contact Info</p>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-map-marker"></i></span>
-                    <span>Manchester, United Kingdom</span>
+                    <span><?= !empty($settings['site_address']) ? $settings['site_address'] : 'Manchester, United Kingdom'; ?></span>
                 </div>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-envelope"></i></span>
-                    <span>support@marlota.co.uk</span>
+                    <span><?= !empty($settings['site_email']) ? $settings['site_email'] : 'support@marlota.co.uk'; ?></span>
                 </div>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-phone"></i></span>
