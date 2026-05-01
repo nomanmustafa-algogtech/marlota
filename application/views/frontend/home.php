@@ -94,14 +94,14 @@
     }
 
     .category-card-home h5 {
-        font-size: .95rem;
+        font-size: 15px;
         font-weight: 600;
         color: #1a1a2e;
         margin-bottom: 4px;
     }
 
     .category-card-home .browse-link {
-        font-size: .8rem;
+        font-size: 13px;
         color: #D4A017;
         font-weight: 600;
     }
@@ -172,7 +172,7 @@
                             <?php if (!empty($row['image'])) { ?>
                                 <img src="<?= base_url(); ?>uploads/categories/<?= $row['image']; ?>" alt="<?= $row['name']; ?>" />
                             <?php } else { ?>
-                                <div style="height:180px;background:#f0eaf8;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2D1B69;">📦</div>
+                                <div style="height:180px;background:#f0eaf8;display:flex;align-items:center;justify-content:center;font-size:32px;color:#2D1B69;">📦</div>
                             <?php } ?>
                             <div class="card-body-cat">
                                 <h5><?= $row['name']; ?></h5>
@@ -239,7 +239,7 @@
                                     <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
                                 </a>
                             </div>
-                            <h4 class="product-name text-center" style="overflow:hidden;font-size:.9rem;margin:8px 0 4px;">
+                            <h4 class="product-name text-center" style="overflow:hidden;font-size:14px;margin:8px 0 4px;">
                                 <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a>
                             </h4>
                             <div class="ratings-container text-center">

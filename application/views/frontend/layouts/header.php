@@ -91,14 +91,14 @@ $function  = $this->uri->segment(2);
             right: -17px;
             top: 7px;
             font-weight: 600;
-            width: 1.9rem;
-            height: 1.9rem;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             font-style: normal;
             z-index: 1;
             font-family: Poppins, sans-serif;
-            font-size: 1.1rem;
-            line-height: 1.8rem;
+            font-size: 18px;
+            line-height: 29px;
             text-align: center;
         }
 
@@ -328,9 +328,9 @@ $function  = $this->uri->segment(2);
                         <!-- Cart icon for mobile -->
                         <div class="dropdown cart-dropdown cart-offcanvas">
                             <div class="cart-overlay"></div>
-                            <a href="#" class="cart-toggle link" style="color:#2D1B69; position:relative; font-size:1.5rem;">
+                            <a href="#" class="cart-toggle link" style="color:#2D1B69; position:relative; font-size:24px;">
                                 <i class="w-icon-cart"></i>
-                                <span style="position:absolute;top:-6px;right:-10px;background:#D4A017;color:#fff;border-radius:50%;width:18px;height:18px;font-size:.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;"><?= count($cart); ?></span>
+                                <span style="position:absolute;top:-6px;right:-10px;background:#D4A017;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;"><?= count($cart); ?></span>
                             </a>
                         </div>
                         <!-- Categories button -->
