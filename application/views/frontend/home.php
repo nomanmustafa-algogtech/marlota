@@ -278,16 +278,16 @@
             <div class="tab tab-nav-boxed tab-nav-outline appear-animate">
                 <ul class="nav nav-tabs justify-content-center" role="tablist">
                     <li class="nav-item mr-2 mb-2">
-                        <a class="nav-link active br-sm font-size-md ls-normal" href="#tab1-1">New Arrivals</a>
+                        <a class="nav-link active br-sm font-size-md ls-normal" href="#tab1-1" data-bs-toggle="tab">New Arrivals</a>
                     </li>
                     <li class="nav-item mr-2 mb-2">
-                        <a class="nav-link br-sm font-size-md ls-normal" href="#tab1-2">Best Seller</a>
+                        <a class="nav-link br-sm font-size-md ls-normal" href="#tab1-2" data-bs-toggle="tab">Best Seller</a>
                     </li>
                 </ul>
             </div>
             <div class="tab-content product-wrapper appear-animate">
                 <!-- New Arrivals -->
-                <div class="tab-pane pt-4" id="tab1-1">
+                <div class="tab-pane show active pt-4" id="tab1-1">
                     <div class="row roww cols-xl-5 cols-md-4 cols-sm-3 cols-2">
                         <?php
                         $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by id DESC LIMIT 0,20")->result_array();
