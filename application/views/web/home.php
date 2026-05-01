@@ -233,7 +233,6 @@
                     foreach ($new_arrivals as $row) {
                         $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
                         $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
-                        $star_pct = ($row['rating'] * 100 / 5);
                         $filled = round($row['rating']);
                         // compute price/discount
                         if ($stocks->num_rows() > 1) {
