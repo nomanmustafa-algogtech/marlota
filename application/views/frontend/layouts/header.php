@@ -228,7 +228,7 @@ $function  = $this->uri->segment(2);
                     <a href="<?= base_url(); ?>" class="logo text-decoration-none">
                         <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>"
                              alt="<?= $settings['site_title']; ?>"
-                             style="height:50px; width:auto;" />
+                             style="height:100px; width:auto;" />
                     </a>
 
                     <!-- Desktop Nav Links -->

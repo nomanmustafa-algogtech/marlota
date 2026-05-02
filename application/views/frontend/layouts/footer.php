@@ -17,7 +17,7 @@ if($this->session->userdata('user_loggedin')){
                 <a href="<?=base_url();?>">
                     <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>"
                          alt="<?=$settings['site_title'];?>"
-                         class="footer-logo" />
+                         class="footer-logo"  style="height:100px; width:auto;" />
                 </a>
                 <p class="footer-tagline">Your trusted partner for premium packaging, labels, and office essentials.</p>
                 <div class="footer-social">

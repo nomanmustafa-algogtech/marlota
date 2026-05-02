@@ -120,6 +120,9 @@
     .dot.active { background-color: #2D1B69; }
     .fade { animation-name: fade; animation-duration: 1.5s; }
     @keyframes fade { from { opacity:.4 } to { opacity:1 } }
+    .product-wrapper {
+      height: 100% !important;
+    }
 </style>
 
 <div class="main" id="main">
@@ -394,75 +397,6 @@
                 </div>
             </div>
 
-            <!-- ========================================
-                 BEST SELLER PRODUCTS
-            ========================================= -->
-            <h2 class="section-title mb-4 mt-5">Best Seller Products</h2>
-            <div class="row">
-                <div class="col-md-3 d-none d-md-block">
-                    <div style="border-radius:12px;overflow:hidden;">
-                        <div class="mySlides fade">
-                            <img src="<?php echo base_url(); ?>uploads/newimgs/Shopping.jpg" style="width:100%;border-radius:12px;" />
-                        </div>
-                        <div class="mySlides fade">
-                            <img src="<?php echo base_url(); ?>uploads/newimgs/Shoping2.jpg" style="width:100%;border-radius:12px;" />
-                        </div>
-                        <div style="text-align:center;margin-top:8px;">
-                            <span class="dot"></span>
-                            <span class="dot"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="slider-bottom owl-carousel">
-                        <?php
-                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && bestseller = '1' ORDER by id DESC LIMIT 0,20")->result_array();
-                        foreach ($new_arrivals as $row) {
-                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
-                            $filled = round($row['rating']);
-                            if ($stocks->num_rows() > 1) {
-                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-                            } else {
-                                $lp = $stocks->row();
-                            }
-                            $show_old = ($lp && $lp->discount > 0);
-                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
-                            $old_price = $lp ? $lp->price : 0;
-                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
-                        ?>
-                            <div class="product-card-new" style="margin:0 6px;">
-                                <div class="pc-image-wrap">
-                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
-                                    </a>
-                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                </div>
-                                <div class="pc-body">
-                                    <div class="pc-rating">
-                                        <div class="pc-stars">
-                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
-                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
-                                            <?php } ?>
-                                        </div>
-                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
-                                    </div>
-                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
-                                    <div class="pc-price-row">
-                                        <span class="pc-price">£<?= $display_price; ?></span>
-                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
-                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                    </div>
-                                    <div class="pc-fast-delivery">
-                                        <span class="pc-fd-fast">Fast</span>
-                                        <span class="pc-fd-label">Delivery</span>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
