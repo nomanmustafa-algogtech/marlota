@@ -96,13 +96,13 @@
     .category-card-home h5 {
         font-size: 15px;
         font-weight: 600;
-        color: #1a1a2e;
+        color: #1E1E1E;
         margin-bottom: 4px;
     }
 
     .category-card-home .browse-link {
         font-size: 13px;
-        color: #D4A017;
+        color: #C9A646;
         font-weight: 600;
     }
 
@@ -117,7 +117,7 @@
         display: inline-block;
         transition: background-color 0.4s ease;
     }
-    .dot.active { background-color: #2D1B69; }
+    .dot.active { background-color: #5A2D82; }
     .fade { animation-name: fade; animation-duration: 1.5s; }
     @keyframes fade { from { opacity:.4 } to { opacity:1 } }
     .product-wrapper {
@@ -142,11 +142,11 @@
                     <p class="hero-sub">Premium packaging, labels, and office essentials delivered fast across the UK.</p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="<?= base_url('products'); ?>" class="btn-hero-primary">Shop Products</a>
-                        <a href="<?= base_url('about'); ?>" class="btn-hero-outline">Learn More</a>
+                        <a href="<?= base_url('web/about'); ?>" class="btn-hero-outline">Learn More</a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 hero-image mt-4 mt-lg-0">
-                    <img src="<?= base_url(); ?>uploads/newimgs/Shopping.jpg"
+                    <img src="<?= base_url(); ?>uploads/home-hero.png"
                          onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
                          alt="Premium Packaging Products" />
                 </div>
@@ -175,7 +175,7 @@
                             <?php if (!empty($row['image'])) { ?>
                                 <img src="<?= base_url(); ?>uploads/categories/<?= $row['image']; ?>" alt="<?= $row['name']; ?>" />
                             <?php } else { ?>
-                                <div style="height:180px;background:#f0eaf8;display:flex;align-items:center;justify-content:center;font-size:32px;color:#2D1B69;">📦</div>
+                                <div class="home-category-fallback">📦</div>
                             <?php } ?>
                             <div class="card-body-cat">
                                 <h5><?= $row['name']; ?></h5>
@@ -248,7 +248,7 @@
                         $old_price = $lp ? $lp->price : 0;
                         $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
                     ?>
-                        <div class="product-card-new" style="margin:0 5px;">
+                        <div class="product-card-new home-card-slider-margin">
                             <div class="pc-image-wrap">
                                 <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
                                     <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">

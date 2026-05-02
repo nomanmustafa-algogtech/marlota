@@ -6,7 +6,7 @@
 <section class="marlota-page-hero marlota-page-hero-contact">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-7 col-md-12">
+            <div class="col-lg-6 col-md-12">
                 <div class="breadcrumb-hero">
                     <a href="<?= base_url(); ?>">Home</a>
                     <span>&rsaquo;</span>
@@ -15,10 +15,11 @@
                 <h1>Contact Us</h1>
                 <p class="hero-sub">We're here to help. Get in touch with our friendly team.</p>
             </div>
-            <div class="col-lg-5 col-md-12 d-none d-lg-block">
-                <div class="hero-contact-icons">
-                    <i class="fa fa-phone"></i>
-                    <i class="fa fa-envelope-o"></i>
+            <div class="col-lg-6 col-md-12 d-none d-lg-block">
+                <div class="hero-visual text-end">
+                    <img class="contact-hero" src="<?= base_url(); ?>uploads/contect-hero.png"
+                         onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
+                         alt="Marlota products" />
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ if($this->session->userdata('user_loggedin')){
                 <a href="<?=base_url();?>">
                     <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>"
                          alt="<?=$settings['site_title'];?>"
-                         class="footer-logo"  style="height:100px; width:auto;" />
+                         class="footer-logo footer-logo-large" />
                 </a>
                 <p class="footer-tagline">Your trusted partner for premium packaging, labels, and office essentials.</p>
                 <div class="footer-social">
@@ -34,8 +34,8 @@ if($this->session->userdata('user_loggedin')){
                 <ul class="footer-links">
                     <li><a href="<?=base_url();?>">Home</a></li>
                     <li><a href="<?=base_url('products');?>">Products</a></li>
-                    <li><a href="<?=base_url('web/about');?>">About Us</a></li>
-                    <li><a href="<?=base_url('web/contact');?>">Contact Us</a></li>
+                    <li><a href="<?=base_url('about');?>">About Us</a></li>
+                    <li><a href="<?=base_url('contact');?>">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -161,7 +161,7 @@ if($this->session->userdata('user_loggedin')){
                                         
                                         <li>
                                             <a href="<?=base_url();?>products/?category=<?=$row0['slug']; ?>">
-                                                <img src="<?=base_url();?>/uploads/categories/<?=$row0['icon']; ?>" alt="<?=$row0['name']; ?>" style="width:24px;height:24px"/> <?=$row0['name']; ?>
+                                                <img src="<?=base_url();?>/uploads/categories/<?=$row0['icon']; ?>" alt="<?=$row0['name']; ?>" class="footer-mobile-cat-icon"/> <?=$row0['name']; ?>
                                             </a>
                                             <?php $cat1 = $this->db->query("SELECT * FROM app_categories WHERE level=1 && parent_id = '{$row0['id']}'")->result_array();
                                             if(count($cat1) > 0) {?>
@@ -235,7 +235,7 @@ if($this->session->userdata('user_loggedin')){
         href="https://wa.me/+44 7448 484949?text=Hello%20I%20want%20to%20know%20more!" 
         target="_blank" 
         class="whatsapp-button">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 30px; height: 30px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="footer-mobile-cat-icon">
     </a>
     <!-- End of Newsletter popup -->
 

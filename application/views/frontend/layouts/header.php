@@ -55,7 +55,7 @@ $function  = $this->uri->segment(2);
             z-index: 1000;
             top: 0;
             left: 0;
-            background-color: #2D1B69;
+            background-color: #5A2D82;
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
@@ -71,7 +71,7 @@ $function  = $this->uri->segment(2);
         }
 
         .sidebarmenu a:hover {
-            color: #D4A017;
+            color: #C9A646;
         }
 
         .closebtn {
@@ -87,7 +87,7 @@ $function  = $this->uri->segment(2);
         .customcart {
             position: absolute;
             background-color: transparent;
-            color: #2D1B69;
+            color: #5A2D82;
             right: -17px;
             top: 7px;
             font-weight: 600;
@@ -185,7 +185,7 @@ $function  = $this->uri->segment(2);
             width: 80px;
             height: 80px;
             border: 2px solid #f3f3f3;
-            border-top: 3px solid #2D1B69;
+            border-top: 3px solid #5A2D82;
             border-radius: 100%;
             position: absolute;
             top: 0;
@@ -222,23 +222,23 @@ $function  = $this->uri->segment(2);
         <!-- Start of Header -->
         <header class="header marlota-header">
             <!-- White Navbar -->
-            <nav class="navbar navbar-expand-lg" style="background:#fff; border-bottom:1px solid #eee; padding:12px 0;">
+            <nav class="navbar navbar-expand-lg">
                 <div class="container d-flex align-items-center justify-content-between">
                     <!-- Logo -->
                     <a href="<?= base_url(); ?>" class="logo text-decoration-none">
                         <img src="<?= base_url(); ?>uploads/settings/<?=$this->settings['site_logo'];?>"
                              alt="<?= $settings['site_title']; ?>"
-                             style="height:100px; width:auto;" />
+                             class="header-logo-fixed" />
                     </a>
 
                     <!-- Desktop Nav Links -->
                     <ul class="navbar-nav d-none d-lg-flex flex-row align-items-center gap-4 mb-0">
                         <li class="nav-item">
-                            <a href="<?= base_url(); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Home</a>
+                            <a href="<?= base_url(); ?>" class="nav-link fw-500">Home</a>
                         </li>
                         <li class="nav-item has-megamenu">
-                            <a href="<?= base_url('products'); ?>" class="nav-link fw-500 megamenu-trigger" style="color:#1a1a2e;">
-                                Products <i class="fa fa-chevron-down" style="font-size:11px;margin-left:3px;"></i>
+                            <a href="<?= base_url('products'); ?>" class="nav-link fw-500 megamenu-trigger">
+                                Products <i class="fa fa-chevron-down mega-trigger-icon"></i>
                             </a>
                             <!-- MEGA MENU PANEL -->
                             <div class="megamenu-panel">
@@ -262,25 +262,15 @@ $function  = $this->uri->segment(2);
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('web/about'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">About Us</a>
+                            <a href="<?= base_url('web/about'); ?>" class="nav-link fw-500">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('web/contact'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">Contact Us</a>
+                            <a href="<?= base_url('web/contact'); ?>" class="nav-link fw-500">Contact Us</a>
                         </li>
-                        <!-- Account -->
-                        <?php if ($this->session->userdata('user_loggedin')) { ?>
-                            <li class="nav-item">
-                                <a href="<?= base_url('user/account'); ?>" class="nav-link fw-500" style="color:#1a1a2e;">
-                                    <i class="fa fa-user" style="color:#2D1B69;"></i> My Account
-                                </a>
-                            </li>
-                        <?php } else { if (uri_string() != 'user/register') { ?>
-                            <li class="nav-item">
-                                <a href="javascript:void(0)" class="nav-link fw-500 login sign-in-click" style="color:#1a1a2e;">
-                                    <i class="fa fa-user" style="color:#2D1B69;"></i> Sign In
-                                </a>
-                            </li>
-                        <?php } } ?>
+                        <li class="nav-item ms-2">
+                            <a href="<?= base_url('products'); ?>" class="btn-shop-now">Shop Now</a>
+                        </li>
+
                         <!-- Cart -->
                         <?php
                         if ($this->session->userdata('user_loggedin')) {
@@ -291,58 +281,32 @@ $function  = $this->uri->segment(2);
                             $cart = $this->db->query("SELECT * FROM app_cart where session_id = '$session_id'")->result_array();
                         }
                         ?>
-                        <li class="nav-item">
-                            <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-4">
-                                <div class="cart-overlay"></div>
-                                <a href="#" class="cart-toggle label-down link nav-link" style="color:#1a1a2e; position:relative;">
-                                    <i class="fa fa-shopping-cart" style="font-size:18px;"></i>
-                                    <span class="customcart"><?= count($cart); ?></span>
-                                    <span class="cart-label" style="margin-left:8px;">Cart</span>
-                                </a>
-                                <div class="dropdown-box">
-                                    <div class="cart-header">
-                                        <span>Shopping Cart</span>
-                                        <a href="#" class="btn-close">Close <i class="fa fa-arrow-right"></i></a>
-                                    </div>
-                                    <div class="products" style="overflow-y: auto;overflow-x: hidden;">
-                                        <?php
-                                        $total = 0;
-                                        foreach ($cart as $row) {
-                                            $total += $row['qty'] * $row['price'];
-                                            $product = $this->db->query("SELECT * FROM app_products where id = '{$row['product_id']}'")->row_array();
-                                        ?>
-                                            <div class="product product-cart">
-                                                <div class="product-detail">
-                                                    <a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>" class="product-name"><?= $product['name']; ?></a>
-                                                    <div class="price-box">
-                                                        <span class="product-quantity"><?= $row['qty']; ?></span>
-                                                        <span class="product-price">£ <?= $row['price']; ?></span>
-                                                    </div>
-                                                </div>
-                                                <figure class="product-media">
-                                                    <a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>">
-                                                        <img src="<?= base_url(); ?>uploads/products/<?= $product['thumbnail_img']; ?>" alt="<?= $product['name']; ?>" height="84" width="94" />
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                    <div class="cart-total">
-                                        <label>Subtotal:</label>
-                                        <span class="price">£ <?= $total; ?></span>
-                                    </div>
-                                    <div class="cart-action">
-                                        <a href="<?= base_url(); ?>cart" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
-                                        <a href="<?= base_url(); ?>checkout" class="btn btn-primary btn-rounded">Checkout</a>
-                                    </div>
-                                </div>
-                                <!-- End of Dropdown Box -->
-                            </div>
-                        </li>
-                        <!-- Shop Now CTA -->
+
+                        <!-- Right Side Icons: User + Cart -->
                         <li class="nav-item ms-2">
-                            <a href="<?= base_url('products'); ?>" class="btn-shop-now">Shop Now</a>
+                            <?php if ($this->session->userdata('user_loggedin')) { ?>
+                                <a href="<?= base_url('user/account'); ?>" class="nav-link header-icon-link" title="My Account">
+                                    <span class="header-icon-wrap">
+                                        <i class="fa fa-user header-user-icon"></i>
+                                    </span>
+                                </a>
+                            <?php } else { ?>
+                                <a href="<?= base_url('user/login'); ?>" class="nav-link sign-in-click header-icon-link" title="Sign In">
+                                    <span class="header-icon-wrap">
+                                        <i class="fa fa-user header-user-icon"></i>
+                                    </span>
+                                </a>
+                            <?php } ?>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="<?= base_url('cart'); ?>" class="nav-link header-icon-link header-cart-link" title="Cart">
+                                <i class="fa fa-shopping-cart header-cart-icon"></i>
+                                <span class="customcart"><?= count($cart); ?></span>
+                            </a>
+                        </li>
+
+                        
                     </ul>
 
                     <!-- Mobile: cart + hamburger -->
@@ -350,9 +314,9 @@ $function  = $this->uri->segment(2);
                         <!-- Cart icon for mobile -->
                         <div class="dropdown cart-dropdown cart-offcanvas">
                             <div class="cart-overlay"></div>
-                            <a href="#" class="cart-toggle link" style="color:#2D1B69; position:relative; font-size:24px;">
+                            <a href="#" class="cart-toggle link mobile-cart-link">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span style="position:absolute;top:-6px;right:-10px;background:#D4A017;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;"><?= count($cart); ?></span>
+                                <span class="mobile-cart-count"><?= count($cart); ?></span>
                             </a>
                         </div>
                         <!-- Categories button -->
@@ -378,21 +342,21 @@ $function  = $this->uri->segment(2);
                     if (count($cat0) > 0) {
                 ?>
                         <div class="widget widget-collapsible m-2">
-                            <h3 class="widget-title collapsed" style="color:#fff; background:rgba(255,255,255,.12); border-radius:5px; padding:10px;">
+                            <h3 class="widget-title collapsed sidebar-widget-title-custom">
                                 <span><?= $row0['name']; ?></span><span class="toggle-btn"></span>
                             </h3>
                             <?php
                             $cat28 = $this->db->query("SELECT * FROM app_categories WHERE level=1 && parent_id = '{$row0['id']}'")->result_array();
                             if (count($cat28) > 0) { ?>
-                                <ul class="widget-body filter-items search-ul" style="display: none;">
+                                <ul class="widget-body filter-items search-ul sidebar-sublist-hidden">
                                     <?php foreach ($cat28 as $row1) { ?>
-                                        <li style="background:rgba(212,160,23,.15); color:white; border-radius:5px; padding:10px; margin-top:5px;">
+                                        <li class="sidebar-subitem">
                                             <a href="<?= base_url(); ?>products/?category=<?= $row1['slug']; ?>"><?= $row1['name']; ?></a>
                                         </li>
                                     <?php } ?>
                                 </ul>
                             <?php } else {
-                                echo '<ul class="widget-body filter-items search-ul" style="display:none;"><li style="background:rgba(255,255,255,.1);color:white;border-radius:5px;padding:10px;margin-top:5px;">N/A</li></ul>';
+                                echo '<ul class="widget-body filter-items search-ul sidebar-sublist-hidden"><li class="sidebar-subitem-na">N/A</li></ul>';
                             } ?>
                         </div>
                 <?php } ?>

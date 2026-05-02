@@ -17,7 +17,7 @@
             </div>
             <div class="col-lg-6 col-md-12 d-none d-lg-block">
                 <div class="hero-visual text-end">
-                    <img src="<?= base_url(); ?>uploads/product-img-banner.jpeg"
+                    <img src="<?= base_url(); ?>uploads/about-hero.png"
                          onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
                          alt="Marlota products" />
                 </div>
