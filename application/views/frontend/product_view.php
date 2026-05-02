@@ -117,15 +117,15 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 										<svg width="15" height="15" viewBox="0 0 15 15" fill="none"
 											xmlns="http://www.w3.org/2000/svg">
 											<path
-												d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
-												fill="#E0E0E0" />
+												<!--d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"-->
+												<!--fill="#E0E0E0" />-->
 										</svg>
 									<?php } ?>
 								</span>
 
-								<span class="text">
-									(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$product['id']}' AND approved = '1'")->num_rows(); ?> Reviews)
-								</span>
+								<!--<span class="text">-->
+								<!--	(<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$product['id']}' AND approved = '1'")->num_rows(); ?> Reviews)-->
+								<!--</span>-->
 							</div>
 
                             <div class="price" id="product-price">
@@ -155,6 +155,7 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 									<li>Customer Support Assistance</li>
 									<li>10 Days free returns</li>
 									<li>Return collection from doorstep</li>
+									<li>FREE UK Standard Delivery</li>
 								</ul>
 							</p>
                             <hr>
@@ -345,70 +346,52 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
                 <h5>Best Sell in this Week</h5>
             </div>
             <div class="weekly-sale-section">
-                <div class="row g-5">
+                <div class="row g-4">
 					<?php
 						$new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' && featured = '1' ORDER by id DESC LIMIT 0,4")->result_array();
 						foreach ($new_arrivals as $row) {
 						$stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-							$words = explode(' ', $row['name']);
-							$shortName = implode(' ', array_slice($words, 0, 7)); // 8 words max
-							$productName = $shortName . (count($words) > 7 ? '...' : '');
+						$review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
+						$filled = round($row['rating']);
+						if ($stocks->num_rows() > 1) {
+							$lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
+						} else {
+							$lp = $stocks->row();
+						}
+						$show_old = ($lp && $lp->discount > 0);
+						$display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
+						$old_price = $lp ? $lp->price : 0;
+						$pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
 					?>
 					<div class="col-lg-3 col-sm-6">
-						<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-							<div class="product-wrapper product-wrapper-two" data-aos="fade-up">
-								<div class="product-img">
-									<img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="product-img" />
-
-								</div>
-								<div class="product-info">
-									<div class="ratings">
-										<span style="width: <?= ($row['rating'] * 100 / 5); ?>%;">
-											
-										</span>
-										(
-										<?= $this->db->query("SELECT * FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->num_rows(); ?>
-										Reviews)
-									</div>
-									<div class="product-description">
-											<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="product-details"> <?= $productName; ?> </a>
-											
-
-											<?php if ($stocks->num_rows() > 1) { 
-											// Multiple stock variations
-											$low_price = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-											if ($low_price->discount > 0) { ?>
-												<div class="price">
-													<span class="price-cut">£<?= $low_price->price; ?></span>
-													<span class="new-price">£<?= $low_price->discount; ?></span>
-												</div>
-											<?php } else { ?>
-												<div class="price">
-													<span class="new-price">£<?= $low_price->price; ?></span>
-												</div>
-											<?php } ?>
-
-										<?php } else { 
-											// Single stock variation
-											$singleStock = $stocks->row();  
-											if ($singleStock->discount > 0) { ?>
-												<div class="price">
-													<span class="price-cut">£<?= $singleStock->price; ?></span>
-													<span class="new-price">£<?= $singleStock->discount; ?></span>
-												</div>
-											<?php } else { ?>
-												<div class="price">
-													<span class="new-price">£<?= $singleStock->price; ?></span>
-												</div>
-											<?php } ?>
+						<div class="product-card-new">
+							<div class="pc-image-wrap">
+								<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+									<img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
+								</a>
+								<?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+							</div>
+							<div class="pc-body">
+								<div class="pc-rating">
+									<div class="pc-stars">
+										<?php for ($s = 1; $s <= 5; $s++) { ?>
+										<i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
 										<?php } ?>
 									</div>
+									<span class="pc-review-count"><?= $review_count; ?> Reviews</span>
 								</div>
-								<div class="product-cart-btn">
-									<a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="product-btn">Add To Cart</a>
+								<div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
+								<div class="pc-price-row">
+									<span class="pc-price">£<?= $display_price; ?></span>
+									<?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
+									<?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
+								</div>
+								<div class="pc-fast-delivery">
+									<span class="pc-fd-fast">Fast</span>
+									<span class="pc-fd-label">Delivery</span>
 								</div>
 							</div>
-						</a>
+						</div>
 					</div>
 					<?php } ?>
                 </div>

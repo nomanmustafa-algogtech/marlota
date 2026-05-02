@@ -32,16 +32,16 @@
 <section class="marlota-about-who">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-5 col-md-12">
                 <span class="badge-section">Who We Are</span>
                 <h2>Your Trusted Partner in Packaging &amp; Supplies</h2>
                 <div class="section-underline"></div>
                 <p>Marlota Limited is a UK-based supplier of premium packaging, labels, and office essentials. We are dedicated to helping businesses of all sizes operate more efficiently with quality products that make a lasting impression.</p>
-                <p>We are committed to providing premium products at competitive prices, with fast and reliable delivery across the United Kingdom. Whether you are an e-commerce seller, retailer, or business owner, Marlota has the supplies you need.</p>
+                <p class="second-p">We are committed to providing premium products at competitive prices, with fast and reliable delivery across the United Kingdom. Whether you are an e-commerce seller, retailer, or business owner, Marlota has the supplies you need.</p>
                 <a href="<?= base_url('products'); ?>" class="btn-shop-now" style="margin-top:16px; display:inline-block;">Explore Products</a>
             </div>
-            <div class="col-lg-6 col-md-12">
-                <img src="<?= base_url(); ?>uploads/newimgs/Shopping.jpg"
+            <div class="col-lg-7 col-md-12">
+                <img src="<?= base_url(); ?>uploads/about-marlota.png"
                      onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
                      alt="Marlota Warehouse" class="about-img" />
             </div>
@@ -55,7 +55,7 @@
 <section class="marlota-core-values">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title">Our Core Values</h2>
+            <h2 class="section-title text-center">Our Core Values</h2>
             <div class="section-underline-center"></div>
             <p class="section-sub">The principles that guide everything we do.</p>
         </div>
@@ -91,7 +91,7 @@
 <section class="marlota-mission">
     <div class="container">
         <div class="text-center mb-4">
-            <h2 class="section-title">Our Mission</h2>
+            <h2 class="section-title text-center">Our Mission</h2>
             <div class="section-underline-center"></div>
         </div>
         <div class="mission-card">

@@ -1,6 +1,4 @@
-<?php /* Keep OWL and other slider scripts */ ?>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<?php /* OWL CSS loaded here; OWL JS loaded via view_scripts in footer after jQuery */ ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 
 <style>
@@ -13,10 +11,17 @@
         overflow: hidden;
     }
 
-    .custom-slider {
-        display: flex;
-        transition: transform 0.5s ease;
-        text-align: center;
+    /* Force OWL carousel items to equal height */
+    .custom-slider.owl-carousel .owl-stage {
+        display: flex !important;
+    }
+    .custom-slider.owl-carousel .owl-item {
+        display: flex !important;
+        flex-direction: column;
+    }
+    .custom-slider.owl-carousel .owl-item .product-card-new {
+        flex: 1;
+        height: 100%;
     }
 
     .custom-product {
@@ -66,7 +71,7 @@
 
     .category-card-home {
         border: 1px solid #e8e8e8;
-        border-radius: 12px;
+        border-radius: 14px;
         overflow: hidden;
         text-align: center;
         transition: box-shadow .25s, transform .2s;
@@ -83,27 +88,43 @@
         text-decoration: none;
     }
 
+    .category-card-home .cat-img-wrap {
+        background: #f8f6fc;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+    }
+
     .category-card-home img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
+        max-width: 100%;
+        max-height: 160px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
     }
 
     .category-card-home .card-body-cat {
-        padding: 14px 16px;
+        padding: 14px 16px 16px;
+        border-top: 1px solid #f0f0f0;
     }
 
     .category-card-home h5 {
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 700;
         color: #1E1E1E;
         margin-bottom: 4px;
     }
 
     .category-card-home .browse-link {
         font-size: 13px;
-        color: #C9A646;
-        font-weight: 600;
+        color: #1E1E1E;
+        font-weight: 500;
+    }
+
+    .category-card-home:hover .browse-link {
+        color: #5A2D82;
     }
 
     /* Slideshow */
@@ -123,6 +144,7 @@
     .product-wrapper {
       height: 100% !important;
     }
+
 </style>
 
 <div class="main" id="main">
@@ -160,7 +182,7 @@
     <section class="marlota-categories">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title">Shop By Category</h2>
+                <h2 class="section-title text-center">Shop By Category</h2>
                 <div class="section-underline-center"></div>
                 <p class="section-sub">Browse our wide range of quality packaging and supplies.</p>
             </div>
@@ -172,11 +194,13 @@
                 ?>
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <a href="<?= base_url(); ?>products/?category=<?= $row['slug']; ?>" class="category-card-home">
+                            <div class="cat-img-wrap">
                             <?php if (!empty($row['image'])) { ?>
                                 <img src="<?= base_url(); ?>uploads/categories/<?= $row['image']; ?>" alt="<?= $row['name']; ?>" />
                             <?php } else { ?>
                                 <div class="home-category-fallback">📦</div>
                             <?php } ?>
+                            </div>
                             <div class="card-body-cat">
                                 <h5><?= $row['name']; ?></h5>
                                 <span class="browse-link">Browse Now →</span>
@@ -194,7 +218,7 @@
     <section class="marlota-why">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title-white">Why Choose Marlota?</h2>
+                <h2 class="section-title-white marlota-title-white">Why Choose Marlota?</h2>
                 <div class="section-underline-center"></div>
             </div>
             <div class="row g-4">
@@ -228,7 +252,7 @@
     ========================================= -->
     <section class="marlota-products-section">
         <div class="container">
-            <h2 class="section-title mb-4">Trending Products</h2>
+            <h2 class="section-title mb-4 text-center">Trending Products</h2>
             <div class="custom-slider-container">
                 <div class="custom-slider owl-carousel">
                     <?php
@@ -281,139 +305,204 @@
             </div>
 
             <!-- ========================================
-                 POPULAR DEPARTMENTS TABS
+                 POPULAR DEPARTMENTS — MODERN REDESIGN
             ========================================= -->
-            <h2 class="section-title mb-3 mt-5">Popular Departments</h2>
-            <div class="tab tab-nav-boxed tab-nav-outline appear-animate">
-                <ul class="nav nav-tabs justify-content-center" role="tablist">
-                    <li class="nav-item mr-2 mb-2">
-                        <a class="nav-link active br-sm font-size-md ls-normal" href="#tab1-1" data-bs-toggle="tab">New Arrivals</a>
-                    </li>
-                    <li class="nav-item mr-2 mb-2">
-                        <a class="nav-link br-sm font-size-md ls-normal" href="#tab1-2" data-bs-toggle="tab">Best Seller</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-content product-wrapper appear-animate">
-                <!-- New Arrivals -->
-                <div class="tab-pane show active pt-4" id="tab1-1">
-                    <div class="product-cards-grid">
-                        <?php
-                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by id DESC LIMIT 0,20")->result_array();
-                        foreach ($new_arrivals as $row) {
-                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
-                            $filled = round($row['rating']);
-                            if ($stocks->num_rows() > 1) {
-                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-                            } else {
-                                $lp = $stocks->row();
-                            }
-                            $show_old = ($lp && $lp->discount > 0);
-                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
-                            $old_price = $lp ? $lp->price : 0;
-                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
-                        ?>
-                            <div class="product-card-new">
-                                <div class="pc-image-wrap">
-                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
-                                    </a>
-                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                </div>
-                                <div class="pc-body">
-                                    <div class="pc-rating">
-                                        <div class="pc-stars">
-                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
-                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
-                                            <?php } ?>
-                                        </div>
-                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
-                                    </div>
-                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
-                                    <div class="pc-price-row">
-                                        <span class="pc-price">£<?= $display_price; ?></span>
-                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
-                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                    </div>
-                                    <div class="pc-fast-delivery">
-                                        <span class="pc-fd-fast">Fast</span>
-                                        <span class="pc-fd-label">Delivery</span>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
+            <div class="pop-dept-section">
+                <!-- Section Header -->
+                <div class="pop-dept-header">
+                    <div class="pop-dept-title-wrap">
+                        <span class="pop-dept-eyebrow">Handpicked for you</span>
+                        <h2 class="pop-dept-title">Popular Departments</h2>
                     </div>
-                </div>
-                <!-- Best Seller Tab -->
-                <div class="tab-pane pt-4" id="tab1-2">
-                    <div class="product-cards-grid">
-                        <?php
-                        $new_arrivals = $this->db->query("SELECT * FROM app_products WHERE published = '1' && approved = '1' ORDER by rating DESC LIMIT 0,20")->result_array();
-                        foreach ($new_arrivals as $row) {
-                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}'");
-                            $review_count = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id = '{$row['id']}' AND approved = '1'")->row()->cnt;
-                            $filled = round($row['rating']);
-                            if ($stocks->num_rows() > 1) {
-                                $lp = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '{$row['id']}' ORDER BY price ASC")->row();
-                            } else {
-                                $lp = $stocks->row();
-                            }
-                            $show_old = ($lp && $lp->discount > 0);
-                            $display_price = ($show_old) ? $lp->discount : ($lp ? $lp->price : 0);
-                            $old_price = $lp ? $lp->price : 0;
-                            $pct_off = ($show_old && $old_price > 0) ? round(($old_price - $display_price) / $old_price * 100) : 0;
-                        ?>
-                            <div class="product-card-new">
-                                <div class="pc-image-wrap">
-                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
-                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= $row['name']; ?>">
-                                    </a>
-                                    <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                </div>
-                                <div class="pc-body">
-                                    <div class="pc-rating">
-                                        <div class="pc-stars">
-                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
-                                            <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
-                                            <?php } ?>
-                                        </div>
-                                        <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
-                                    </div>
-                                    <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
-                                    <div class="pc-price-row">
-                                        <span class="pc-price">£<?= $display_price; ?></span>
-                                        <?php if ($show_old) { ?><span class="pc-old-price">£<?= $old_price; ?></span><?php } ?>
-                                        <?php if ($pct_off > 0) { ?><span class="pc-pct-off"><?= $pct_off; ?>% OFF</span><?php } ?>
-                                    </div>
-                                    <div class="pc-fast-delivery">
-                                        <span class="pc-fd-fast">Fast</span>
-                                        <span class="pc-fd-label">Delivery</span>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
+                    <div class="pop-dept-filters" id="popDeptFilters">
+                        <button class="pd-filter active" data-tab="tab-new">New Arrivals</button>
+                        <button class="pd-filter" data-tab="tab-best">Best Sellers</button>
+                        <button class="pd-filter" data-tab="tab-sale">On Sale</button>
                     </div>
+                    <a href="<?= base_url('products'); ?>" class="pop-dept-viewall">View All <i class="fa fa-arrow-right"></i></a>
                 </div>
-            </div>
 
-        </div>
-    </section>
+                <!-- Tab Panels -->
+                <div class="pop-dept-panels">
+
+                    <!-- NEW ARRIVALS -->
+                    <div class="pd-panel active" id="tab-new">
+                        <div class="pd-grid">
+                        <?php
+                        $pd_new = $this->db->query("SELECT * FROM app_products WHERE published='1' AND approved='1' ORDER BY id DESC LIMIT 10")->result_array();
+                        foreach ($pd_new as $row):
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}'");
+                            $rc = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id='{$row['id']}' AND approved='1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            $lp = ($stocks->num_rows() > 1)
+                                ? $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}' ORDER BY price ASC")->row()
+                                : $stocks->row();
+                            $has_disc = ($lp && $lp->discount > 0);
+                            $price    = $has_disc ? $lp->discount : ($lp ? $lp->price : 0);
+                            $orig     = $lp ? $lp->price : 0;
+                            $pct      = ($has_disc && $orig > 0) ? round(($orig - $price) / $orig * 100) : 0;
+                        ?>
+                            <div class="pd-card">
+                                <div class="pd-card-img">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= htmlspecialchars($row['name']); ?>" loading="lazy">
+                                    </a>
+                                    <?php if ($pct > 0): ?><span class="pd-badge-off"><?= $pct; ?>%<br>OFF</span><?php endif; ?>
+                                    <span class="pd-badge-new">New</span>
+                                    <div class="pd-hover-actions">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-btn-view">Quick View</a>
+                                    </div>
+                                </div>
+                                <div class="pd-card-body">
+                                    <div class="pd-stars">
+                                        <?php for ($s=1;$s<=5;$s++): ?><i class="fa fa-star<?= ($s<=$filled)?'':($s-0.5<=$row['rating']?'-half-o':'-o'); ?>"></i><?php endfor; ?>
+                                        <span>(<?= $rc; ?>)</span>
+                                    </div>
+                                    <div class="pd-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= htmlspecialchars($row['name']); ?></a></div>
+                                    <div class="pd-price-row">
+                                        <span class="pd-price">£<?= number_format($price, 2); ?></span>
+                                        <?php if ($has_disc): ?><span class="pd-orig">£<?= number_format($orig, 2); ?></span><?php endif; ?>
+                                    </div>
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-add-cart">
+                                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <!-- BEST SELLERS -->
+                    <div class="pd-panel" id="tab-best">
+                        <div class="pd-grid">
+                        <?php
+                        $pd_best = $this->db->query("SELECT * FROM app_products WHERE published='1' AND approved='1' ORDER BY rating DESC, id DESC LIMIT 10")->result_array();
+                        foreach ($pd_best as $row):
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}'");
+                            $rc = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id='{$row['id']}' AND approved='1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            $lp = ($stocks->num_rows() > 1)
+                                ? $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}' ORDER BY price ASC")->row()
+                                : $stocks->row();
+                            $has_disc = ($lp && $lp->discount > 0);
+                            $price    = $has_disc ? $lp->discount : ($lp ? $lp->price : 0);
+                            $orig     = $lp ? $lp->price : 0;
+                            $pct      = ($has_disc && $orig > 0) ? round(($orig - $price) / $orig * 100) : 0;
+                        ?>
+                            <div class="pd-card">
+                                <div class="pd-card-img">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= htmlspecialchars($row['name']); ?>" loading="lazy">
+                                    </a>
+                                    <?php if ($pct > 0): ?><span class="pd-badge-off"><?= $pct; ?>%<br>OFF</span><?php endif; ?>
+                                    <span class="pd-badge-hot">🔥 Hot</span>
+                                    <div class="pd-hover-actions">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-btn-view">Quick View</a>
+                                    </div>
+                                </div>
+                                <div class="pd-card-body">
+                                    <div class="pd-stars">
+                                        <?php for ($s=1;$s<=5;$s++): ?><i class="fa fa-star<?= ($s<=$filled)?'':($s-0.5<=$row['rating']?'-half-o':'-o'); ?>"></i><?php endfor; ?>
+                                        <span>(<?= $rc; ?>)</span>
+                                    </div>
+                                    <div class="pd-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= htmlspecialchars($row['name']); ?></a></div>
+                                    <div class="pd-price-row">
+                                        <span class="pd-price">£<?= number_format($price, 2); ?></span>
+                                        <?php if ($has_disc): ?><span class="pd-orig">£<?= number_format($orig, 2); ?></span><?php endif; ?>
+                                    </div>
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-add-cart">
+                                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <!-- ON SALE -->
+                    <div class="pd-panel" id="tab-sale">
+                        <div class="pd-grid">
+                        <?php
+                        $pd_sale = $this->db->query("
+                            SELECT p.* FROM app_products p
+                            INNER JOIN app_product_stocks s ON s.product_id = p.id AND s.discount > 0
+                            WHERE p.published='1' AND p.approved='1'
+                            GROUP BY p.id ORDER BY p.id DESC LIMIT 10
+                        ")->result_array();
+                        foreach ($pd_sale as $row):
+                            $stocks = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}'");
+                            $rc = $this->db->query("SELECT COUNT(*) as cnt FROM app_product_reviews WHERE product_id='{$row['id']}' AND approved='1'")->row()->cnt;
+                            $filled = round($row['rating']);
+                            $lp = ($stocks->num_rows() > 1)
+                                ? $this->db->query("SELECT * FROM app_product_stocks WHERE product_id='{$row['id']}' ORDER BY price ASC")->row()
+                                : $stocks->row();
+                            $has_disc = ($lp && $lp->discount > 0);
+                            $price    = $has_disc ? $lp->discount : ($lp ? $lp->price : 0);
+                            $orig     = $lp ? $lp->price : 0;
+                            $pct      = ($has_disc && $orig > 0) ? round(($orig - $price) / $orig * 100) : 0;
+                        ?>
+                            <div class="pd-card">
+                                <div class="pd-card-img">
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>">
+                                        <img src="<?= base_url(); ?>uploads/products/<?= $row['thumbnail_img']; ?>" alt="<?= htmlspecialchars($row['name']); ?>" loading="lazy">
+                                    </a>
+                                    <?php if ($pct > 0): ?><span class="pd-badge-off"><?= $pct; ?>%<br>OFF</span><?php endif; ?>
+                                    <span class="pd-badge-sale">Sale</span>
+                                    <div class="pd-hover-actions">
+                                        <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-btn-view">Quick View</a>
+                                    </div>
+                                </div>
+                                <div class="pd-card-body">
+                                    <div class="pd-stars">
+                                        <?php for ($s=1;$s<=5;$s++): ?><i class="fa fa-star<?= ($s<=$filled)?'':($s-0.5<=$row['rating']?'-half-o':'-o'); ?>"></i><?php endfor; ?>
+                                        <span>(<?= $rc; ?>)</span>
+                                    </div>
+                                    <div class="pd-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= htmlspecialchars($row['name']); ?></a></div>
+                                    <div class="pd-price-row">
+                                        <span class="pd-price">£<?= number_format($price, 2); ?></span>
+                                        <?php if ($has_disc): ?><span class="pd-orig">£<?= number_format($orig, 2); ?></span><?php endif; ?>
+                                    </div>
+                                    <a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>" class="pd-add-cart">
+                                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php if (empty($pd_sale)): ?>
+                            <div class="pd-empty">No sale products at the moment. <a href="<?= base_url('products'); ?>">Browse all products →</a></div>
+                        <?php endif; ?>
+                        </div>
+                    </div>
+
+                </div><!-- end panels -->
+
+                <!-- View All CTA -->
+                <div class="pop-dept-cta">
+                    <a href="<?= base_url('products'); ?>" class="pop-dept-cta-btn">
+                        Explore All Products &nbsp;<i class="fa fa-long-arrow-right"></i>
+                    </a>
+                </div>
+            </div><!-- end pop-dept-section -->
+
+        </div><!-- /.container -->
+    </section><!-- /.marlota-products-section -->
 
     <!-- ========================================
          NEWSLETTER SECTION
     ========================================= -->
-    <section class="marlota-newsletter">
+    <section class="marlota-newsletter newsletter-2025">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="nl-icon">✉️</div>
-                    <h4>Stay Updated</h4>
-                    <p>Subscribe to get the latest updates on new products and offers.</p>
+            <div class="newsletter-2025-card">
+                <div class="newsletter-2025-left">
+                    <div class="nl-icon"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></div>
+                    <div class="newsletter-copy">
+                        <h4>Stay Updated</h4>
+                        <p>Subscribe to get the latest updates on new products and offers.</p>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <form action="#" method="get" class="nl-form">
-                        <input type="email" name="email" placeholder="Your email address" required />
+                <div class="newsletter-2025-right">
+                    <form action="#" method="get" class="nl-form" aria-label="Newsletter Subscribe">
+                        <input type="email" name="email" placeholder="Enter your email" required />
                         <button type="submit">Subscribe</button>
                     </form>
                 </div>
@@ -425,7 +514,20 @@
 <!-- End of Main -->
 
 <script>
-    $(document).ready(function () {
+    /* Popular Departments tab switcher */
+    document.querySelectorAll('#popDeptFilters .pd-filter').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#popDeptFilters .pd-filter').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelectorAll('.pd-panel').forEach(function(p){ p.classList.remove('active'); });
+            btn.classList.add('active');
+            var target = document.getElementById(btn.getAttribute('data-tab'));
+            if (target) target.classList.add('active');
+        });
+    });
+</script>
+
+<script>
+    window.addEventListener('load', function () {
         $(".slider").owlCarousel({
             loop: true,
             items: 6,
@@ -453,7 +555,7 @@
         $(".custom-slider").owlCarousel({
             items: 5,
             loop: true,
-            margin: 10,
+            margin: 14,
             nav: true,
             dots: false,
             responsive: {

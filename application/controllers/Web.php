@@ -32,7 +32,9 @@ class Web extends My_controller {
 
 	public function index()
 	{
-		$data['view_scripts']=array();
+		$data['view_scripts']=array(
+		    'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js',
+		);
 		$data['view_css']=array();
 		// echo 'data: <pre>' .print_r($data,true). '</pre>';
         $this->load_web('home',$data);

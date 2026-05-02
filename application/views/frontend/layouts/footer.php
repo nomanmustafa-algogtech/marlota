@@ -411,21 +411,23 @@ if($this->session->userdata('user_loggedin')){
     }
     
     function reviewproduct(sn, order_id, product_id){
-        var query = '?sn='+sn+'&order_id='+order_id+'&product_id='+product_id
-        Wolmart.popup({items:{src:'<?=base_url();?>products/review_page'+query}},"login");
+        var query = '?sn='+sn+'&order_id='+order_id+'&product_id='+product_id;
+        if (typeof Wolmart !== 'undefined') {
+            Wolmart.popup({items:{src:'<?=base_url();?>products/review_page'+query}},"login");
+        }
     }
     
     
     
     $(".sign-in-click").click(function(){
-      Wolmart.popup({items:{src:'<?=base_url();?>authentication'}},"login");
+      if (typeof Wolmart !== 'undefined') Wolmart.popup({items:{src:'<?=base_url();?>authentication'}},"login");
     });
     $(".register-click").click(function(){
-      Wolmart.popup({items:{src:'<?=base_url();?>authentication'},callbacks:{ajaxContentAdded:function(){this.wrap.find('[href="#sign-up"]').click()}}},"login")
+      if (typeof Wolmart !== 'undefined') Wolmart.popup({items:{src:'<?=base_url();?>authentication'},callbacks:{ajaxContentAdded:function(){this.wrap.find('[href="#sign-up"]').click()}}},"login");
     });
     
     
-Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function(e) {
+if (typeof Wolmart !== 'undefined') Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function(e) {
 e.preventDefault();
 var i = $(this),
 a = i.closest(".product, .product-popup");
@@ -462,7 +464,8 @@ var oldcart = parseInt($(".cart-count").html());
 $(".cart-count").html((oldcart+1));
 $(".cart-total .price").html("£ "+(parseInt(cart_old_total)+(parseInt(price)*qty)))
 $(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'" class="product-name">'+a.find(".product-name, .product-title").text()+'</a><div class="price-box"><span class="product-quantity">'+qty+'</span><span class="product-price">£ '+price+'</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'"><img src="'+a.find(".product-media img, .product-image:first-child img").attr("src")+'" alt="'+a.find(".product-name, .product-title").text()+'" height="84" width="94" /></a></figure></div>');
-i.removeClass("load-more-overlay loading"), Wolmart.Minipopup.open({
+i.removeClass("load-more-overlay loading");
+if (typeof Wolmart !== 'undefined') Wolmart.Minipopup.open({
 productClass: " product-cart",
 name: a.find(".product-name, .product-title").text(),
 nameLink: a.find(".product-name > a, .product-title > a").attr("href"),
