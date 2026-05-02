@@ -111,14 +111,14 @@
     }
 
     .category-card-home h5 {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: #1E1E1E;
         margin-bottom: 4px;
     }
 
     .category-card-home .browse-link {
-        font-size: 13px;
+        font-size: 15px;
         color: #1E1E1E;
         font-weight: 500;
     }

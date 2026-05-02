@@ -1,5 +1,5 @@
     <!--------------- products-sidebar-section--------------->
-	<section class="product product-sidebar footer-padding marlota-products-section" style="background:#fff;">
+	<section class="product product-sidebar footer-padding marlota-products-section marlota-products-listing-page">
     	<div class="container">
     		<div class="row g-5">
     			<div class="col-lg-3">
@@ -55,9 +55,9 @@
     										<option value="date" <?php if (isset($_GET['orderby']) && $_GET['orderby'] == 'date') {
 																		echo 'selected';
 																	} ?>>Sort by latest</option>
-    										<option value="price_low" <?php if (isset($_GET['orderby']) && $_GET['orderby'] == 'price_low') {
+											<option value="price_low" <?php if (isset($_GET['orderby']) && $_GET['orderby'] == 'price_low') {
 																			echo 'selected';
-																		} ?>>Sort by pric: low to high</option>
+													} ?>>Sort by price: low to high</option>
     										<option value="price_high" <?php if (isset($_GET['orderby']) && $_GET['orderby'] == 'price_high') {
 																			echo 'selected';
 																		} ?>>Sort by price: high to low</option>
@@ -82,7 +82,7 @@
     						</div>
 							<?php if (count($products) == 0) { ?>
 								<div class="col-12">
-									<p style="color:red; text-align:center;">No products found with this criteria</p>
+									<p class="no-products-message">No products found with this criteria.</p>
 								</div>
 							<?php } ?>
     						<?php
@@ -142,12 +142,12 @@
 								</div>
     						<?php } ?>
     						<div class="toolbox toolbox-pagination justify-content-between">
-    							<p class="showing-info mb-2 mb-sm-0">
-    								Showing<span><?= $offset; ?>-<?php $showingTotal = $pageno * $per_page;
+								<p class="showing-info mb-2 mb-sm-0">
+									Showing <span><?= $offset; ?>-<?php $showingTotal = $pageno * $per_page;
 																	if ($showingTotal > $total_rows) {
 																		$showingTotal = $total_rows;
 																	}
-																	echo $showingTotal; ?> of <?= $total_rows; ?></span>Products
+															echo $showingTotal; ?> of <?= $total_rows; ?></span> products
     							</p>
 
     							<ul class="pagination">

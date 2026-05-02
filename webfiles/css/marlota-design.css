@@ -65,7 +65,7 @@ body {
 .marlota-contact-section a,
 .marlota-cta a,
 .marlota-footer a {
-    font-size: inherit;
+    /* font-size: inherit; */
     font-family: 'Poppins', sans-serif;
     color: inherit;
 }
@@ -148,7 +148,7 @@ body {
 .marlota-header .nav-link {
     color: #1E1E1E !important;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 18px;
     padding: 6px 4px !important;
     transition: color .2s;
 }
@@ -933,6 +933,175 @@ body {
 
 .marlota-products-section .section-title {
     margin-bottom: 30px;
+}
+
+/* Products listing page theme alignment */
+.marlota-products-listing-page {
+    background: #F9F6F1;
+}
+
+.marlota-products-listing-page .sidebar {
+    position: sticky;
+    top: 110px;
+}
+
+.marlota-products-listing-page .sidebar-wrapper {
+    background: #fff;
+    border: 1px solid #ece7f7;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 18px rgba(90, 45, 130, .07);
+}
+
+.marlota-products-listing-page .wrapper-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1eef8;
+}
+
+.marlota-products-listing-page .sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.marlota-products-listing-page .sidebar-list li {
+    margin-bottom: 6px;
+}
+
+.marlota-products-listing-page .sidebar-list li a {
+    display: block;
+    border: 1px solid #efeaf8;
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: #4f4f4f;
+    text-decoration: none;
+    transition: all .2s;
+}
+
+.marlota-products-listing-page .sidebar-list li a:hover {
+    border-color: #5A2D82;
+    color: #5A2D82;
+    background: #faf7ff;
+}
+
+.marlota-products-listing-page .sidebar-list li a label {
+    cursor: pointer;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.marlota-products-listing-page .sidebar-section hr {
+    display: none;
+}
+
+.marlota-products-listing-page .product-sorting-section {
+    background: #fff;
+    border: 1px solid #ece7f7;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(90, 45, 130, .06);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.marlota-products-listing-page .product-sort {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5A2D82;
+    margin-right: 8px;
+}
+
+.marlota-products-listing-page .product-sorting-section .form-control {
+    border: 1px solid #e8e3f2;
+    border-radius: 9px;
+    height: 40px;
+    font-size: 13px;
+    color: #333;
+    min-width: 190px;
+    box-shadow: none;
+}
+
+.marlota-products-listing-page .product-sorting-section .form-control:focus {
+    border-color: #5A2D82;
+}
+
+.marlota-products-listing-page .no-products-message {
+    margin: 14px 0;
+    text-align: center;
+    color: #a12f4c;
+    background: #ffeef3;
+    border: 1px solid #ffd3df;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.marlota-products-listing-page .toolbox-pagination {
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #ece7f7;
+    border-radius: 14px;
+    padding: 12px 14px;
+}
+
+.marlota-products-listing-page .showing-info {
+    font-size: 13px;
+    color: #666;
+}
+
+.marlota-products-listing-page .showing-info span {
+    color: #5A2D82;
+    font-weight: 700;
+}
+
+.marlota-products-listing-page .pagination {
+    margin: 0;
+    gap: 8px;
+}
+
+.marlota-products-listing-page .pagination li a {
+    border: 1px solid #e8e3f2;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5A2D82;
+    background: #fff;
+    text-decoration: none;
+    transition: all .2s;
+}
+
+.marlota-products-listing-page .pagination li a:hover {
+    background: #5A2D82;
+    border-color: #5A2D82;
+    color: #fff;
+}
+
+.marlota-products-listing-page .pagination li.disabled a {
+    opacity: .45;
+    pointer-events: none;
+}
+
+@media (max-width: 991px) {
+    .marlota-products-listing-page .sidebar {
+        position: static;
+    }
+
+    .marlota-products-listing-page .product-sorting-section {
+        padding: 10px;
+    }
+
+    .marlota-products-listing-page .product-sorting-section .form-control {
+        min-width: 160px;
+    }
 }
 
 /* Override old teal borders on product cards */

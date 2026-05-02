@@ -237,7 +237,7 @@ $function  = $this->uri->segment(2);
                             <a href="<?= base_url(); ?>" class="nav-link fw-500">Home</a>
                         </li>
                         <li class="nav-item has-megamenu">
-                            <a href="<?= base_url('products'); ?>" class="nav-link fw-500 megamenu-trigger">
+                            <a href="javascript:void(0);" class="nav-link fw-500 megamenu-trigger">
                                 Products <i class="fa fa-chevron-down mega-trigger-icon"></i>
                             </a>
                             <!-- MEGA MENU PANEL -->
