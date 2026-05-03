@@ -377,15 +377,16 @@ $function  = $this->uri->segment(2);
                 document.addEventListener('DOMContentLoaded', function () {
                     if (window.innerWidth < 992) return;
 
+                    var header = document.querySelector('.marlota-header');
                     var navbar = document.querySelector('.marlota-header .navbar');
                     var panels = document.querySelectorAll('.megamenu-panel');
 
                     function positionPanels() {
-                        if (!navbar) return;
-                        var rect = navbar.getBoundingClientRect();
-                        var bottom = rect.bottom + window.scrollY - window.scrollY; /* fixed is relative to viewport */
+                        if (!navbar && !header) return;
+                        var rect = (header || navbar).getBoundingClientRect();
+                        var panelTop = Math.max(0, Math.round(rect.bottom));
                         panels.forEach(function(p) {
-                            p.style.top = rect.bottom + 'px';
+                            p.style.top = panelTop + 'px';
                         });
                     }
 

@@ -97,7 +97,7 @@ body {
 
 /* Global btn-shop-now (used in header and on About/other pages) */
 .btn-shop-now {
-    background: #C9A646;
+    background: #c08c00;
     color: #fff !important;
     border-radius: 6px;
     padding: 8px 20px;
@@ -159,8 +159,8 @@ body {
 
 /* Reusable frontend utility classes (replacing inline styles) */
 .header-logo-fixed {
-    height: 160px;
-    width: 280px;
+    height: 70px;
+    width: 250px;
 }
 
 .mega-trigger-icon {
@@ -677,7 +677,7 @@ body {
 }
 
 .marlota-why .feature-card p {
-    font-size: 14px;
+    font-size: 13px;
     color: rgba(255,255,255,.7);
     margin: 0;
 }
@@ -1140,8 +1140,8 @@ body {
 }
 
 .marlota-footer .footer-logo {
-    height: 160px;
-    width: 280px;
+    height: 70px;
+    width: 250px;
     margin-bottom: 16px;
     filter: brightness(0) invert(1);
 }
@@ -1287,16 +1287,18 @@ body {
 }
 
 .marlota-core-values .value-card {
-    background: #F9F6F1;
+    background: #fff;
     border-radius: 14px;
     padding: 36px 24px;
     text-align: center;
     height: 100%;
+    box-shadow: 0 4px 18px rgba(58,27,118,.08);
+    border: 1px solid #ede9f5;
     transition: box-shadow .25s, transform .2s;
 }
 
 .marlota-core-values .value-card:hover {
-    box-shadow: 0 8px 28px rgba(45, 27, 105, .1);
+    box-shadow: 0 10px 32px rgba(58,27,118,.15);
     transform: translateY(-4px);
 }
 
@@ -1332,7 +1334,7 @@ body {
 }
 
 .marlota-mission .mission-card {
-    background: #F9F6F1;
+    background: #fffefd;
     border-radius: 16px;
     border-left: 5px solid #C9A646;
     padding: 70px;
@@ -1433,10 +1435,13 @@ body {
 }
 
 .marlota-contact-section .contact-info-card {
-    background: #F9F6F1;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-top: 4px solid #3a1b76;
     border-radius: 14px;
     padding: var(--mx-space-9) var(--mx-space-8);
     height: 100%;
+    box-shadow: 0 4px 20px rgba(58,27,118,.09);
 }
 
 .marlota-contact-section .contact-info-item {
@@ -1520,6 +1525,419 @@ body {
     font-size: 14px;
     color: #444;
     cursor: pointer;
+}
+
+/* =============================================
+   ABOUT PAGE — MISSION PRINCIPLES
+   ============================================= */
+.marlota-mission .mission-principle {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 24px;
+    text-align: center;
+    height: 100%;
+    border-top: 4px solid #3a1b76;
+    box-shadow: 0 4px 18px rgba(58,27,118,.08);
+    border: 1px solid #ede9f5;
+    border-top: 4px solid #3a1b76;
+    transition: box-shadow .25s, transform .2s;
+}
+.marlota-mission .mission-principle:hover {
+    box-shadow: 0 10px 32px rgba(58,27,118,.15);
+    transform: translateY(-4px);
+}
+.marlota-mission .mp-number {
+    font-size: 36px;
+    font-weight: 800;
+    color: #C9A646;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+.marlota-mission .mission-principle h5 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 10px;
+}
+.marlota-mission .mission-principle p {
+    font-size: 15px;
+    color: #666;
+    margin: 0;
+}
+
+/* =============================================
+   ABOUT PAGE — WHY CHOOSE
+   ============================================= */
+.marlota-why-choose {
+    background: var(--brand-ivory);
+    padding: var(--mx-space-11) 0;
+}
+.marlota-why-choose h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 16px;
+}
+.marlota-why-choose p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.75;
+    font-family: 'Poppins', sans-serif;
+}
+.marlota-why-choose h1,.marlota-why-choose h2,.marlota-why-choose h3,.marlota-why-choose h4,.marlota-why-choose h5 {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-why-choose a {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.marlota-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 1px solid #ede9f5;
+    font-family: 'Poppins', sans-serif;
+}
+.marlota-checklist li:last-child { border-bottom: none; }
+.marlota-checklist li .fa-check-circle {
+    color: #3a1b76;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.marlota-checklist-light li {
+    color: rgba(255,255,255,.88);
+    border-bottom-color: rgba(255,255,255,.12);
+}
+.marlota-checklist-light li .fa-check-circle {
+    color: #C9A646;
+}
+.why-choose-quote {
+    background: #3a1b76;
+    border-radius: 16px;
+    padding: 40px 36px;
+    color: #fff;
+    position: relative;
+}
+.why-choose-quote .wc-quote-icon {
+    font-size: 36px;
+    color: #C9A646;
+    margin-bottom: 16px;
+    display: block;
+}
+.why-choose-quote p {
+    font-size: 20px;
+    color: rgba(255,255,255,.92);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+.why-choose-quote .wc-author {
+    font-size: 14px;
+    font-weight: 600;
+    color: #C9A646;
+    letter-spacing: .5px;
+}
+
+/* =============================================
+   ABOUT PAGE — OUR PRODUCTS RANGE
+   ============================================= */
+.marlota-products-range {
+    background: #fff;
+    padding: var(--mx-space-11) 0;
+    border-top: 1px solid #f0f0f0;
+}
+.marlota-products-range h1,.marlota-products-range h2,.marlota-products-range h3,.marlota-products-range h4,.marlota-products-range h5 {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-products-range a { font-family: 'Poppins', sans-serif; color: inherit; }
+.marlota-products-range p { font-family: 'Poppins', sans-serif; }
+.range-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 32px 24px;
+    height: 100%;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(58,27,118,.08);
+    border: 1px solid #ede9f5;
+    border-bottom: 3px solid transparent;
+    transition: box-shadow .25s, transform .2s;
+}
+.range-card:hover {
+    box-shadow: 0 10px 32px rgba(58,27,118,.15);
+    transform: translateY(-4px);
+    border-bottom-color: #C9A646;
+}
+.range-icon {
+    width: 64px;
+    height: 64px;
+    background: #3a1b76;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 24px;
+    color: #fff;
+}
+.range-card h5 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+.range-card p {
+    font-size: 15px;
+    color: #666;
+    margin: 0;
+}
+.range-card-cta {
+    background: linear-gradient(135deg, #3a1b76 0%, #4A4A4A 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.range-card-cta h5,
+.range-card-cta p {
+    color: rgba(255,255,255,.9) !important;
+}
+
+/* =============================================
+   ABOUT PAGE — 3PL FULFILMENT
+   ============================================= */
+.marlota-3pl {
+    background: linear-gradient(160deg, #2a1256 0%, #1E1E1E 100%);
+    padding: var(--mx-space-12) 0;
+}
+.marlota-3pl h1,.marlota-3pl h2,.marlota-3pl h3,.marlota-3pl h4,.marlota-3pl h5 {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-3pl a { font-family: 'Poppins', sans-serif; color: inherit; }
+.marlota-3pl p { font-family: 'Poppins', sans-serif; }
+.badge-3pl {
+    display: inline-block;
+    background: #C9A646;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+.tpl-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px;
+    padding: 28px 22px;
+    height: 100%;
+    transition: background .25s, transform .2s;
+}
+.tpl-card:hover {
+    background: rgba(255,255,255,.1);
+    transform: translateY(-4px);
+}
+.tpl-icon {
+    width: 56px;
+    height: 56px;
+    background: #C9A646;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 16px;
+}
+.tpl-card h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+.tpl-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,.7);
+    margin: 0;
+    line-height: 1.6;
+}
+.tpl-who-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    padding: 32px 28px;
+    height: 100%;
+}
+.tpl-who-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #C9A646;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+.tpl-who-card h4 .fa {
+    margin-right: 8px;
+}
+.tpl-partner-note {
+    font-size: 14px;
+    color: rgba(255,255,255,.65);
+    font-style: italic;
+    margin-top: 16px;
+    line-height: 1.6;
+}
+
+/* =============================================
+   ABOUT PAGE — COMMITMENT + STANDARD
+   ============================================= */
+.marlota-commitment {
+    background: #fff;
+    padding: var(--mx-space-11) 0;
+    border-top: 1px solid #f0f0f0;
+}
+.marlota-commitment h1,.marlota-commitment h2,.marlota-commitment h3,.marlota-commitment h4,.marlota-commitment h5 {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-commitment a { font-family: 'Poppins', sans-serif; color: inherit; }
+.marlota-commitment p { font-family: 'Poppins', sans-serif; }
+.marlota-commitment h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 16px;
+}
+.marlota-commitment p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.75;
+}
+.standard-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.std-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #F9F6F1;
+    border: 1px solid #e0d5f0;
+    color: #3a1b76;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    transition: background .2s, color .2s;
+}
+.std-badge:hover {
+    background: #3a1b76;
+    color: #fff;
+    border-color: #3a1b76;
+}
+.std-badge .fa {
+    color: #C9A646;
+    font-size: 12px;
+}
+.std-badge:hover .fa {
+    color: #C9A646;
+}
+
+/* =============================================
+   ABOUT PAGE — LOOKING AHEAD
+   ============================================= */
+.marlota-looking-ahead {
+    background: var(--brand-ivory);
+    padding: var(--mx-space-11) 0;
+}
+.marlota-looking-ahead h1,.marlota-looking-ahead h2,.marlota-looking-ahead h3,.marlota-looking-ahead h4,.marlota-looking-ahead h5 {
+    font-family: 'Poppins', sans-serif;
+    color: inherit;
+}
+.marlota-looking-ahead a { font-family: 'Poppins', sans-serif; color: inherit; }
+.marlota-looking-ahead p { font-family: 'Poppins', sans-serif; }
+.marlota-looking-ahead h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1E1E1E;
+    margin-bottom: 16px;
+}
+.marlota-looking-ahead p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.75;
+}
+.ahead-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.ahead-stat {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 3px solid #C9A646;
+}
+.ahead-num {
+    font-size: 30px;
+    font-weight: 800;
+    color: #3a1b76;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+}
+.ahead-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* =============================================
+   RESPONSIVE — NEW ABOUT SECTIONS
+   ============================================= */
+@media (max-width: 767px) {
+    .marlota-mission .mission-card {
+        padding: 30px 24px;
+        padding-left: 30px;
+        gap: 24px;
+        flex-direction: column;
+    }
+    .marlota-mission .mission-icon-wrap {
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+        margin: 0 auto;
+    }
+    .ahead-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    .why-choose-quote {
+        padding: 28px 24px;
+    }
+    .why-choose-quote p {
+        font-size: 17px;
+    }
 }
 
 /* CTA Banner */
@@ -1780,7 +2198,7 @@ body {
 
 .megamenu-panel {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 100%;
     left: 0;
     right: 0;

@@ -89,7 +89,7 @@
     }
 
     .category-card-home .cat-img-wrap {
-        background: #f8f6fc;
+        background: #ffffff;
         padding: 20px;
         display: flex;
         align-items: center;
@@ -118,13 +118,33 @@
     }
 
     .category-card-home .browse-link {
-        font-size: 15px;
+        font-size: 16px;
         color: #1E1E1E;
-        font-weight: 500;
+        font-weight: 700;
     }
 
     .category-card-home:hover .browse-link {
         color: #5A2D82;
+    }
+
+    .category-slider-container {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        padding: 4px 0;
+    }
+
+    .category-slider.owl-carousel .owl-stage {
+        display: flex !important;
+    }
+
+    .category-slider.owl-carousel .owl-item {
+        display: flex !important;
+    }
+
+    .category-slider.owl-carousel .owl-item .category-card-home {
+        width: 100%;
+        height: 100%;
     }
 
     /* Slideshow */
@@ -186,13 +206,13 @@
                 <div class="section-underline-center"></div>
                 <p class="section-sub">Browse our wide range of quality packaging and supplies.</p>
             </div>
-            <div class="row g-4">
-                <?php
-                $categories = $this->db->query("SELECT * FROM app_categories WHERE level = 0 LIMIT 0,8");
-                foreach ($categories->result_array() as $row) {
-                    if (!empty($row['name'])) {
-                ?>
-                    <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="category-slider-container">
+                <div class="category-slider owl-carousel">
+                    <?php
+                    $categories = $this->db->query("SELECT * FROM app_categories WHERE level = 0 ");
+                    foreach ($categories->result_array() as $row) {
+                        if (!empty($row['name'])) {
+                    ?>
                         <a href="<?= base_url(); ?>products/?category=<?= $row['slug']; ?>" class="category-card-home">
                             <div class="cat-img-wrap">
                             <?php if (!empty($row['image'])) { ?>
@@ -206,8 +226,8 @@
                                 <span class="browse-link">Browse Now →</span>
                             </div>
                         </a>
-                    </div>
-                <?php } } ?>
+                    <?php } } ?>
+                </div>
             </div>
         </div>
     </section>
@@ -553,7 +573,7 @@
             }
         });
         $(".custom-slider").owlCarousel({
-            items: 5,
+            items: 4,
             loop: true,
             margin: 14,
             nav: true,
@@ -561,7 +581,23 @@
             responsive: {
                 0:    { items: 1 },
                 600:  { items: 2 },
-                1000: { items: 5 }
+                1000: { items: 4 }
+            }
+        });
+        $(".category-slider").owlCarousel({
+            items: 4,
+            loop: true,
+            margin: 16,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 2800,
+            autoplayHoverPause: true,
+            responsive: {
+                0:    { items: 1 },
+                576:  { items: 2 },
+                992:  { items: 3 },
+                1200: { items: 4 }
             }
         });
     });

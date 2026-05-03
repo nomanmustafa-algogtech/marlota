@@ -529,8 +529,189 @@ $grand_total = $subtotal + $vat;
 			localStorage.removeItem('checkout_form_draft');
 		}
 
-		restoreCheckoutDraft();
-		$('#shipping_details').on('input change', 'input, select, textarea', saveCheckoutDraft);
+		function initCheckoutPage() {
+			if (initCheckoutPage.initialized || typeof window.jQuery === 'undefined' || typeof window.paypal === 'undefined') {
+				return;
+			}
+
+			initCheckoutPage.initialized = true;
+			restoreCheckoutDraft();
+			$('#shipping_details').on('input change', 'input, select, textarea', saveCheckoutDraft);
+
+			$("#submitPayment").on("click", function() {
+				let $btn = $(this); // cache button
+  		    		$btn.prop("disabled", true).text("Processing..."); // disable + change text
+				let grandTotal = $('#total_payable').val();
+				$.ajax({
+					url: "<?= base_url('checkout/create_payment_intent'); ?>",
+					method: "POST",
+					data : {
+						"grand_total": grandTotal
+					},
+					success: async function(response) {
+						debugger
+						let data = JSON.parse(response);
+
+						if (data.error) {
+							$("#card-errors").text(data.error);
+							$btn.prop("disabled", false).text("Pay Now"); // re-enable if error
+							return;
+						}
+
+						const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
+							payment_method: {
+								card: card,
+								billing_details: {
+									name: $("#full_name").val(),
+									email: $("#email").val()
+								}
+							}
+						});
+
+						if (error) {
+							$("#card-errors").text(error.message);
+							$btn.prop("disabled", false).text("Pay Now"); // re-enable if error
+						} else if (paymentIntent.status === "succeeded") {
+							$("#payment-success").removeClass("d-none").text("Payment successful!");
+							
+							showSpinner(); 
+							
+							$.ajax({
+								type: "POST",
+								url: '<?= base_url(); ?>/checkout/processorder/',
+								data:{
+								    'payment_type': 2,
+									stripe_intent_id: paymentIntent.id,
+									grand_total: $('#total_payable').val(),
+									checkout_type: $('#checkout_type').val(),
+									full_name: $('#full_name').val(),
+									email: $('#email').val(),
+									phone: $('#phone').val(),
+									address: $('#address').val(),
+									street: $('#street').val(),
+									city: $('#city').val(),
+									zipcode: $('#zipcode').val(),
+									country: $('#country').val(),
+									order_notes: $('#order-notes').val(),
+								},
+								success: function(data) {
+									debugger
+									console.log(data);
+									
+									dataObj = JSON.parse(data);
+									hideSpinner();
+									if (dataObj.status == 'success') {
+										clearCheckoutDraft();
+										window.location.href = "<?= base_url(); ?>user/account#v-pills-order";
+									} else {
+										 $btn.prop("disabled", false).text("Pay Now");
+                           				 $("#card-pay-error").html(dataObj.msg).show();
+										if (payment_type == 2) {
+											$("#card-pay-error").html(dataObj.msg);
+											$("#card-pay-error").show();
+										} else {
+											alert(dataObj.msg);
+										}
+									}
+								},
+								error: function () {
+									$(".preloader").hide();
+									$btn.prop("disabled", false).text("Pay Now"); // re-enable on ajax fail
+								},
+							});
+						}
+					},
+					error: function () {
+						$btn.prop("disabled", false).text("Pay Now"); // re-enable on ajax fail
+					},
+				});
+			});
+
+			paypal.Buttons({
+				onInit: function(data, actions) {
+					// actionStatus.enable();
+					if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
+
+						actions.disable();
+					} else {
+						actions.enable();
+					}
+
+					actionStatus = actions;
+
+
+					$('.checkout-form :input').change(function() {
+						if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
+
+							actionStatus.disable();
+						} else {
+							actionStatus.enable();
+						}
+					});
+				},
+				onClick: function() {
+					console.log("Paypal Payment", parseFloat($('#total_payable').val()));
+					if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
+						alert("Please Fill out all the Fields!");
+						actionStatus.disable();
+						return;
+					} else {
+						actionStatus.enable();
+						// return;
+					}
+				},
+				createOrder: function(data, actions) {
+
+					// This function sets up the details of the transaction, including the amount and line item details.
+					return actions.order.create({
+						purchase_units: [{
+							amount: {
+								value: parseFloat($('#total_payable').val()),
+								currency_code: 'GBP'
+							}
+						}]
+					});
+				},
+				onApprove: function(data, actions) {
+
+					// This function captures the funds from the transaction.
+					return actions.order.capture().then(function(details) {
+						if (details.status == "COMPLETED") {
+							var datap = "paypal_trx_id=" + details.id + ""
+							placeorder(3, datap);
+						}
+
+					});
+				}
+			}).render('#paypal-button-container');
+		}
+
+		function waitForCheckoutDependencies(attempt) {
+			if (initCheckoutPage.initialized) {
+				return;
+			}
+
+			if (typeof window.jQuery !== 'undefined' && typeof window.paypal !== 'undefined') {
+				initCheckoutPage();
+				return;
+			}
+
+			if ((attempt || 0) >= 120) {
+				return;
+			}
+
+			window.setTimeout(function () {
+				waitForCheckoutDependencies((attempt || 0) + 1);
+			}, 50);
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', function () {
+				waitForCheckoutDependencies(0);
+			});
+		} else {
+			waitForCheckoutDependencies(0);
+		}
 
 		function openPaymentModal() {
 			// show modal first
@@ -555,94 +736,6 @@ $grand_total = $subtotal + $vat;
 			modal.show();
 		}
 
-		$("#submitPayment").on("click", function() {
-			let $btn = $(this); // cache button
-  		    $btn.prop("disabled", true).text("Processing..."); // disable + change text
-			let grandTotal = $('#total_payable').val();
-			$.ajax({
-				url: "<?= base_url('checkout/create_payment_intent'); ?>",
-				method: "POST",
-				data : {
-					"grand_total": grandTotal
-				},
-				success: async function(response) {
-					debugger
-					let data = JSON.parse(response);
-
-					if (data.error) {
-						$("#card-errors").text(data.error);
-						$btn.prop("disabled", false).text("Pay Now"); // re-enable if error
-						return;
-					}
-
-					const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
-						payment_method: {
-							card: card,
-							billing_details: {
-								name: $("#full_name").val(),
-								email: $("#email").val()
-							}
-						}
-					});
-
-					if (error) {
-						$("#card-errors").text(error.message);
-						$btn.prop("disabled", false).text("Pay Now"); // re-enable if error
-					} else if (paymentIntent.status === "succeeded") {
-						$("#payment-success").removeClass("d-none").text("Payment successful!");
-						
-						showSpinner(); 
-						
-						$.ajax({
-							type: "POST",
-							url: '<?= base_url(); ?>/checkout/processorder/',
-							data:{
-							    'payment_type': 2,
-								stripe_intent_id: paymentIntent.id,
-								grand_total: $('#total_payable').val(),
-								checkout_type: $('#checkout_type').val(),
-								full_name: $('#full_name').val(),
-								email: $('#email').val(),
-								phone: $('#phone').val(),
-								address: $('#address').val(),
-								street: $('#street').val(),
-								city: $('#city').val(),
-								zipcode: $('#zipcode').val(),
-								country: $('#country').val(),
-								order_notes: $('#order-notes').val(),
-							},
-							success: function(data) {
-								debugger
-								console.log(data);
-								
-								dataObj = JSON.parse(data);
-								hideSpinner();
-								if (dataObj.status == 'success') {
-									clearCheckoutDraft();
-									window.location.href = "<?= base_url(); ?>user/account#v-pills-order";
-								} else {
-									 $btn.prop("disabled", false).text("Pay Now");
-                           			 $("#card-pay-error").html(dataObj.msg).show();
-									if (payment_type == 2) {
-										$("#card-pay-error").html(dataObj.msg);
-										$("#card-pay-error").show();
-									} else {
-										alert(dataObj.msg);
-									}
-								}
-							},
-							error: function () {
-								$(".preloader").hide();
-								$btn.prop("disabled", false).text("Pay Now"); // re-enable on ajax fail
-							},
-						});
-					}
-				},
-				error: function () {
-					$btn.prop("disabled", false).text("Pay Now"); // re-enable on ajax fail
-				},
-			});
-		});
 
 		function showSpinner() {
 		$("#spinner-overlay").removeClass("d-none");
@@ -700,61 +793,4 @@ $grand_total = $subtotal + $vat;
 				}
 			});
 		}
-		paypal.Buttons({
-			onInit: function(data, actions) {
-				// actionStatus.enable();
-				if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
-
-					actions.disable();
-				} else {
-					actions.enable();
-				}
-
-				actionStatus = actions;
-
-
-				$('.checkout-form :input').change(function() {
-					if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
-
-						actionStatus.disable();
-					} else {
-						actionStatus.enable();
-					}
-				});
-			},
-			onClick: function() {
-				console.log("Paypal Payment", parseFloat($('#total_payable').val()));
-				if (parseFloat($('#total_payable').val()) == 0 || $('#full_name').val() == "" || $('#address').val() == "" || $('#street').val() == "" || $('#city').val() == "" || $('#zipcode').val() == "" || $('#country').val() == "" || $('#email').val() == "" || $('#phone').val() == "") {
-					alert("Please Fill out all the Fields!");
-					actionStatus.disable();
-					return;
-				} else {
-					actionStatus.enable();
-					// return;
-				}
-			},
-			createOrder: function(data, actions) {
-
-				// This function sets up the details of the transaction, including the amount and line item details.
-				return actions.order.create({
-					purchase_units: [{
-						amount: {
-							value: parseFloat($('#total_payable').val()),
-							currency_code: 'GBP'
-						}
-					}]
-				});
-			},
-			onApprove: function(data, actions) {
-
-				// This function captures the funds from the transaction.
-				return actions.order.capture().then(function(details) {
-					if (details.status == "COMPLETED") {
-						var datap = "paypal_trx_id=" + details.id + ""
-						placeorder(3, datap);
-					}
-
-				});
-			}
-		}).render('#paypal-button-container');
 	</script>
