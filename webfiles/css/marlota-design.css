@@ -1,7 +1,7 @@
 /* =============================================
    MARLOTA DESIGN SYSTEM
    Color Palette:
-    Primary (deep purple):  #5A2D82
+    Primary (deep purple):  #3a1b76
     Secondary (gold):       #C9A646
     Neutral dark:           #1E1E1E
     Neutral light:          #FFFFFF
@@ -27,7 +27,7 @@ body {
 }
 
 :root {
-    --brand-primary: #5A2D82;
+    --brand-primary: #3a1b76;
     --brand-secondary: #C9A646;
     --brand-neutral-dark: #1E1E1E;
     --brand-neutral-light: #FFFFFF;
@@ -118,7 +118,7 @@ body {
    ============================================= */
 .marlota-header {
     background: #fff !important;
-    border-top: 30px solid #5A2D82;
+    border-top: 30px solid #3a1b76;
     box-shadow: 0 2px 8px rgba(0,0,0,.06);
     position: relative;
     z-index: 999;
@@ -159,8 +159,8 @@ body {
 
 /* Reusable frontend utility classes (replacing inline styles) */
 .header-logo-fixed {
-    height: 130px;
-    width: 250px;
+    height: 160px;
+    width: 280px;
 }
 
 .mega-trigger-icon {
@@ -188,13 +188,13 @@ body {
 
 .header-user-icon,
 .header-cart-icon {
-    color: #5A2D82;
+    color: #3a1b76;
     font-size: 20px;
     line-height: 1;
 }
 
 .mobile-cart-link {
-    color: #5A2D82;
+    color: #3a1b76;
     position: relative;
     font-size: 24px;
 }
@@ -261,7 +261,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 48px;
-    color: #5A2D82;
+    color: #3a1b76;
 }
 
 .home-card-slider-margin {
@@ -271,11 +271,11 @@ body {
 /* Mobile hamburger button */
 .marlota-header .navbar-toggler-marlota {
     background: none;
-    border: 2px solid #5A2D82;
+    border: 2px solid #3a1b76;
     border-radius: 5px;
     padding: 6px 10px;
     cursor: pointer;
-    color: #5A2D82;
+    color: #3a1b76;
     font-size: 19px;
 }
 
@@ -304,7 +304,7 @@ body {
 
 /* Sidebar category override to match new purple */
 #mySidebar {
-    background-color: #5A2D82 !important;
+    background-color: #3a1b76 !important;
 }
 
 #mySidebar .widget-title {
@@ -325,8 +325,8 @@ body {
    HERO SECTION
    ============================================= */
 .marlota-hero {
-    background: #5A2D82;
-    background: linear-gradient(135deg, #5A2D82 0%, #4A4A4A 100%);
+    background: #3a1b76;
+    background: linear-gradient(135deg, #3a1b76 0%, #4A4A4A 100%);
     min-height: 492px;
     display: flex;
     align-items: center;
@@ -452,7 +452,7 @@ body {
 
 /* Page hero (About / Contact) */
 .marlota-page-hero {
-    background: linear-gradient(135deg, #5A2D82 0%, #4A4A4A 100%);
+    background: linear-gradient(135deg, #3a1b76 0%, #4A4A4A 100%);
     padding: var(--mx-space-11) 0 80px;
     position: relative;
     overflow: hidden;
@@ -639,7 +639,7 @@ body {
    WHY CHOOSE MARLOTA (dark purple bg)
    ============================================= */
 .marlota-why {
-    background: #5A2D82;
+    background: #3a1b76;
     padding: var(--mx-space-12) 0;
 }
 
@@ -694,7 +694,7 @@ body {
 
 .marlota-newsletter .nl-icon {
     font-size: 40px;
-    color: #5A2D82;
+    color: #3a1b76;
     margin-bottom: 12px;
 }
 
@@ -729,11 +729,11 @@ body {
 }
 
 .marlota-newsletter .nl-form input:focus {
-    border-color: #5A2D82;
+    border-color: #3a1b76;
 }
 
 .marlota-newsletter .nl-form button {
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -751,7 +751,7 @@ body {
 
 /* Home page: 2025 newsletter style */
 .marlota-newsletter.newsletter-2025 {
-    /* background: linear-gradient(180deg, #4a1f6f 0%, #5A2D82 100%); */
+    /* background: linear-gradient(180deg, #4a1f6f 0%, #3a1b76 100%); */
     padding: 24px 0;
     border: 0;
 }
@@ -846,7 +846,7 @@ body {
     height: 58px;
     border-radius: 0;
     padding: 0 30px;
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     font-size: 17px;
     font-weight: 700;
@@ -983,8 +983,8 @@ body {
 }
 
 .marlota-products-listing-page .sidebar-list li a:hover {
-    border-color: #5A2D82;
-    color: #5A2D82;
+    border-color: #3a1b76;
+    color: #3a1b76;
     background: #faf7ff;
 }
 
@@ -1015,7 +1015,7 @@ body {
 .marlota-products-listing-page .product-sort {
     font-size: 13px;
     font-weight: 600;
-    color: #5A2D82;
+    color: #3a1b76;
     margin-right: 8px;
 }
 
@@ -1030,7 +1030,7 @@ body {
 }
 
 .marlota-products-listing-page .product-sorting-section .form-control:focus {
-    border-color: #5A2D82;
+    border-color: #3a1b76;
 }
 
 .marlota-products-listing-page .no-products-message {
@@ -1058,7 +1058,7 @@ body {
 }
 
 .marlota-products-listing-page .showing-info span {
-    color: #5A2D82;
+    color: #3a1b76;
     font-weight: 700;
 }
 
@@ -1073,15 +1073,15 @@ body {
     padding: 8px 12px;
     font-size: 13px;
     font-weight: 600;
-    color: #5A2D82;
+    color: #3a1b76;
     background: #fff;
     text-decoration: none;
     transition: all .2s;
 }
 
 .marlota-products-listing-page .pagination li a:hover {
-    background: #5A2D82;
-    border-color: #5A2D82;
+    background: #3a1b76;
+    border-color: #3a1b76;
     color: #fff;
 }
 
@@ -1125,23 +1125,23 @@ body {
 /* Tab nav overrides */
 .tab-nav-boxed .nav-tabs .nav-link.active,
 .tab-nav-boxed .nav-tabs .nav-link:hover {
-    background: #5A2D82 !important;
+    background: #3a1b76 !important;
     color: #fff !important;
-    border-color: #5A2D82 !important;
+    border-color: #3a1b76 !important;
 }
 
 /* =============================================
    FOOTER
    ============================================= */
 .marlota-footer {
-    background: #5A2D82;
+    background: #3a1b76;
     color: rgba(255,255,255,.85);
     padding: var(--mx-space-11) 0 0;
 }
 
 .marlota-footer .footer-logo {
-    height: 110px;
-    width: 200px;
+    height: 160px;
+    width: 280px;
     margin-bottom: 16px;
     filter: brightness(0) invert(1);
 }
@@ -1303,7 +1303,7 @@ body {
 .marlota-core-values .icon-circle {
     width: 70px;
     height: 70px;
-    background: #5A2D82;
+    background: #3a1b76;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1346,7 +1346,7 @@ body {
 .marlota-mission .mission-icon-wrap {
     width: 150px;
     height: 150px;
-    background: #5A2D82;
+    background: #3a1b76;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1410,12 +1410,12 @@ body {
 }
 
 .marlota-contact-section .form-control:focus {
-    border-color: #5A2D82;
+    border-color: #3a1b76;
     box-shadow: 0 0 0 3px rgba(45, 27, 105, .1);
 }
 
 .marlota-contact-section .btn-send {
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -1449,7 +1449,7 @@ body {
 .marlota-contact-section .ci-icon {
     width: 42px;
     height: 42px;
-    background: #5A2D82;
+    background: #3a1b76;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1492,7 +1492,7 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #5A2D82;
+    background: #3a1b76;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1524,7 +1524,7 @@ body {
 
 /* CTA Banner */
 .marlota-cta {
-    background: linear-gradient(135deg, #5A2D82 0%, #4A4A4A 100%);
+    background: linear-gradient(135deg, #3a1b76 0%, #4A4A4A 100%);
     padding: var(--mx-space-10) 0;
 }
 
@@ -1731,7 +1731,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff !important;
     border-radius: 50%;
     box-shadow: 0 4px 14px rgba(0, 0, 0, .22);
@@ -1853,7 +1853,7 @@ body {
 }
 
 .megamenu-sublist li a:hover {
-    color: #5A2D82 !important;
+    color: #3a1b76 !important;
 }
 
 .megamenu-sublist .megamenu-see-all {
@@ -1864,7 +1864,7 @@ body {
 
 .megamenu-sublist .megamenu-see-all a {
     font-weight: 700;
-    color: #5A2D82 !important;
+    color: #3a1b76 !important;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .5px;
@@ -1936,7 +1936,7 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     font-size: 11px;
     font-weight: 700;
@@ -2011,7 +2011,7 @@ body {
 }
 
 .product-card-new .pc-name a:hover {
-    color: #5A2D82 !important;
+    color: #3a1b76 !important;
 }
 
 .product-card-new .pc-price-row {
@@ -2157,7 +2157,7 @@ body {
     border-radius: 50px;
     border: 2px solid #e8e2f4;
     background: transparent;
-    color: #5A2D82;
+    color: #3a1b76;
     font-size: 13px;
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
@@ -2166,8 +2166,8 @@ body {
 }
 .pd-filter:hover,
 .pd-filter.active {
-    background: #5A2D82;
-    border-color: #5A2D82;
+    background: #3a1b76;
+    border-color: #3a1b76;
     color: #fff;
     box-shadow: 0 4px 14px rgba(90,45,130,.3);
 }
@@ -2175,7 +2175,7 @@ body {
 .pop-dept-viewall {
     font-size: 13px;
     font-weight: 600;
-    color: #5A2D82;
+    color: #3a1b76;
     text-decoration: none;
     white-space: nowrap;
     display: flex;
@@ -2183,7 +2183,7 @@ body {
     gap: 6px;
     transition: gap .2s;
 }
-.pop-dept-viewall:hover { gap: 10px; color: #5A2D82; text-decoration: none; }
+.pop-dept-viewall:hover { gap: 10px; color: #3a1b76; text-decoration: none; }
 
 .pop-dept-panels { padding: 28px 28px 0; }
 .pd-panel { display: none; }
@@ -2233,7 +2233,7 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     font-size: 11px;
     font-weight: 800;
@@ -2280,7 +2280,7 @@ body {
 .pd-card:hover .pd-hover-actions { bottom: 8px; }
 .pd-btn-view {
     background: rgba(255,255,255,.95);
-    color: #5A2D82;
+    color: #3a1b76;
     font-size: 12px;
     font-weight: 700;
     padding: 6px 18px;
@@ -2290,7 +2290,7 @@ body {
     transition: background .2s, color .2s;
     font-family: 'Poppins', sans-serif;
 }
-.pd-btn-view:hover { background: #5A2D82; color: #fff; text-decoration: none; }
+.pd-btn-view:hover { background: #3a1b76; color: #fff; text-decoration: none; }
 
 .pd-card-body {
     padding: 14px 14px 16px;
@@ -2324,7 +2324,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 .pd-name a { color: inherit; text-decoration: none; }
-.pd-name a:hover { color: #5A2D82; }
+.pd-name a:hover { color: #3a1b76; }
 
 .pd-price-row {
     display: flex;
@@ -2335,7 +2335,7 @@ body {
 .pd-price {
     font-size: 17px;
     font-weight: 800;
-    color: #5A2D82;
+    color: #3a1b76;
     font-family: 'Poppins', sans-serif;
 }
 .pd-orig {
@@ -2350,7 +2350,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 7px;
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff !important;
     font-size: 12px;
     font-weight: 700;
@@ -2376,7 +2376,7 @@ body {
     color: #888;
     font-family: 'Poppins', sans-serif;
 }
-.pd-empty a { color: #5A2D82; }
+.pd-empty a { color: #3a1b76; }
 
 .pop-dept-cta {
     text-align: center;
@@ -2389,8 +2389,8 @@ body {
     align-items: center;
     gap: 10px;
     background: transparent;
-    border: 2px solid #5A2D82;
-    color: #5A2D82;
+    border: 2px solid #3a1b76;
+    color: #3a1b76;
     font-size: 14px;
     font-weight: 700;
     padding: 12px 34px;
@@ -2400,7 +2400,7 @@ body {
     transition: background .2s, color .2s, gap .2s;
 }
 .pop-dept-cta-btn:hover {
-    background: #5A2D82;
+    background: #3a1b76;
     color: #fff;
     text-decoration: none;
     gap: 14px;
