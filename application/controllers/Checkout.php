@@ -99,27 +99,35 @@ private function get_cart_items()
             ->result_array();
 
     } else {
+		$session_id = isset($_COOKIE['session_id']) ? $_COOKIE['session_id'] : '';
+		if (!$session_id) return [];
 
-        return $this->session->userdata('guest_cart') ?? [];
+		return $this->db
+			->select('c.*, p.name, p.slug, p.thumbnail_img')
+			->from('app_cart c')
+			->join('app_products p', 'p.id = c.product_id')
+			->where('c.session_id', $session_id)
+			->get()
+			->result_array();
     }
 }
 private function calculate_cart_totals($cart)
 {
     $subtotal = 0;
     $vat_rate = 0.20;
-    $shipping_cost = 4;
+	$shipping_cost = 0;
 
     foreach ($cart as $row) {
         $subtotal += $row['qty'] * $row['price'];
     }
 
     $vat = $subtotal * $vat_rate;
-    $grand_total = $subtotal + $vat + $shipping_cost;
+	$grand_total = $subtotal + $vat;
 
     return [
         'subtotal'      => $subtotal,
         'vat'           => $vat,
-        'shipping_cost' => $shipping_cost,
+		'shipping_cost' => 0,
         'grand_total'   => $grand_total
     ];
 }
@@ -563,12 +571,8 @@ public function getAreasByCity()
 		$isLoggedIn = $this->session->userdata('user_loggedin') ? true : false;
 		$user_id    = $isLoggedIn ? (int)$this->session->userdata('user_id') : 0;
 
-		// 1. Get cart
-		if ($isLoggedIn) {
-			$cart = $this->db->where('user_id', $user_id)->get('app_cart')->result_array();
-		} else {
-			$cart = $this->session->userdata('guest_cart') ?? [];
-		}
+		// 1. Get cart (same source for guest and logged-in users)
+		$cart = $this->get_cart_items();
 
 		if (empty($cart)) {
 			echo json_encode(['status' => 'error', 'msg' => 'Cart is empty']);
@@ -576,16 +580,12 @@ public function getAreasByCity()
 		}
 
 		// 2. Calculate totals server-side
-		$subtotal      = 0;
-		$vat_rate      = 0.20;
-		$shipping_cost = 4;
-
-		foreach ($cart as $item) {
-			$subtotal += $item['qty'] * $item['price'];
-		}
-
-		// $vat         = $subtotal * $vat_rate;
-		$grand_total = $subtotal ;
+		$totals = $this->calculate_cart_totals($cart);
+		$subtotal = (float)$totals['subtotal'];
+		$vat = (float)$totals['vat'];
+		$shipping_cost = (float)$totals['shipping_cost'];
+		$grand_total = (float)$totals['grand_total'];
+		$expected_amount_pence = (int) round($grand_total * 100);
 
 		// 3. Payment verification
 		$payment_type    = (int)$this->input->post('payment_type');
@@ -615,6 +615,13 @@ public function getAreasByCity()
 				$intent = \Stripe\PaymentIntent::retrieve($stripe_intent_id);
 				if ($intent->status !== 'succeeded') {
 					echo json_encode(['status' => 'error', 'msg' => "Payment not successful. Status: {$intent->status}"]);
+					exit;
+				}
+				$paid_amount = isset($intent->amount_received) && $intent->amount_received > 0
+					? (int)$intent->amount_received
+					: (int)$intent->amount;
+				if ($paid_amount !== $expected_amount_pence) {
+					echo json_encode(['status' => 'error', 'msg' => 'Payment amount mismatch. Please try again.']);
 					exit;
 				}
 				$transaction_id = $stripe_intent_id;
@@ -675,6 +682,14 @@ public function getAreasByCity()
 				echo json_encode(['status' => 'error', 'msg' => 'PayPal payment not completed']);
 				exit;
 			}
+			$paypal_paid = 0;
+			if (isset($responseOrder['purchase_units'][0]['amount']['value'])) {
+				$paypal_paid = (float)$responseOrder['purchase_units'][0]['amount']['value'];
+			}
+			if (abs($paypal_paid - $grand_total) > 0.01) {
+				echo json_encode(['status' => 'error', 'msg' => 'PayPal amount mismatch. Please try again.']);
+				exit;
+			}
 			$transaction_id = $paypal_trx_id;
 		}
 
@@ -705,8 +720,8 @@ public function getAreasByCity()
 			'shipping_address' => $billing_address,
 			'payment_method'   => $payment_type,
 			'total_amount'     => $grand_total,
-			'vat'              => 0,
-			'shipping_cost'    => 0,
+			'vat'              => $vat,
+			'shipping_cost'    => $shipping_cost,
 			'created_date'     => date('Y-m-d H:i:s'),
 			'order_notes'      => $this->input->post('order_notes', true),
 		];
@@ -723,6 +738,8 @@ public function getAreasByCity()
 		// 7. Insert order details
 		foreach ($cart as $item) {
 			$product = $this->db->where('id', $item['product_id'])->get('app_products')->row_array();
+			$item_total = (float)$item['qty'] * (float)$item['price'];
+			$item_vat = $item_total * 0.20;
 			$this->db->insert('app_order_details', [
 				'order_id'      => $order_id,
 				'vendor_id'     => $product['vendor_id'],
@@ -731,8 +748,8 @@ public function getAreasByCity()
 				'variant'       => $item['variant'] ?? null,
 				'qty'           => $item['qty'],
 				'price'         => $item['price'],
-				'total_amount'  => $item['qty'] * $item['price'],
-				'vat'           => 0,
+				'total_amount'  => $item_total,
+				'vat'           => $item_vat,
 				'shipping_cost' => 0,
 				'status'        => 0
 			]);
@@ -754,6 +771,10 @@ public function getAreasByCity()
 		if ($isLoggedIn) {
 			$this->db->where('user_id', $user_id)->delete('app_cart');
 		} else {
+			$session_id = isset($_COOKIE['session_id']) ? $_COOKIE['session_id'] : '';
+			if (!empty($session_id)) {
+				$this->db->where('session_id', $session_id)->delete('app_cart');
+			}
 			$this->session->unset_userdata('guest_cart');
 		}
 
@@ -789,8 +810,13 @@ public function getAreasByCity()
 	public function create_payment_intent()
 	{
 		require_once FCPATH . 'vendor/autoload.php'; // ✅ load composer stripe
-		$grand_total = 0;
-		$grand_total = $this->input->post('grand_total');	
+		$cart = $this->get_cart_items();
+		if (empty($cart)) {
+			echo json_encode(['error' => 'Cart is empty']);
+			return;
+		}
+		$totals = $this->calculate_cart_totals($cart);
+		$grand_total = (float)$totals['grand_total'];
 		
 		\Stripe\Stripe::setApiKey($this->settings['stripe_sk']);
 		try {

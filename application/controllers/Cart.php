@@ -59,26 +59,15 @@ private function get_cart_items()
             ->result_array();
 
     } else {
-
-        $guest_cart = $this->session->userdata('guest_cart') ?? [];
-
-        if (!empty($guest_cart)) {
-            $product_ids = array_column($guest_cart, 'product_id');
-
-            $products = $this->db
-                ->where_in('id', $product_ids)
-                ->get('app_products')
+        $session_id = isset($_COOKIE['session_id']) ? $_COOKIE['session_id'] : '';
+        if ($session_id) {
+            $items = $this->db
+                ->select('c.*, p.name, p.slug, p.thumbnail_img')
+                ->from('app_cart c')
+                ->join('app_products p', 'p.id = c.product_id')
+                ->where('c.session_id', $session_id)
+                ->get()
                 ->result_array();
-
-            $products = array_column($products, null, 'id');
-
-            foreach ($guest_cart as $key => $row) {
-                if (isset($products[$row['product_id']])) {
-                    $items[] = array_merge($row, $products[$row['product_id']], [
-                        'row_key' => $key // important for guest update/delete
-                    ]);
-                }
-            }
         }
     }
 

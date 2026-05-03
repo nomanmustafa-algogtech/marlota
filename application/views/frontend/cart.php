@@ -122,9 +122,209 @@
     </section>
     <!--------------- cart-section-end---------------->
 	<style>
-		.show-code-action {
-			font-size: large;
+		:root {
+			--ui-surface: #ffffff;
+			--ui-soft: #f8fafc;
+			--ui-border: #e5e7eb;
+			--ui-text: #111827;
+			--ui-muted: #6b7280;
+			--ui-brand: #03a9f4;
+			--ui-brand-dark: #0284c7;
+			--ui-dark: #1f2937;
+			--ui-shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+		}
+
+		.blog.about-blog .container,
+		.product-cart.product .container {
+			background: var(--ui-surface);
+			border: 1px solid var(--ui-border);
+			border-radius: 16px;
+			box-shadow: var(--ui-shadow);
+		}
+
+		.blog.about-blog .container {
+			background: #3a1b76;
+			border-color: #3a1b76;
+			padding: 22px;
+		}
+
+		.product-cart.product .container {
+			padding: 24px;
+		}
+
+		.blog-bradcrum span,
+		.blog-bradcrum a {
+			color: rgba(255, 255, 255, 0.88);
+		}
+
+		.blog-bradcrum .devider {
+			color: rgba(255, 255, 255, 0.6);
+		}
+
+		.blog-heading .heading {
+			color: #ffffff;
+			font-weight: 800;
+		}
+
+		.cart-section {
+			overflow-x: auto;
+			border: 1px solid var(--ui-border);
+			border-radius: 14px;
+			background: var(--ui-surface);
+		}
+
+		.cart-section table {
+			width: 100%;
+			min-width: 760px;
+			border-collapse: separate;
+			border-spacing: 0;
+		}
+
+		.table-top-row {
+			background: var(--ui-soft);
+		}
+
+		.table-row .table-wrapper {
+			padding: 14px 12px;
+			border-bottom: 1px solid var(--ui-border);
+			vertical-align: middle;
+		}
+
+		.table-row:last-child .table-wrapper {
+			border-bottom: 0;
+		}
+
+		.table-heading,
+		.table-wrapper .heading {
+			color: var(--ui-text);
+			font-weight: 700;
+			margin: 0;
+		}
+
+		.wrapper-content p {
+			color: var(--ui-muted);
+			margin: 4px 0 0;
+		}
+
+		.wrapper-content a {
+			color: var(--ui-text);
+			text-decoration: none;
+		}
+
+		.wrapper-content a:hover {
+			color: var(--ui-brand-dark);
+		}
+
+		.wrapper-img img {
+			width: 68px;
+			height: 68px;
+			object-fit: contain;
+			border: 1px solid var(--ui-border);
+			border-radius: 10px;
+			background: var(--ui-soft);
+			padding: 4px;
+		}
+
+		.quantity {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 6px 10px;
+			border: 1px solid var(--ui-border);
+			border-radius: 999px;
+			background: #fff;
+		}
+
+		.product-minus,
+		.product-plus {
+			width: 26px;
+			height: 26px;
+			border-radius: 50%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			background: var(--ui-soft);
+			font-weight: 700;
+			color: var(--ui-text);
+		}
+
+		.quantity .number {
+			min-width: 24px;
 			text-align: center;
+			font-weight: 700;
+			color: var(--ui-text);
+		}
+
+		.cart-btn {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			margin-top: 18px;
+		}
+
+		.btn-clear,
+		.btn-update,
+		.btn-checkout {
+			min-height: 44px;
+			padding: 10px 16px;
+			border-radius: 999px;
+			font-weight: 700;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid var(--ui-dark);
+		}
+
+		.btn-clear,
+		.btn-update {
+			background: #fff;
+			color: var(--ui-dark);
+		}
+
+		.btn-clear:hover,
+		.btn-update:hover {
+			background: var(--ui-dark);
+			color: #fff;
+		}
+
+		.btn-checkout {
+			background: var(--ui-brand);
+			border-color: var(--ui-brand);
+			color: #fff;
+		}
+
+		.btn-checkout:hover {
+			background: var(--ui-brand-dark);
+			border-color: var(--ui-brand-dark);
+			color: #fff;
+		}
+
+		.show-code-action {
+			font-size: 18px;
+			text-align: center;
+			background: var(--ui-soft);
+			border: 1px dashed var(--ui-border);
+			color: var(--ui-muted);
+			padding: 18px;
+			border-radius: 12px;
+		}
+
+		@media (max-width: 768px) {
+			.blog.about-blog .container,
+			.product-cart.product .container {
+				padding: 16px;
+			}
+
+			.cart-btn {
+				flex-direction: column;
+			}
+
+			.btn-clear,
+			.btn-update,
+			.btn-checkout {
+				width: 100%;
+			}
 		}
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

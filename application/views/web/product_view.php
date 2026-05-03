@@ -377,7 +377,7 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 
 
 
-								<form id="choice_options_form" action="" method="post">
+								<form id="choice_options_form_variant" class="choice-options-form" action="" method="post">
 									<?php if ($product['variant_product'] == 1) { ?>
 										<?php foreach (json_decode($product['choice_options']) as $key => $choice_option) { ?>
 											<input type="hidden" name="choice_no[]" value="<?= $choice_option->attribute_id; ?>">
@@ -402,7 +402,7 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 
 								<!--variation for price pack -->
 
-								<form id="choice_options_form" action="" method="post">
+								<form id="choice_options_form_price" class="choice-options-form" action="" method="post">
 									<?php if ($product['variant_product'] == 4) { ?>
 										<?php foreach (json_decode($product['choice_options']) as $key => $choice_option) { ?>
 											<input type="hidden" name="choice_no[]" value="<?= $choice_option->attribute_id; ?>">
@@ -614,17 +614,17 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 <script>
 	function getVariantDetails() {
 		$(".preloader").show();
-		var formdata = $("#choice_options_form").serialize();
+		var formdata = $("#choice_options_form_variant").serialize();
 
 		formdata += '&product_id=' + $("#product_id").val();
 
 		$.ajax({
 			type: "POST",
 			url: '<?= base_url(); ?>products/get_sku_combination/',
+			dataType: 'json',
 			data: formdata,
-			success: function(data) {
-				console.log(data);
-				const obj = JSON.parse(data);
+			success: function(obj) {
+				console.log(obj);
 				$(".preloader").hide();
 				if (obj.status != -1) {
 					if (obj.status == 1) {
@@ -637,7 +637,6 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 						} else {
 							$("#product-price").html("<ins class='new-price'>£ " + obj.price + "</ins>");
 						}
-
 						if (obj.qty < 10) {
 							$("#product_stock").html('<span style="color:red;">' + obj.qty + ' left in stock</span>');
 						} else {
@@ -646,6 +645,10 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 
 
 						if (obj.image != null && obj.image != '') {
+			},
+			error: function() {
+				$(".preloader").hide();
+				alert('Unable to load variant details. Please try again.');
 							$("#thumbdiv").find("img").attr('src', '<?= base_url(); ?>uploads/products/' + obj.image);
 						}
 
@@ -653,8 +656,8 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 					} else {
 						//   $("#product-price").html("<ins class='new-price'>£ "+$("#product-price-orignal").val()+"</ins>");
 						$("#product_sku").hide();
-						$('#choice_options_form').trigger("reset"); //Line1
-						$('#choice_options_form select').trigger("change"); //Line2
+						$('#choice_options_form_variant').trigger("reset"); //Line1
+						$('#choice_options_form_variant select').trigger("change"); //Line2
 						alert('Error from getting details, try again later.');
 						location.reload();
 					}
@@ -666,17 +669,17 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 
 	function getPriceVariantDetails() {
 		$(".preloader").show();
-		var formdata = $("#choice_options_form").serialize();
+		var formdata = $("#choice_options_form_price").serialize();
 
 		formdata += '&product_id=' + $("#product_id").val();
 
 		$.ajax({
 			type: "POST",
 			url: '<?= base_url(); ?>products/get_sku_combination/',
+			dataType: 'json',
 			data: formdata,
-			success: function(data) {
-				console.log(data);
-				const obj = JSON.parse(data);
+			success: function(obj) {
+				console.log(obj);
 				$(".preloader").hide();
 				if (obj.status != -1) {
 					if (obj.status == 1) {
@@ -689,7 +692,6 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 						} else {
 							$("#product-price").html("<ins class='new-price'>£ " + obj.price + "</ins>");
 						}
-
 						if (obj.qty < 10) {
 							$("#product_stock").html('<span style="color:red;">' + obj.qty + ' left in stock</span>');
 						} else {
@@ -698,6 +700,10 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 
 
 						if (obj.image != null && obj.image != '') {
+			},
+			error: function() {
+				$(".preloader").hide();
+				alert('Unable to load variant details. Please try again.');
 							$("#thumbdiv").find("img").attr('src', '<?= base_url(); ?>uploads/products/' + obj.image);
 						}
 
@@ -705,8 +711,8 @@ $stock = $this->db->query("SELECT * FROM app_product_stocks where product_id = '
 					} else {
 						//   $("#product-price").html("<ins class='new-price'>£ "+$("#product-price-orignal").val()+"</ins>");
 						$("#product_sku").hide();
-						$('#choice_options_form').trigger("reset"); //Line1
-						$('#choice_options_form select').trigger("change"); //Line2
+						$('#choice_options_form_price').trigger("reset"); //Line1
+						$('#choice_options_form_price select').trigger("change"); //Line2
 						alert('Error from getting details, try again later.');
 						location.reload();
 					}

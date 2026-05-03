@@ -1,24 +1,28 @@
 <?php
-$userid = $this->session->userdata('user_id');
+$userid = (int)$this->session->userdata('user_id');
+$is_loggedin = (bool)$this->session->userdata('user_loggedin');
 
-$user = $this->db->select('*')->from('app_users')->where('id', $this->session->userdata('user_id'))->get()->row_array();
-
-$billing = $this->db->query("SELECT * FROM app_address where user_id = '$userid' && type = '1' ORDER BY id DESC");
-$shipping = $this->db->query("SELECT * FROM app_address where user_id = '$userid' && type = '2' ORDER BY id DESC");
-$total = 0;
-$total_sum = 0;
-$shipping_cost = 4; // Flat shipping charge
-$vat_rate = 0.20; // VAT rate (20%)
-$usertotalpayable = '';
-foreach ($cart as $row) {
-
-$total = $row['qty'] * $row['price'];
-$total_sum += $total;
-$product = $this->db->query("SELECT * FROM app_products WHERE id = '{$row['product_id']}'")->row_array();
-$subtotal = $total; // Subtotal includes shipping charges
-$vat = $total * $vat_rate; // VAT on products + shipping
+if (!isset($user) || !is_array($user)) {
+	$user = $is_loggedin
+		? $this->db->select('*')->from('app_users')->where('id', $userid)->get()->row_array()
+		: [];
 }
-$usertotalpayable = $total_sum; // Subtotal including VAT
+
+if (!isset($billing) || !is_array($billing)) {
+	$billing = $is_loggedin
+		? $this->db->query("SELECT * FROM app_address where user_id = '$userid' && type = '1' ORDER BY id DESC LIMIT 1")->row_array()
+		: [];
+}
+
+$subtotal = 0;
+$vat_rate = 0.20;
+
+foreach ($cart as $row) {
+	$subtotal += ((float)$row['qty'] * (float)$row['price']);
+}
+
+$vat = $subtotal * $vat_rate;
+$grand_total = $subtotal + $vat;
 
 ?>
 
@@ -53,15 +57,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 												<label for="fname" class="form-label">Full Name <span style="color:red">*</span></label>
 												<input type="text" id="full_name" name="full_name" class="form-control" 
 													placeholder="Full Name" 
-													value="<?php 
-														if ($billing && $billing->num_rows() > 0 && isset($billing->row()->full_name)) {
-															echo $billing->row()->full_name;
-														} elseif (isset($user['full_name'])) {
-															echo $user['full_name'];
-														} else {
-															echo '';
-														}
-													?>" 
+													value="<?= isset($billing['full_name']) ? $billing['full_name'] : (isset($user['full_name']) ? $user['full_name'] : ''); ?>" 
 													required>
 
 											</div>
@@ -71,15 +67,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 													<label for="email" class="form-label">Email <span style="color:red">*</span></label>
 													<input type="email" name="email" id="email" class="form-control"
 														placeholder="user@gmail.com"
-														value="<?php 
-															if ($billing && $billing->num_rows() > 0 && isset($billing->row()->email)) {
-																echo $billing->row()->email;
-															} elseif (isset($user['email'])) {
-																echo $user['email'];
-															} else {
-																echo '';
-															}
-														?>" 
+														value="<?= isset($billing['email']) ? $billing['email'] : (isset($user['email']) ? $user['email'] : ''); ?>" 
 														required>
 												</div>
 
@@ -87,15 +75,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 													<label for="phone" class="form-label">Phone <span style="color:red">*</span></label>
 													<input type="tel" id="phone" name="phone" class="form-control"
 														placeholder="+880388**0899"
-														value="<?php 
-															if ($billing && $billing->num_rows() > 0 && isset($billing->row()->phone)) {
-																echo $billing->row()->phone;
-															} elseif (isset($user['phone'])) {
-																echo $user['phone'];
-															} else {
-																echo '';
-															}
-														?>" 
+														value="<?= isset($billing['phone']) ? $billing['phone'] : (isset($user['phone']) ? $user['phone'] : ''); ?>" 
 														required>
 												</div>
 											</div>
@@ -111,12 +91,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 																		->get()
 																		->result_array();
 
-													$selected_country = '';
-													if ($billing && $billing->num_rows() > 0 && isset($billing->row()->country)) {
-														$selected_country = $billing->row()->country;
-													} elseif (isset($user['country'])) {
-														$selected_country = $user['country'];
-													}
+													$selected_country = isset($billing['country']) ? $billing['country'] : (isset($user['country']) ? $user['country'] : '');
 
 													foreach ($countries as $country) { 
 													?>
@@ -132,13 +107,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 												<label for="address" class="form-label">Address <span style="color:red">*</span></label>
 												<input type="text" name="address" id="address" class="form-control"
 													placeholder="Enter your Address" 
-													value="<?php 
-														if ($billing && $billing->num_rows() > 0 && isset($billing->row()->address)) {
-															echo $billing->row()->address;
-														} elseif (isset($user['address'])) {
-															echo $user['address'];
-														}
-													?>" required>
+													value="<?= isset($billing['address']) ? $billing['address'] : (isset($user['address']) ? $user['address'] : ''); ?>" required>
 											</div>
 
 											<div class="account-inner-form">
@@ -146,26 +115,14 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 													<label for="city" class="form-label">City <span style="color:red">*</span></label>
 													<input type="text" id="city" name="city" class="form-control"
 														placeholder="Enter your City" 
-														value="<?php 
-															if ($billing && $billing->num_rows() > 0 && isset($billing->row()->city)) {
-																echo $billing->row()->city;
-															} elseif (isset($user['city'])) {
-																echo $user['city'];
-															}
-														?>" required>
+														value="<?= isset($billing['city']) ? $billing['city'] : (isset($user['city']) ? $user['city'] : ''); ?>" required>
 												</div>
 
 												<div class="review-form-name zipcode-form">
 													<label for="zipcode" class="form-label">Postal Code <span style="color:red">*</span></label>
 													<input type="text" id="zipcode" name="zipcode" class="form-control"
 														placeholder="Enter your postal code" 
-														value="<?php 
-															if ($billing && $billing->num_rows() > 0 && isset($billing->row()->zipcode)) {
-																echo $billing->row()->zipcode;
-															} elseif (isset($user['zipcode'])) {
-																echo $user['zipcode'];
-															}
-														?>" required>
+														value="<?= isset($billing['zipcode']) ? $billing['zipcode'] : (isset($user['zipcode']) ? $user['zipcode'] : ''); ?>" required>
 												</div>
 											</div>
 
@@ -176,11 +133,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 											</div>
 
 											<input type="hidden" 
-												value="<?php 
-													$payable = $usertotalpayable;
-													// $payable = $usertotalpayable - $user['balance'];
-													echo ($payable < 0) ? 0 : number_format($payable, 2);
-												?>" 
+												value="<?= number_format(($grand_total < 0 ? 0 : $grand_total), 2, '.', ''); ?>" 
 												id="total_payable" />
 												<input type="hidden" id="checkout_type" name="checkout_type" 
        												value="<?= $this->session->userdata('user_loggedin') ? 'user' : 'guest'; ?>">
@@ -205,11 +158,8 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 										<div class="subtotal product-total">
 											<ul class="product-list">
 												<?php
-													
-													$all_total = 0;
 													foreach ($cart as $row) {
-														$total = $row['qty'] * $row['price'];
-														$all_total += $total;
+														$total = (float)$row['qty'] * (float)$row['price'];
 														$product = $this->db->query("SELECT * FROM app_products WHERE id = '{$row['product_id']}'")->row_array();
 													?>
 													<li>
@@ -223,15 +173,10 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 														</div>
 
 														<div class="price">
-															<h5 class="wrapper-heading">$<?= $total; ?></h5>
+															<h5 class="wrapper-heading">£<?= number_format($total, 2); ?></h5>
 														</div>
 													</li>
-												<?php }
-												// Calculate VAT
-													 $subtotal = $all_total; // Subtotal includes shipping charges
-													$vat = $total * $vat_rate; // VAT on products + shipping
-													$subtotal_with_vat = $subtotal; // Subtotal including VAT
-												?>
+												<?php } ?>
 												
 											</ul>
 										</div>
@@ -240,23 +185,19 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 									
 											<div class="subtotal product-total">
 											<h5 class="wrapper-heading">SUBTOTAL</h5>
-											<h5 class="wrapper-heading">$<?= $subtotal; ?></h5>
+											<h5 class="wrapper-heading">£<?= number_format($subtotal, 2); ?></h5>
 										</div>
+										<div class="subtotal product-total">
+											<h5 class="wrapper-heading">VAT (20%)</h5>
+											<h5 class="wrapper-heading">£<?= number_format($vat, 2); ?></h5>
+										</div>
+										
 								
 									
 										<hr>
 										<div class="subtotal total">
 											<h5 class="wrapper-heading">TOTAL Payable</h5>
-											<h5 class="wrapper-heading price">$<?php
-												// Total payable calculation
-												$payable = $subtotal_with_vat;
-												// $payable = $subtotal_with_vat - $user['balance'];
-												if ($payable < 0) {
-													echo 0;
-												} else {
-													echo number_format($payable, 2);
-												}
-												?>
+											<h5 class="wrapper-heading price">£<?= number_format(($grand_total < 0 ? 0 : $grand_total), 2); ?>
 											</h5>
 																
 											
@@ -316,11 +257,184 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 	</section>
 
 <style>
+	:root {
+		--ui-surface: #ffffff;
+		--ui-soft: #f8fafc;
+		--ui-border: #e5e7eb;
+		--ui-text: #111827;
+		--ui-muted: #6b7280;
+		--ui-brand: #03a9f4;
+		--ui-brand-dark: #0284c7;
+		--ui-dark: #1f2937;
+		--ui-shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+	}
+
+	.blog.about-blog .container,
+	.checkout.product .container {
+		background: var(--ui-surface);
+		border: 1px solid var(--ui-border);
+		border-radius: 16px;
+		box-shadow: var(--ui-shadow);
+	}
+
+	.blog.about-blog .container {
+		background: #3a1b76;
+		border-color: #3a1b76;
+		padding: 22px;
+	}
+
+	.checkout.product .container {
+		padding: 24px;
+	}
+
+	.blog-bradcrum span,
+	.blog-bradcrum a {
+		color: rgba(255, 255, 255, 0.88);
+	}
+
+	.blog-bradcrum .devider {
+		color: rgba(255, 255, 255, 0.6);
+	}
+
+	.blog-heading .heading {
+		color: #ffffff;
+		font-weight: 800;
+	}
+
+	.checkout-wrapper .account-section {
+		border: 1px solid var(--ui-border);
+		border-radius: 14px;
+		background: var(--ui-surface);
+		padding: 18px;
+	}
+
+	.wrapper-heading {
+		color: var(--ui-text);
+		font-weight: 800;
+	}
+
+	.form-label,
+	#order-notes + label {
+		color: var(--ui-text);
+		font-weight: 600;
+	}
+
+	.checkout-form .form-control,
+	.checkout-form .form-select,
+	#order-notes {
+		border: 1px solid var(--ui-border);
+		border-radius: 10px;
+		background: #fff;
+		color: var(--ui-text);
+		min-height: 44px;
+		box-shadow: none;
+	}
+
+	.checkout-form .form-control:focus,
+	.checkout-form .form-select:focus,
+	#order-notes:focus {
+		border-color: var(--ui-brand);
+		box-shadow: 0 0 0 3px rgba(3, 169, 244, 0.14);
+	}
+
+	#order-notes {
+		min-height: 110px;
+	}
+
+	.order-summery {
+		border: 1px solid var(--ui-border);
+		border-radius: 12px;
+		padding: 14px;
+		background: var(--ui-soft);
+	}
+
+	.order-summery .subtotal {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.order-summery .product-list {
+		list-style: none;
+		padding-left: 0;
+		margin-bottom: 0;
+	}
+
+	.order-summery .product-list li {
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		gap: 12px;
+		padding: 10px 0;
+		border-bottom: 1px solid var(--ui-border);
+	}
+
+	.order-summery .product-list li:last-child {
+		border-bottom: 0;
+	}
+
+	.order-summery .price .wrapper-heading,
+	.order-summery .total .price {
+		color: var(--ui-dark);
+		font-weight: 800;
+	}
+
+	.order-summery hr {
+		border-color: var(--ui-border);
+		opacity: 1;
+	}
+
+	.payment-type {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
 	.payment-button {
-		    margin-bottom: 15px;
-    width: 250px;
-    padding: 10px;
-    font-size: large;
+		width: 100%;
+		min-height: 46px;
+		padding: 10px 14px;
+		font-size: 16px;
+		font-weight: 700;
+		border-radius: 999px;
+	}
+
+	#spinner-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 1055;
+		background: rgba(15, 23, 42, 0.35);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#paymentModal .modal-content {
+		border-radius: 14px;
+		border: 1px solid var(--ui-border);
+	}
+
+	#submitPayment {
+		border-radius: 999px;
+		font-weight: 700;
+		padding: 8px 16px;
+	}
+
+	@media (max-width: 991px) {
+		.blog.about-blog .container,
+		.checkout.product .container {
+			padding: 16px;
+		}
+
+		.checkout-wrapper .account-section {
+			padding: 14px;
+		}
+	}
+
+	@media (max-width: 576px) {
+		.order-summery .product-list li {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
 <!--------------- checkout-section-end---------------->
@@ -375,6 +489,48 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 		let elements = stripe.elements();
 		let card = elements.create("card");
 		card.mount("#card-element");
+
+		function saveCheckoutDraft() {
+			var draft = {
+				full_name: $('#full_name').val() || '',
+				email: $('#email').val() || '',
+				phone: $('#phone').val() || '',
+				address: $('#address').val() || '',
+				city: $('#city').val() || '',
+				zipcode: $('#zipcode').val() || '',
+				country: $('#country').val() || '',
+				order_notes: $('#order-notes').val() || ''
+			};
+			localStorage.setItem('checkout_form_draft', JSON.stringify(draft));
+		}
+
+		function restoreCheckoutDraft() {
+			var raw = localStorage.getItem('checkout_form_draft');
+			if (!raw) return;
+			var draft = null;
+			try {
+				draft = JSON.parse(raw);
+			} catch (e) {
+				draft = null;
+			}
+			if (!draft) return;
+
+			if (!$('#full_name').val() && draft.full_name) $('#full_name').val(draft.full_name);
+			if (!$('#email').val() && draft.email) $('#email').val(draft.email);
+			if (!$('#phone').val() && draft.phone) $('#phone').val(draft.phone);
+			if (!$('#address').val() && draft.address) $('#address').val(draft.address);
+			if (!$('#city').val() && draft.city) $('#city').val(draft.city);
+			if (!$('#zipcode').val() && draft.zipcode) $('#zipcode').val(draft.zipcode);
+			if (!$('#country').val() && draft.country) $('#country').val(draft.country).trigger('change');
+			if (!$('#order-notes').val() && draft.order_notes) $('#order-notes').val(draft.order_notes);
+		}
+
+		function clearCheckoutDraft() {
+			localStorage.removeItem('checkout_form_draft');
+		}
+
+		restoreCheckoutDraft();
+		$('#shipping_details').on('input change', 'input, select, textarea', saveCheckoutDraft);
 
 		function openPaymentModal() {
 			// show modal first
@@ -462,6 +618,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 								dataObj = JSON.parse(data);
 								hideSpinner();
 								if (dataObj.status == 'success') {
+									clearCheckoutDraft();
 									window.location.href = "<?= base_url(); ?>user/account#v-pills-order";
 								} else {
 									 $btn.prop("disabled", false).text("Pay Now");
@@ -528,6 +685,7 @@ $usertotalpayable = $total_sum; // Subtotal including VAT
 					dataObj = JSON.parse(data);
 					$(".preloader").hide();
 					if (dataObj.status == 'success') {
+						clearCheckoutDraft();
 						window.location.href = "<?= base_url(); ?>user/orders";
 					} else {
 						if (payment_type == 2) {

@@ -208,7 +208,8 @@ if($this->session->userdata('user_loggedin')){
         .whatsapp-button {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 20px;
+            right: auto;
             background-color: #25D366;
             color: white;
             font-size: 16px;
@@ -425,26 +426,93 @@ if($this->session->userdata('user_loggedin')){
     $(".register-click").click(function(){
       if (typeof Wolmart !== 'undefined') Wolmart.popup({items:{src:'<?=base_url();?>authentication'},callbacks:{ajaxContentAdded:function(){this.wrap.find('[href="#sign-up"]').click()}}},"login");
     });
+
+    function showCartAddedToast(options) {
+        var opts = options || {};
+        var name = opts.name || 'Product';
+        var qty = parseInt(opts.qty, 10);
+        if (isNaN(qty) || qty < 1) qty = 1;
+        var image = opts.image || '';
+
+        if (!document.getElementById('cart-toast-style')) {
+            var style = document.createElement('style');
+            style.id = 'cart-toast-style';
+            style.textContent = '' +
+                '#cart-toast-stack{position:fixed;left:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}' +
+                '.cart-toast{width:min(320px,calc(100vw - 32px));background:#fff;border:1px solid #e6e8ef;border-radius:12px;box-shadow:0 12px 28px rgba(16,24,40,.16);display:flex;align-items:center;gap:10px;padding:10px;opacity:0;transform:translateY(14px);transition:all .22s ease;pointer-events:auto;}' +
+                '.cart-toast.show{opacity:1;transform:translateY(0);}' +
+                '.cart-toast-img{width:42px;height:42px;border-radius:8px;border:1px solid #eceff5;background:#f7f8fb;object-fit:cover;flex:0 0 42px;}' +
+                '.cart-toast-content{min-width:0;}' +
+                '.cart-toast-title{font-size:13px;line-height:1.25;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px;}' +
+                '.cart-toast-sub{font-size:12px;color:#4b5563;margin-top:2px;}' +
+                '.cart-toast-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;margin-right:6px;vertical-align:middle;}' +
+                '.cart-toast-close{margin-left:auto;border:0;background:transparent;color:#9aa3b2;font-size:16px;line-height:1;cursor:pointer;padding:2px 4px;}' +
+                '.cart-toast-close:hover{color:#4b5563;}';
+            document.head.appendChild(style);
+        }
+
+        var stack = document.getElementById('cart-toast-stack');
+        if (!stack) {
+            stack = document.createElement('div');
+            stack.id = 'cart-toast-stack';
+            document.body.appendChild(stack);
+        }
+
+        var toast = document.createElement('div');
+        toast.className = 'cart-toast';
+        toast.innerHTML =
+            '<img class="cart-toast-img" src="' + image + '" alt="cart item" onerror="this.style.display=\'none\'">' +
+            '<div class="cart-toast-content">' +
+                '<div class="cart-toast-title">' + name + '</div>' +
+                '<div class="cart-toast-sub"><span class="cart-toast-dot"></span>Added to cart • Qty: ' + qty + '</div>' +
+            '</div>' +
+            '<button class="cart-toast-close" aria-label="Close">&times;</button>';
+
+        stack.appendChild(toast);
+        requestAnimationFrame(function(){ toast.classList.add('show'); });
+
+        var removeToast = function() {
+            toast.classList.remove('show');
+            setTimeout(function() {
+                if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 220);
+        };
+
+        var closeBtn = toast.querySelector('.cart-toast-close');
+        if (closeBtn) closeBtn.addEventListener('click', removeToast);
+        setTimeout(removeToast, 3500);
+    }
     
     
-if (typeof Wolmart !== 'undefined') Wolmart.$body.on("click", ".product:not(.product-select) .btn-cart, .product-popup .btn-cart, .home .product-single .btn-cart", (function(e) {
+$(document).on("click", ".btn-cart", function(e) {
 e.preventDefault();
 var i = $(this),
-a = i.closest(".product, .product-popup");
+a = i.closest(".product, .product-popup, .product-info-content, section");
 i.hasClass("disabled") ? alert("Please select some product options before adding this product to your cart.") : (i.toggleClass("added").addClass("load-more-overlay loading"), setTimeout((function() {
 var product_id = $("#product_id").val();
-var qty = $("#user_qty").val();
+if (!product_id) {
+i.removeClass("load-more-overlay loading");
+return;
+}
+var qtyInput = $("#user_qty");
+var qty = qtyInput.length ? parseInt(qtyInput.val(), 10) : parseInt($.trim($(".product-quantity .quantity .number").first().text()), 10);
+if (isNaN(qty) || qty <= 0) qty = 1;
+var minQty = qtyInput.length ? parseInt(qtyInput.attr('min'), 10) : 1;
+if (isNaN(minQty) || minQty < 1) minQty = 1;
 var regex = /[+-]?\d+(\.\d+)?/g;
-var price = $("#product-price .new-price").html().match(regex).map(function(v) { return parseFloat(v); }); 
-
-var cart_old_total = $(".cart-total .price").html().match(regex).map(function(v) { return parseFloat(v); });
-if (parseInt(qty) < 10) {
-alert("Minimum order quantity is 10. Please select at least 10 products.");
+var priceText = $("#product-price .new-price").text() || $("#product-price").text() || '0';
+var priceMatch = priceText.match(regex);
+var price = priceMatch ? parseFloat(priceMatch[0]) : 0;
+var cartTotalText = $(".cart-total .price").text() || '0';
+var cartMatch = cartTotalText.match(regex);
+var cart_old_total = cartMatch ? parseFloat(cartMatch[0]) : 0;
+if (qty < minQty) {
+alert("Minimum order quantity is " + minQty + ". Please select at least " + minQty + " products.");
 i.removeClass("load-more-overlay loading");
 return;
 }
 
-var formdata = $("#choice_options_form").serialize();
+var formdata = $(".choice-options-form").serialize();
 
 formdata += '&product_id='+product_id+'&qty='+qty;
 
@@ -457,13 +525,38 @@ success: function(data) {
 if(data == 'ERROR_QTY'){
 alert('Product qty must be equal or less than available qty.');
 i.removeClass("load-more-overlay loading");
+}else if(data == 'ERROR_VARIANT'){
+alert('Please select product options before adding to cart.');
+i.removeClass("load-more-overlay loading");
 }else{
-console.log(data);
-var oldcart = parseInt($(".cart-count").html());
+var resp = null;
+if (typeof data === 'string') {
+try { resp = JSON.parse(data); } catch(err) { resp = null; }
+} else if (typeof data === 'object') {
+resp = data;
+}
+if (resp && resp.status === 'error') {
+alert(resp.msg || 'Unable to add this product to cart.');
+i.removeClass("load-more-overlay loading");
+return;
+}
+var oldcart = parseInt($(".cart-count").html(), 10);
+if (isNaN(oldcart)) oldcart = 0;
+var oldCustom = parseInt($(".customcart").first().text(), 10);
+if (isNaN(oldCustom)) oldCustom = oldcart;
 
 $(".cart-count").html((oldcart+1));
-$(".cart-total .price").html("£ "+(parseInt(cart_old_total)+(parseInt(price)*qty)))
-$(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'" class="product-name">'+a.find(".product-name, .product-title").text()+'</a><div class="price-box"><span class="product-quantity">'+qty+'</span><span class="product-price">£ '+price+'</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'"><img src="'+a.find(".product-media img, .product-image:first-child img").attr("src")+'" alt="'+a.find(".product-name, .product-title").text()+'" height="84" width="94" /></a></figure></div>');
+$(".customcart").text(oldCustom + 1);
+$(".mobile-cart-count").text(oldCustom + 1);
+if ($(".cart-total .price").length) {
+$(".cart-total .price").html("£ "+((cart_old_total)+(price*qty)).toFixed(2));
+}
+if ($(".cart-dropdown .products").length) {
+$(".cart-dropdown .products").append('<div class="product product-cart"><div class="product-detail"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'" class="product-name">'+a.find(".product-name, .product-title").text()+'</a><div class="price-box"><span class="product-quantity">'+qty+'</span><span class="product-price">£ '+price.toFixed(2)+'</span></div></div><figure class="product-media"><a href="<?=base_url();?>products/view/'+$("#product-slug").val()+'"><img src="'+a.find(".product-media img, .product-image:first-child img").attr("src")+'" alt="'+a.find(".product-name, .product-title").text()+'" height="84" width="94" /></a></figure></div>');
+}
+var toastName = $.trim(a.find(".product-name, .product-title").first().text()) || $.trim($(".product-name, .product-title").first().text()) || 'Product';
+var toastImage = a.find(".product-media img, .product-image:first-child img").first().attr("src") || $(".product-media img, .product-image:first-child img").first().attr("src") || '';
+showCartAddedToast({ name: toastName, qty: qty, image: toastImage });
 i.removeClass("load-more-overlay loading");
 if (typeof Wolmart !== 'undefined') Wolmart.Minipopup.open({
 productClass: " product-cart",
@@ -476,12 +569,17 @@ actionTemplate: '<a href="<?=base_url();?>cart" class="btn btn-rounded btn-sm">V
 })
 }
 }
+,
+error: function() {
+i.removeClass("load-more-overlay loading");
+alert('Unable to add this product to cart. Please try again.');
+}
 });
 
 
 
-}), 500))
-}));
+}), 500));
+});
                     
                   
     

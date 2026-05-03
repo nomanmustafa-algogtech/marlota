@@ -261,83 +261,87 @@ class Products extends My_controller {
 	
 	public function get_sku_combination()
     {
-        
-        $options = array();
-        $dataReturn['status'] = -1;
-        $colors_active = 0;
-        $product_id = $this->input->post('product_id');
-        $product  = $this->db->query("SELECT * FROM app_products WHERE id = '$product_id'")->row_array();
+		$options = array();
+		$dataReturn = array('status' => -1);
+		$product_id = (int)$this->input->post('product_id');
 
-        $product_name = $product['name'];
-        
-        // echo $product_name;
-        // exit;
-       
-        if($this->input->post('choice_no')){
-            foreach ($this->input->post('choice_no') as $key => $no) {
-                $name = 'choice_options_'.$no;
-                $data = array();
-                $val = $this->input->post($name);
-                // foreach (json_decode($request[$name][0]) as $key => $item) {
-                if(!empty($val)){
-                    array_push($data, $val);
-                }
-                
-                array_push($options, $data);
-            }
-        }
-        $result = array(array());
-        foreach ($options as $property => $property_values) {
-            $tmp = array();
-            foreach ($result as $result_item) {
-                foreach ($property_values as $property_value) {
-                    $tmp[] = array_merge($result_item, array($property => $property_value));
-                }
-            }
-            $result = $tmp;
-        }
-        $combinations =  $result;
-        if(count($combinations) > 0){
-             foreach ($combinations as $key => $combination){
-                 $sku = '';
-    // 			$str = '';
-    			foreach (explode(' ', $product_name) as $key => $value) {
-    				$sku .= substr($value, 0, 1);
-    				// $str .= substr($value, 0, 1);
-    			}
-    
-    			$str = '';
-    			foreach ($combination as $key => $item){
-    				if($key > 0 ){
-    					$str .= '-'.str_replace(' ', '', $item);
-    					$sku .='-'.str_replace(' ', '', $item);
-    				}
-    				else{
-    					
-    					$str .= str_replace(' ', '', $item);
-    					$sku .='-'.str_replace(' ', '', $item);
-    					
-    				}
-    			}
-        		if(strlen($str) > 0){
-        		    $data_stock = $this->db->query("SELECT * FROM app_product_stocks WHERE product_id = '$product_id' && variant = '$str'")->row_array();
-        		    if(count($data_stock) > 0){
-        		        $dataReturn['status'] = 1;
-        		        $dataReturn['sku'] = $data_stock['sku'];
-        		        $dataReturn['price'] = $data_stock['price'];
-        		        $dataReturn['discount'] = $data_stock['discount'];
-        		        $dataReturn['qty'] = $data_stock['qty'];
-        		        $dataReturn['image'] = $data_stock['image'];
-        		    }else{
-        		        $dataReturn['status'] = 0;
-        		    }
-        		    
-        		}
-        		
-             }
-             
-        }
-        echo json_encode($dataReturn);
+		if ($product_id <= 0) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_output(json_encode($dataReturn));
+		}
+
+		$product = $this->db->where('id', $product_id)->get('app_products')->row_array();
+		if (!$product) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_output(json_encode($dataReturn));
+		}
+
+		$product_name = $product['name'];
+
+		if ($this->input->post('choice_no')) {
+			foreach ($this->input->post('choice_no') as $key => $no) {
+				$name = 'choice_options_'.$no;
+				$data = array();
+				$val = $this->input->post($name);
+				if (!empty($val)) {
+					array_push($data, $val);
+				}
+				array_push($options, $data);
+			}
+		}
+
+		$result = array(array());
+		foreach ($options as $property => $property_values) {
+			$tmp = array();
+			foreach ($result as $result_item) {
+				foreach ($property_values as $property_value) {
+					$tmp[] = array_merge($result_item, array($property => $property_value));
+				}
+			}
+			$result = $tmp;
+		}
+
+		$combinations = $result;
+		if (count($combinations) > 0) {
+			foreach ($combinations as $key => $combination) {
+				$sku = '';
+				foreach (explode(' ', $product_name) as $key => $value) {
+					$sku .= substr($value, 0, 1);
+				}
+
+				$str = '';
+				foreach ($combination as $key => $item) {
+					if ($key > 0) {
+						$str .= '-'.str_replace(' ', '', $item);
+						$sku .= '-'.str_replace(' ', '', $item);
+					} else {
+						$str .= str_replace(' ', '', $item);
+						$sku .= '-'.str_replace(' ', '', $item);
+					}
+				}
+
+				if (strlen($str) > 0) {
+					$data_stock = $this->find_stock_by_variant($product_id, $str);
+
+					if (!empty($data_stock)) {
+						$dataReturn['status'] = 1;
+						$dataReturn['sku'] = $data_stock['sku'];
+						$dataReturn['price'] = $data_stock['price'];
+						$dataReturn['discount'] = $data_stock['discount'];
+						$dataReturn['qty'] = $data_stock['qty'];
+						$dataReturn['image'] = $data_stock['image'];
+					} else {
+						$dataReturn['status'] = 0;
+					}
+				}
+			}
+		}
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($dataReturn));
         // print_r($combinations);
         // $data['combinations'] = $combinations;
         // $data['unit_price'] = $unit_price;
@@ -535,11 +539,7 @@ class Products extends My_controller {
 			$variant_values = array_map(function($v){ return str_replace(' ', '', $v['value']); }, $cart_variant);
 			$variantStr = implode('-', $variant_values);
 
-			$data_stock = $this->db
-				->where('product_id', $product['id'])
-				->where('variant', $variantStr)
-				->get('app_product_stocks')
-				->row_array();
+			$data_stock = $this->find_stock_by_variant($product['id'], $variantStr);
 
 			if (!$data_stock) {
 				echo 'ERROR_VARIANT'; // keep old behaviour
@@ -596,32 +596,30 @@ class Products extends My_controller {
 				$this->db->insert('app_cart', $item);
 			}
 		} else {
-			// Guest: keep indexed array (same structure as DB rows) for compatibility
-			$guest_cart = $this->session->userdata('guest_cart');
-			if (!is_array($guest_cart)) $guest_cart = [];
-
-			// Try to find same product+sku+price
-			$found = false;
-			foreach ($guest_cart as $idx => $gitem) {
-				if ($gitem['product_id'] == $item['product_id'] &&
-					$gitem['sku'] == $item['sku'] &&
-					(float)$gitem['price'] == (float)$item['price']) {
-
-					$guest_cart[$idx]['qty'] += $item['qty'];
-					$guest_cart[$idx]['total_amount'] += $item['total_amount'];
-					$found = true;
-					break;
-				}
+			// Guest: persist in DB by session_id to stay compatible with header/cart/checkout flows
+			$session_id = isset($_COOKIE['session_id']) ? $_COOKIE['session_id'] : session_id();
+			if (!$session_id) {
+				$session_id = bin2hex(random_bytes(16));
 			}
 
-			if (!$found) {
-				// add created_date & optional session id for reference
+			$exist = $this->db
+				->where('session_id', $session_id)
+				->where('product_id', $item['product_id'])
+				->where('sku', $item['sku'])
+				->where('price', $item['price'])
+				->get('app_cart')
+				->row_array();
+
+			if ($exist) {
+				$this->db->where('id', $exist['id'])
+						->set('qty', 'qty + ' . (int)$item['qty'], false)
+						->set('total_amount', 'total_amount + ' . (float)$item['total_amount'], false)
+						->update('app_cart');
+			} else {
 				$item['user_id'] = 0;
-				$item['session_id'] = session_id(); // optional
-				$guest_cart[] = $item;
+				$item['session_id'] = $session_id;
+				$this->db->insert('app_cart', $item);
 			}
-
-			$this->session->set_userdata('guest_cart', $guest_cart);
 		}
 
 		// Return JSON success (front-end should read this)
@@ -644,9 +642,61 @@ class Products extends My_controller {
         $rows = $this->db->where('user_id', $user_id)->get('app_cart')->result_array();
         return $rows ?: [];
     } else {
-        $guest_cart = $this->session->userdata('guest_cart');
-        return is_array($guest_cart) ? array_values($guest_cart) : [];
+		$session_id = isset($_COOKIE['session_id']) ? $_COOKIE['session_id'] : '';
+		if (!$session_id) return [];
+		$rows = $this->db->where('session_id', $session_id)->get('app_cart')->result_array();
+		return $rows ?: [];
     }
+}
+
+private function normalize_variant_string($value)
+{
+	$value = strtolower((string)$value);
+	$value = preg_replace('/[^a-z0-9]/', '', $value);
+	return $value;
+}
+
+private function find_stock_by_variant($product_id, $variantStr)
+{
+	$stock = $this->db
+		->where('product_id', $product_id)
+		->where('variant', $variantStr)
+		->get('app_product_stocks')
+		->row_array();
+
+	if (!empty($stock)) {
+		return $stock;
+	}
+
+	$target = $this->normalize_variant_string($variantStr);
+	if ($target === '') {
+		return [];
+	}
+
+	$stocks = $this->db->where('product_id', $product_id)->get('app_product_stocks')->result_array();
+	$best = [];
+	$bestScore = -1;
+
+	foreach ($stocks as $row) {
+		$candidate = $this->normalize_variant_string($row['variant']);
+		if ($candidate === '') {
+			continue;
+		}
+
+		$score = -1;
+		if ($candidate === $target) {
+			$score = 1000;
+		} elseif (strpos($candidate, $target) !== false || strpos($target, $candidate) !== false) {
+			$score = 700 - abs(strlen($candidate) - strlen($target));
+		}
+
+		if ($score > $bestScore) {
+			$bestScore = $score;
+			$best = $row;
+		}
+	}
+
+	return ($bestScore >= 0) ? $best : [];
 }
 
 
