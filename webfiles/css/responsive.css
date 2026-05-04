@@ -1,0 +1,613 @@
+/* =================================================================
+   MARLOTA — RESPONSIVE MEDIA QUERIES
+   Coverage: Small Laptop (≤1366px), Tablet (≤991px),
+             Mobile Large (≤767px), Mobile (≤576px), Mobile XS (≤400px)
+   Pages: Home, About, Products, Product View, Cart, Checkout
+   ================================================================= */
+
+/* =================================================================
+   1. SMALL LAPTOP  — max-width: 1366px
+   Target: 13" laptops, 1280×800, 1366×768
+   ================================================================= */
+@media (max-width: 1366px) {
+
+    /* --- Header --- */
+    .marlota-header { border-top-width: 22px; }
+    .header-logo-fixed { height: 58px; width: 200px; }
+    .marlota-header .nav-link { font-size: 15px; padding: 6px 3px !important; }
+
+    /* --- Hero --- */
+    .marlota-hero { min-height: 420px; padding: 50px 0 70px; }
+    .marlota-hero h1 { font-size: 38px; }
+    .marlota-hero .hero-image img { width: 100%; max-width: 550px; }
+
+    /* --- Page Hero (About / Contact) --- */
+    .marlota-page-hero h1 { font-size: 38px; }
+    .marlota-page-hero-about .hero-visual img { width: 100%; max-width: 440px; }
+    .contact-hero { width: 100%; max-width: 560px; }
+
+    /* --- Section headings --- */
+    .section-title,
+    .section-title-white { font-size: 30px; }
+
+    /* --- Mission Card --- */
+    .marlota-mission .mission-card {
+        padding: 50px 50px 50px 80px;
+        gap: 40px;
+    }
+    .marlota-mission .mission-icon-wrap {
+        width: 110px;
+        height: 110px;
+        font-size: 40px;
+        flex-shrink: 0;
+    }
+    .marlota-mission h4 { font-size: 22px; }
+    .marlota-mission p { font-size: 17px; }
+
+    /* --- About Who paragraph --- */
+    .marlota-about-who p { font-size: 16px; }
+    .marlota-core-values p { font-size: 15px; }
+
+    /* --- Why-choose quote --- */
+    .why-choose-quote p { font-size: 17px; }
+
+    /* --- Product cards grid (5 col → 4 col) already handled, reinforce --- */
+    .product-cards-grid { grid-template-columns: repeat(4, 1fr); }
+
+    /* --- Newsletter --- */
+    .newsletter-2025 .newsletter-copy h4 { font-size: 26px; }
+    .newsletter-2025 .newsletter-copy p { font-size: 15px; }
+
+    /* --- Footer logo --- */
+    .marlota-footer .footer-logo { height: 58px; width: 200px; }
+}
+
+/* =================================================================
+   2. SMALL LAPTOP (tighter) — max-width: 1199px  (already exists partially)
+   Ensure header nav still fits without squeezing
+   ================================================================= */
+@media (max-width: 1199px) {
+
+    .marlota-header .nav-link { font-size: 14px; }
+    .header-logo-fixed { height: 54px; width: 180px; }
+    .marlota-hero h1 { font-size: 34px; }
+    .marlota-hero .hero-sub { font-size: 15px; }
+    .marlota-hero .hero-image img { max-width: 480px; }
+    .marlota-page-hero h1 { font-size: 34px; }
+    .marlota-page-hero-about .hero-visual img { max-width: 380px; }
+    .contact-hero { max-width: 480px; }
+
+    .marlota-mission .mission-card {
+        padding: 40px 40px 40px 60px;
+        gap: 30px;
+    }
+    .marlota-mission .mission-icon-wrap {
+        width: 90px;
+        height: 90px;
+        font-size: 34px;
+    }
+    .marlota-mission p { font-size: 16px; }
+
+    /* Newsletter 2025 */
+    .newsletter-2025 .newsletter-copy h4 { font-size: 24px; }
+    .newsletter-2025 .newsletter-copy p { font-size: 14px; }
+    .newsletter-2025 .nl-form button { min-width: 130px; font-size: 15px; }
+}
+
+/* =================================================================
+   3. TABLET — max-width: 991px
+   ================================================================= */
+@media (max-width: 991px) {
+
+    /* --- Header --- */
+    .marlota-header { border-top-width: 18px; }
+    .header-logo-fixed { height: 50px; width: 170px; }
+
+    /* --- Hero --- */
+    .marlota-hero {
+        min-height: auto;
+        padding: 40px 0 60px;
+        text-align: center;
+    }
+    .marlota-hero .row { flex-direction: column; align-items: center; }
+    .marlota-hero .hero-image {
+        margin-top: 30px;
+    }
+    .marlota-hero .hero-image img {
+        width: 100%;
+        max-width: 420px;
+    }
+    .marlota-hero h1 { font-size: 30px; }
+    .marlota-hero .hero-sub {
+        font-size: 15px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .marlota-hero .section-underline { margin-left: auto; margin-right: auto; }
+
+    /* --- Page Hero (About / Contact) --- */
+    .marlota-page-hero h1 { font-size: 30px; }
+    .marlota-page-hero .hero-sub { font-size: 15px; max-width: 100%; }
+    .marlota-page-hero-about .hero-visual { text-align: center; margin-top: 24px; }
+    .marlota-page-hero-about .hero-visual img { width: 100%; max-width: 340px; }
+    .contact-hero { width: 100%; max-width: 100%; }
+    .marlota-page-hero-contact .hero-contact-icons { justify-content: center; gap: 24px; }
+
+    /* --- Section heading --- */
+    .section-title,
+    .section-title-white { font-size: 26px; }
+    .section-sub { font-size: 14px; margin-bottom: 24px; }
+
+    /* --- Categories grid --- */
+    .marlota-categories { padding: 40px 0; }
+
+    /* --- Why Marlota feature cards --- */
+    .marlota-why { padding: 40px 0; }
+    .marlota-why .feature-card { padding: 24px 18px; }
+
+    /* --- About Who --- */
+    .marlota-about-who { padding: 40px 0; }
+    .marlota-about-who h2 { font-size: 26px; }
+    .marlota-about-who p { font-size: 15px; }
+    .marlota-about-who .about-img { height: 280px; }
+
+    /* --- Core Values --- */
+    .marlota-core-values { padding: 40px 0; }
+    .marlota-core-values p { font-size: 14px; }
+
+    /* --- Mission --- */
+    .marlota-mission { padding: 40px 0; }
+    .marlota-mission .mission-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 32px 28px;
+        gap: 22px;
+    }
+    .marlota-mission .mission-icon-wrap {
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+        flex-shrink: 0;
+    }
+    .marlota-mission h4 { font-size: 20px; }
+    .marlota-mission p { font-size: 15px; }
+
+    /* --- Why Choose --- */
+    .marlota-why-choose { padding: 40px 0; }
+    .marlota-why-choose h2 { font-size: 26px; }
+    .why-choose-quote { padding: 28px 24px; }
+    .why-choose-quote p { font-size: 16px; }
+
+    /* --- Products Range / 3PL / Commitment --- */
+    .marlota-products-range,
+    .marlota-3pl,
+    .marlota-commitment,
+    .marlota-looking-ahead { padding: 40px 0; }
+
+    /* --- Products listing page sidebar --- */
+    .marlota-products-listing-page .sidebar { position: static; }
+
+    /* --- Footer --- */
+    .marlota-footer { padding: 40px 0 0; }
+    .marlota-footer .footer-logo { height: 52px; width: 180px; }
+    .marlota-footer .footer-col-title { margin-top: 24px; }
+    .ahead-stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* =================================================================
+   4. MOBILE LARGE — max-width: 767px
+   ================================================================= */
+@media (max-width: 767px) {
+
+    /* --- Header --- */
+    .marlota-header { border-top-width: 14px; }
+    .header-logo-fixed { height: 44px; width: 150px; }
+    .marlota-footer .footer-logo { height: 44px; width: 150px; }
+
+    /* --- Hero --- */
+    .marlota-hero {
+        padding: 32px 0 48px;
+        text-align: center;
+    }
+    .marlota-hero h1 { font-size: 26px; line-height: 1.25; margin-bottom: 12px; }
+    .marlota-hero .hero-sub { font-size: 13px; margin-bottom: 22px; max-width: 100%; }
+    .marlota-hero .btn-hero-primary,
+    .marlota-hero .btn-hero-outline { font-size: 13px; padding: 10px 18px; }
+    .marlota-hero .hero-image { margin-top: 24px; }
+    .marlota-hero .hero-image img { max-width: 300px; }
+
+    /* --- Page Hero --- */
+    .marlota-page-hero { padding: 30px 0 52px; }
+    .marlota-page-hero h1 { font-size: 26px; line-height: 1.25; }
+    .marlota-page-hero .hero-sub { font-size: 13px; }
+    .marlota-page-hero-about .hero-visual img { max-width: 260px; }
+    .marlota-page-hero-contact .hero-contact-icons i { font-size: 40px; }
+    .marlota-page-hero-contact .hero-contact-icons { gap: 16px; }
+    .marlota-page-hero .hero-icons { gap: 16px; flex-wrap: wrap; }
+    .marlota-page-hero .hero-icon-wrap { width: 64px; height: 64px; font-size: 24px; }
+
+    /* --- Sections general --- */
+    .section-title,
+    .section-title-white { font-size: 22px; }
+    .section-sub { font-size: 13px; margin-bottom: 20px; }
+    .section-underline,
+    .section-underline-center { width: 36px; height: 3px; }
+
+    /* --- Categories --- */
+    .marlota-categories { padding: 30px 0; }
+    .marlota-categories .category-card img { height: 140px; }
+
+    /* --- Why Marlota --- */
+    .marlota-why { padding: 30px 0; }
+    .marlota-why .feature-card { padding: 20px 14px; }
+    .marlota-why .icon-circle { width: 56px; height: 56px; font-size: 22px; margin-bottom: 14px; }
+    .marlota-why .feature-card h5 { font-size: 15px; }
+    .marlota-why .feature-card p { font-size: 12px; }
+
+    /* --- About Who --- */
+    .marlota-about-who { padding: 30px 0; }
+    .marlota-about-who h2 { font-size: 22px; }
+    .marlota-about-who p { font-size: 14px; line-height: 1.7; }
+    .marlota-about-who .about-img { height: 220px; border-radius: 10px; }
+
+    /* --- Core Values --- */
+    .marlota-core-values { padding: 30px 0; }
+    .marlota-core-values h5 { font-size: 15px; }
+    .marlota-core-values p { font-size: 13px; }
+    .marlota-core-values .value-card { padding: 24px 16px; }
+    .marlota-core-values .icon-circle { width: 58px; height: 58px; font-size: 22px; }
+
+    /* --- Mission --- */
+    .marlota-mission { padding: 30px 0; }
+    .marlota-mission .mission-card {
+        flex-direction: column;
+        padding: 22px 18px;
+        gap: 16px;
+        border-radius: 12px;
+    }
+    .marlota-mission .mission-icon-wrap {
+        width: 64px;
+        height: 64px;
+        font-size: 24px;
+    }
+    .marlota-mission h4 { font-size: 18px; margin-bottom: 8px; }
+    .marlota-mission p { font-size: 14px; }
+    .marlota-mission .mission-principle { padding: 20px 14px; }
+    .marlota-mission .mp-number { font-size: 28px; }
+    .marlota-mission .mission-principle h5 { font-size: 15px; }
+    .marlota-mission .mission-principle p { font-size: 13px; }
+
+    /* --- Why Choose --- */
+    .marlota-why-choose { padding: 30px 0; }
+    .marlota-why-choose h2 { font-size: 22px; }
+    .marlota-why-choose p { font-size: 14px; }
+    .why-choose-quote { padding: 22px 18px; border-radius: 12px; }
+    .why-choose-quote .wc-quote-icon { font-size: 28px; margin-bottom: 10px; }
+    .why-choose-quote p { font-size: 14px; }
+    .marlota-checklist li { font-size: 14px; }
+
+    /* --- Products Range --- */
+    .marlota-products-range { padding: 30px 0; }
+    .range-card { padding: 22px 16px; }
+    .range-card h5 { font-size: 15px; }
+    .range-card p { font-size: 13px; }
+
+    /* --- 3PL --- */
+    .marlota-3pl { padding: 30px 0; }
+    .tpl-card { padding: 20px 16px; }
+    .tpl-card h5 { font-size: 15px; }
+
+    /* --- Commitment --- */
+    .marlota-commitment { padding: 30px 0; }
+    .marlota-commitment h2 { font-size: 22px; }
+    .marlota-commitment p { font-size: 14px; }
+
+    /* --- Looking Ahead --- */
+    .marlota-looking-ahead { padding: 30px 0; }
+    .marlota-looking-ahead h2 { font-size: 22px; }
+    .ahead-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ahead-stat { padding: 20px 14px; }
+
+    /* --- Products listing page --- */
+    .marlota-products-listing-page { padding-top: 16px; }
+    .marlota-products-listing-page .product-sorting-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .marlota-products-listing-page .product-sorting-section .form-control {
+        min-width: 0;
+        width: 100%;
+    }
+
+    /* --- Product view page --- */
+    .product-info-section .row { flex-direction: column; }
+    .product .product-info { padding: 16px 0; }
+
+    /* --- CART TABLE — horizontal scroll on mobile --- */
+    .cart-section { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .cart-section table { min-width: 600px; }
+
+    /* --- Checkout --- */
+    .checkout .checkout-section .row { flex-direction: column; }
+    .checkout .checkout-wrapper { padding: 0; }
+
+    /* --- Contact section --- */
+    .marlota-contact-section .contact-form-card,
+    .marlota-contact-section .contact-info-card { padding: 20px 16px; }
+    .marlota-contact-section h4 { font-size: 18px; }
+
+    /* --- Footer --- */
+    .marlota-footer { padding: 28px 0 0; }
+    .marlota-footer .footer-col-title { margin-top: 20px; font-size: 13px; }
+    .marlota-footer .footer-links a { font-size: 13px; }
+    .marlota-footer .footer-tagline { font-size: 13px; }
+    .marlota-footer .footer-bottom p { font-size: 12px; text-align: center; }
+    .marlota-footer .footer-bottom .d-flex { flex-direction: column; align-items: center; gap: 6px; }
+
+    /* --- CTA section --- */
+    .marlota-cta { padding: 30px 0; }
+
+    /* --- Newsletter --- */
+    .marlota-newsletter { padding: 24px 0; }
+    .marlota-newsletter h4 { font-size: 18px; }
+
+    /* --- Products section (home) --- */
+    .marlota-products-section { padding: 30px 0; }
+
+    /* --- Pop departments --- */
+    .pop-dept-section { padding: 30px 0; }
+
+    /* --- Blog breadcrumb --- */
+    .blog.about-blog .container { padding: 16px 16px; }
+    .blog-bradcrum { font-size: 13px; }
+    .blog-heading .heading { font-size: 24px; }
+}
+
+/* =================================================================
+   5. MOBILE — max-width: 576px
+   ================================================================= */
+@media (max-width: 576px) {
+
+    /* Container padding */
+    .container { padding-left: 14px; padding-right: 14px; }
+
+    /* --- Header --- */
+    .marlota-header { border-top-width: 10px; }
+    .header-logo-fixed { height: 38px; width: 130px; }
+
+    /* --- Hero --- */
+    .marlota-hero { padding: 24px 0 40px; }
+    .marlota-hero h1 { font-size: 22px; }
+    .marlota-hero .hero-sub { font-size: 12px; }
+    .marlota-hero .btn-hero-primary,
+    .marlota-hero .btn-hero-outline { font-size: 12px; padding: 9px 14px; margin-bottom: 8px; }
+    .marlota-hero .hero-image img { max-width: 260px; }
+
+    /* --- Page Hero --- */
+    .marlota-page-hero h1 { font-size: 22px; }
+    .marlota-page-hero .hero-sub { font-size: 12px; }
+    .marlota-page-hero-about .hero-visual img { max-width: 220px; }
+
+    /* --- Section headings --- */
+    .section-title,
+    .section-title-white { font-size: 20px; }
+
+    /* --- About --- */
+    .marlota-about-who h2 { font-size: 20px; }
+    .marlota-about-who p { font-size: 13px; }
+    .marlota-about-who .about-img { height: 180px; }
+
+    /* --- Mission card --- */
+    .marlota-mission .mission-card { padding: 18px 14px; }
+    .marlota-mission .mission-icon-wrap { width: 54px; height: 54px; font-size: 20px; }
+    .marlota-mission h4 { font-size: 16px; }
+    .marlota-mission p { font-size: 13px; }
+
+    /* --- Why choose --- */
+    .why-choose-quote p { font-size: 13px; }
+    .marlota-checklist li { font-size: 13px; gap: 8px; }
+
+    /* --- Core Values --- */
+    .marlota-core-values .value-card { padding: 18px 12px; }
+
+    /* --- Products listing --- */
+    .product-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .pd-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+
+    /* --- Product view --- */
+    .product-info-content { padding: 0; }
+
+    /* --- Cart --- */
+    .cart-section table { min-width: 520px; }
+    .cart-section .wrapper-img img { width: 60px; height: 60px; }
+
+    /* --- Checkout --- */
+    .checkout .checkout-section { padding: 0; }
+    .review-form-name input,
+    .review-form-name select,
+    .review-form-name textarea { font-size: 13px; }
+
+    /* --- Contact --- */
+    .marlota-contact-section .contact-form-card,
+    .marlota-contact-section .contact-info-card { padding: 16px 12px; border-radius: 10px; }
+
+    /* --- Footer --- */
+    .marlota-footer .footer-logo { height: 38px; width: 130px; }
+    .marlota-footer .footer-social a { width: 32px; height: 32px; font-size: 12px; }
+
+    /* --- Headings page (blog/breadcrumb) --- */
+    .blog-heading .heading { font-size: 20px; }
+    .blog-bradcrum { font-size: 12px; }
+
+    /* --- Newsletter --- */
+    .newsletter-2025 .nl-form button { font-size: 14px; height: 48px; }
+    .newsletter-2025 .nl-form input { height: 48px; }
+}
+
+/* =================================================================
+   6. MOBILE XS — max-width: 400px
+   ================================================================= */
+@media (max-width: 400px) {
+
+    .container { padding-left: 10px; padding-right: 10px; }
+
+    /* --- Header --- */
+    .header-logo-fixed { height: 34px; width: 115px; }
+    .marlota-header { border-top-width: 8px; }
+
+    /* --- Hero --- */
+    .marlota-hero h1 { font-size: 19px; }
+    .marlota-hero .hero-image img { max-width: 220px; }
+    .marlota-page-hero h1 { font-size: 19px; }
+
+    /* --- Section titles --- */
+    .section-title,
+    .section-title-white { font-size: 18px; }
+
+    /* --- Products grid --- */
+    .product-cards-grid { grid-template-columns: 1fr; gap: 10px; }
+    .pd-grid { grid-template-columns: 1fr !important; gap: 10px; }
+
+    /* --- Cart table --- */
+    .cart-section table { min-width: 460px; }
+
+    /* --- Footer --- */
+    .marlota-footer .footer-logo { height: 34px; width: 115px; }
+
+    /* --- Mission icon --- */
+    .marlota-mission .mission-icon-wrap { width: 46px; height: 46px; font-size: 18px; }
+}
+
+/* =================================================================
+   7. PRODUCT VIEW PAGE — responsive fixes all breakpoints
+   ================================================================= */
+@media (max-width: 991px) {
+    /* Product view: stack image + info vertically */
+    .product.product-info .product-info-section .row { gap: 24px; }
+    .product.product-info .product-info-section .col-md-4 { width: 100%; }
+    .product.product-info .product-info-section .col-md-8 { width: 100%; }
+}
+
+@media (max-width: 767px) {
+    /* Product view slider images */
+    .product-top .swiper-slide img,
+    .swiper-slide.slider-top-img img { max-height: 280px; width: 100%; object-fit: contain; }
+    .product-bottom { margin-top: 8px; }
+    .product-bottom .swiper-slide img { height: 56px; width: 56px; object-fit: cover; border-radius: 6px; }
+
+    /* Product info text */
+    .product-name { font-size: 18px !important; }
+    .product-info-content .wrapper-subtitle { font-size: 13px; }
+}
+
+@media (max-width: 576px) {
+    .product-top .swiper-slide img,
+    .swiper-slide.slider-top-img img { max-height: 220px; }
+    .product-name { font-size: 16px !important; }
+}
+
+/* =================================================================
+   8. CART PAGE — responsive stacked card on mobile
+   ================================================================= */
+@media (max-width: 767px) {
+    /* Make cart table horizontally scrollable */
+    .product-cart .cart-section {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 8px;
+    }
+    .product-cart table { min-width: 580px; font-size: 13px; }
+    .product-cart table .table-heading { font-size: 11px; letter-spacing: .5px; }
+    .product-cart .wrapper-img img { width: 56px; height: 56px; object-fit: cover; }
+    .product-cart .wrapper-content h5 { font-size: 13px; }
+    .product-cart .wrapper-content p { font-size: 11px; }
+    .product-cart .heading { font-size: 13px; }
+
+    /* Cart totals/coupon below table */
+    .cart-total-section { flex-direction: column !important; }
+    .cart-coupon,
+    .cart-total-wrapper { width: 100%; }
+}
+
+@media (max-width: 576px) {
+    .product-cart table { min-width: 480px; font-size: 12px; }
+    .product-cart .wrapper-img img { width: 46px; height: 46px; }
+    .quantity { gap: 4px !important; }
+    .quantity .product-minus,
+    .quantity .product-plus { width: 24px; height: 24px; font-size: 14px; }
+    .quantity .number { font-size: 13px; }
+}
+
+/* =================================================================
+   9. CHECKOUT PAGE — responsive
+   ================================================================= */
+@media (max-width: 991px) {
+    .checkout .checkout-section .col-lg-6 { width: 100%; }
+    .checkout .checkout-wrapper { padding: 0; }
+}
+
+@media (max-width: 767px) {
+    .checkout.product.footer-padding { padding-bottom: 30px; }
+    .checkout .checkout-section .billing-section { padding: 20px 16px; border-radius: 10px; }
+    .checkout .wrapper-heading { font-size: 16px; }
+    .checkout .account-inner-form { flex-direction: column !important; gap: 12px; }
+    .checkout .form-control { font-size: 13px; }
+    .checkout .btn-pay { font-size: 14px; padding: 12px 20px; }
+    .checkout-summary-table { width: 100%; }
+    .checkout-summary-table td,
+    .checkout-summary-table th { padding: 8px 10px; font-size: 13px; }
+}
+
+@media (max-width: 576px) {
+    .checkout .checkout-section .billing-section { padding: 14px 12px; }
+    .checkout .form-label { font-size: 12px; }
+    .checkout .form-control { font-size: 12px; padding: 9px 10px; }
+}
+
+/* =================================================================
+   10. HOME PAGE — product sliders, category grid
+   ================================================================= */
+@media (max-width: 991px) {
+    .custom-slider-container { padding: 14px 0 28px; }
+    .custom-product img { height: 170px; }
+    .marlota-products-section { padding: 30px 0; }
+    .marlota-categories .category-card img { height: 160px; }
+}
+
+@media (max-width: 767px) {
+    .custom-product img { height: 140px; }
+    .marlota-categories .category-card img { height: 120px; }
+    .marlota-categories .category-card h5 { font-size: 14px; }
+    .marlota-categories .category-card .browse-link { font-size: 12px; }
+    .home-category-fallback { width: 110px; height: 110px; font-size: 36px; }
+}
+
+@media (max-width: 576px) {
+    .custom-product img { height: 120px; }
+    .marlota-categories .category-card img { height: 100px; }
+    .marlota-categories .category-card h5 { font-size: 13px; }
+}
+
+/* =================================================================
+   11. GENERAL UTILITY — overflow & spacing fixes
+   ================================================================= */
+@media (max-width: 767px) {
+    /* Prevent overflow on all pages */
+    body { overflow-x: hidden; }
+    .container { max-width: 100%; }
+    img { max-width: 100%; }
+
+    /* Section padding reduce */
+    .footer-padding { padding-bottom: 32px !important; }
+
+    /* Button groups wrap */
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+}
+
+@media (max-width: 576px) {
+    /* Reduce row gap on small screens */
+    .row.g-5 { --bs-gutter-x: 16px; --bs-gutter-y: 16px; }
+    .row.g-4 { --bs-gutter-x: 12px; --bs-gutter-y: 12px; }
+    .row.gy-5 { --bs-gutter-y: 20px; }
+}

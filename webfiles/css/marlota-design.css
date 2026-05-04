@@ -220,6 +220,10 @@ body {
     background: rgba(255,255,255,.12);
     border-radius: 5px;
     padding: 10px;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
 }
 
 .sidebar-sublist-hidden {
@@ -232,6 +236,8 @@ body {
     border-radius: 5px;
     padding: 10px;
     margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
 .sidebar-subitem-na {
@@ -243,7 +249,7 @@ body {
 }
 
 .footer-logo-large {
-    height: 1010px;
+    height: 70px;
     width: 200px;
 }
 
@@ -310,6 +316,10 @@ body {
 #mySidebar .widget-title {
     background: rgba(255,255,255,.15) !important;
     color: #fff;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
 }
 
 #mySidebar .widget-body li {

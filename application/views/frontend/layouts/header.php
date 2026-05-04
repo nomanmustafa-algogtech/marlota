@@ -48,42 +48,183 @@ $function  = $this->uri->segment(2);
     <link rel="icon" type="image/png" href="<?= base_url(); ?>uploads/settings/<?= $settings['site_icon']; ?>">
 
     <style>
+        /* ---- Mobile Sidebar ---- */
         .sidebarmenu {
-            height: 120vh;
+            height: 100vh;
             width: 0;
-            position: absolute;
-            z-index: 1000;
+            position: fixed;
+            z-index: 99999;
             top: 0;
             left: 0;
-            background-color: #5A2D82;
+            background: #3a1b76;
             overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
+            overflow-y: auto;
+            transition: width 0.32s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.38);
         }
 
-        .sidebarmenu a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 16px;
-            color: rgba(255,255,255,.75);
-            display: block;
-            transition: 0.3s;
+        /* Overlay backdrop */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 99998;
         }
+        #sidebar-overlay.active { display: block; }
 
-        .sidebarmenu a:hover {
-            color: #C9A646;
-        }
-
-        .closebtn {
-            color: #FFFFFF !important;
-            cursor: pointer;
+        /* Close button */
+        .sb-close-btn {
             position: absolute;
-            top: 0;
-            right: 5px;
-            font-size: 36px;
-            margin-left: 50px;
+            top: 14px;
+            right: 14px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            padding: 0;
+        }
+        .sb-close-btn:hover { background: rgba(255,255,255,0.28); }
+
+        /* Logo area */
+        .sb-logo {
+            padding: 16px 16px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 6px;
         }
 
+        /* Main nav links */
+        .sb-nav { padding: 0 8px; }
+        .sb-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: rgba(255,255,255,0.88) !important;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none !important;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sb-nav-link:hover { background: rgba(255,255,255,0.12); color: #C9A646 !important; }
+        .sb-nav-link .fa { width: 18px; text-align: center; font-size: 14px; color: #C9A646; }
+
+        /* Cart badge inside nav */
+        .sb-cart-badge {
+            margin-left: auto;
+            background: #C9A646;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Divider */
+        .sb-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.12);
+            margin: 6px 8px;
+        }
+
+        /* Shop Now button */
+        .sb-shop-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px;
+            padding: 11px 16px;
+            background: #C9A646;
+            color: #fff !important;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none !important;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .sb-shop-btn:hover { background: #a87d2e; color: #fff !important; }
+        .sb-shop-btn .fa { font-size: 14px; }
+
+        /* Section label */
+        .sb-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Poppins', sans-serif;
+            padding: 8px 20px 4px;
+            margin: 0;
+        }
+
+        /* Category item */
+        .sb-cat-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .sb-cat-row {
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+        }
+        .sb-cat-link {
+            flex: 1;
+            padding: 10px 12px;
+            color: rgba(255,255,255,0.85) !important;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none !important;
+            transition: color 0.2s;
+        }
+        .sb-cat-link:hover { color: #C9A646 !important; }
+
+        /* Toggle chevron */
+        .sb-toggle-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.45);
+            font-size: 12px;
+            padding: 8px 10px;
+            cursor: pointer;
+            transition: transform 0.25s, color 0.2s;
+            line-height: 1;
+        }
+        .sb-toggle-btn.open { transform: rotate(180deg); color: #C9A646; }
+
+        /* Subcategory list */
+        .sb-sublist {
+            display: none;
+            list-style: none;
+            padding: 2px 8px 8px 24px;
+            margin: 0;
+        }
+        .sb-sublist.open { display: block; }
+        .sb-sub-link {
+            display: block;
+            padding: 7px 10px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.68) !important;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none !important;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sb-sub-link:hover { background: rgba(255,255,255,0.1); color: #C9A646 !important; }
+        .sb-sub-all { color: #C9A646 !important; font-weight: 600; }
+
+        /* Cart counter on desktop */
         .customcart {
             position: absolute;
             background-color: transparent;
@@ -101,22 +242,10 @@ $function  = $this->uri->segment(2);
             line-height: 29px;
             text-align: center;
         }
-
         @media (max-width: 576px) {
-            .customcart {
-                right: -14px !important;
-            }
+            .customcart { right: -14px !important; }
         }
-
-        #main {
-            transition: margin-left .5s;
-        }
-
-        @media screen and (max-height: 450px) {
-            .sidebarmenu a {
-                font-size: 18px;
-            }
-        }
+        #main { transition: margin-left .5s; }
     </style>
 
     <!-- WebFont.js -->
@@ -327,51 +456,120 @@ $function  = $this->uri->segment(2);
                 </div>
             </nav>
 
+            <!-- Overlay backdrop -->
+            <div id="sidebar-overlay" onclick="closeNav()"></div>
+
             <!-- Sidebar Category Menu -->
             <div id="mySidebar" class="sidebarmenu">
-                <span class="closebtn" onclick="closeNav()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+
+                <!-- Close button -->
+                <button class="sb-close-btn" onclick="closeNav()" aria-label="Close menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 50 50">
                         <path d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"></path>
                     </svg>
-                </span>
-                <?php
-                $cat0 = $this->db->query("SELECT * FROM app_categories WHERE level=0 ")->result_array();
+                </button>
 
-                foreach ($cat0 as $row0) {
-                    $products_count = $this->db->query("SELECT COUNT(*) as count FROM app_products WHERE category_id IN (SELECT id FROM app_categories WHERE id = '{$row0['id']}' OR parent_id = '{$row0['id']}')")->row()->count;
-                    if (count($cat0) > 0) {
+                <!-- Logo inside sidebar -->
+                <div class="sb-logo">
+                    <a href="<?= base_url(); ?>">
+                        <img src="<?= base_url(); ?>uploads/settings/<?= $this->settings['site_logo']; ?>" alt="Marlota" style="height:44px;filter:brightness(0) invert(1);">
+                    </a>
+                </div>
+
+                <!-- Main nav links -->
+                <nav class="sb-nav">
+                    <a href="<?= base_url(); ?>" class="sb-nav-link">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                    <a href="<?= base_url('web/about'); ?>" class="sb-nav-link">
+                        <i class="fa fa-info-circle"></i> About Us
+                    </a>
+                    <a href="<?= base_url('web/contact'); ?>" class="sb-nav-link">
+                        <i class="fa fa-envelope"></i> Contact Us
+                    </a>
+                    <?php if ($this->session->userdata('user_loggedin')): ?>
+                    <a href="<?= base_url('user/account'); ?>" class="sb-nav-link">
+                        <i class="fa fa-user"></i> My Account
+                    </a>
+                    <?php else: ?>
+                    <a href="<?= base_url('user/login'); ?>" class="sb-nav-link">
+                        <i class="fa fa-sign-in"></i> Sign In
+                    </a>
+                    <?php endif; ?>
+                    <a href="<?= base_url('cart'); ?>" class="sb-nav-link">
+                        <i class="fa fa-shopping-cart"></i> Cart
+                        <span class="sb-cart-badge"><?= count($cart); ?></span>
+                    </a>
+                </nav>
+
+                <div class="sb-divider"></div>
+
+                <!-- Shop Now button -->
+                <a href="<?= base_url('products'); ?>" class="sb-shop-btn">
+                    <i class="fa fa-tags"></i> Shop All Products
+                </a>
+
+                <div class="sb-divider"></div>
+
+                <!-- Categories heading -->
+                <p class="sb-section-label">Browse Categories</p>
+
+                <!-- Category list with expandable subcategories -->
+                <?php
+                $sb_cats = $this->db->query("SELECT * FROM app_categories WHERE level=0 ORDER BY name ASC")->result_array();
+                foreach ($sb_cats as $i => $row0):
+                    $sb_subs = $this->db->query("SELECT * FROM app_categories WHERE level=1 AND parent_id='{$row0['id']}' ORDER BY name ASC")->result_array();
                 ?>
-                        <div class="widget widget-collapsible m-2">
-                            <h3 class="widget-title collapsed sidebar-widget-title-custom">
-                                <span><?= $row0['name']; ?></span><span class="toggle-btn"></span>
-                            </h3>
-                            <?php
-                            $cat28 = $this->db->query("SELECT * FROM app_categories WHERE level=1 && parent_id = '{$row0['id']}'")->result_array();
-                            if (count($cat28) > 0) { ?>
-                                <ul class="widget-body filter-items search-ul sidebar-sublist-hidden">
-                                    <?php foreach ($cat28 as $row1) { ?>
-                                        <li class="sidebar-subitem">
-                                            <a href="<?= base_url(); ?>products/?category=<?= $row1['slug']; ?>"><?= $row1['name']; ?></a>
-                                        </li>
-                                    <?php } ?>
-                                </ul>
-                            <?php } else {
-                                echo '<ul class="widget-body filter-items search-ul sidebar-sublist-hidden"><li class="sidebar-subitem-na">N/A</li></ul>';
-                            } ?>
-                        </div>
-                <?php } ?>
-                <?php } ?>
+                <div class="sb-cat-item">
+                    <!-- Category row: link + toggle if has subs -->
+                    <div class="sb-cat-row">
+                        <a href="<?= base_url(); ?>products/?category=<?= $row0['slug']; ?>" class="sb-cat-link">
+                            <?= $row0['name']; ?>
+                        </a>
+                        <?php if (!empty($sb_subs)): ?>
+                        <button class="sb-toggle-btn" onclick="sbToggle(this)" aria-label="Expand">
+                            <i class="fa fa-chevron-down"></i>
+                        </button>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (!empty($sb_subs)): ?>
+                    <ul class="sb-sublist">
+                        <li><a href="<?= base_url(); ?>products/?category=<?= $row0['slug']; ?>" class="sb-sub-link sb-sub-all">All <?= $row0['name']; ?></a></li>
+                        <?php foreach ($sb_subs as $row1): ?>
+                        <li><a href="<?= base_url(); ?>products/?category=<?= $row1['slug']; ?>" class="sb-sub-link"><?= $row1['name']; ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
+
             </div>
 
             <script>
                 function openNav() {
-                    document.getElementById("mySidebar").style.width = "320px";
-                    document.getElementById("main").style.marginLeft = "320px";
+                    var w = Math.min(320, window.innerWidth - 40);
+                    document.getElementById("mySidebar").style.width = w + "px";
+                    document.getElementById("sidebar-overlay").classList.add("active");
+                    document.body.style.overflow = "hidden";
                 }
 
                 function closeNav() {
                     document.getElementById("mySidebar").style.width = "0";
-                    document.getElementById("main").style.marginLeft = "0";
+                    document.getElementById("sidebar-overlay").classList.remove("active");
+                    document.body.style.overflow = "";
+                }
+
+                function sbToggle(btn) {
+                    var sublist = btn.closest('.sb-cat-item').querySelector('.sb-sublist');
+                    var isOpen = sublist.classList.contains('open');
+                    // Close all open sublists
+                    document.querySelectorAll('.sb-sublist.open').forEach(function(el) { el.classList.remove('open'); });
+                    document.querySelectorAll('.sb-toggle-btn.open').forEach(function(el) { el.classList.remove('open'); });
+                    // Toggle clicked
+                    if (!isOpen) {
+                        sublist.classList.add('open');
+                        btn.classList.add('open');
+                    }
                 }
 
                 document.addEventListener('DOMContentLoaded', function () {

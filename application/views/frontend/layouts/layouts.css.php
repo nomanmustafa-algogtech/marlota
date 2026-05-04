@@ -16,3 +16,4 @@ foreach ($view_css as $_view_css){
 }
 ?>
 <link href="<?= base_url(); ?>webfiles/css/marlota-design.css" rel="stylesheet">
+<link href="<?= base_url(); ?>webfiles/css/responsive.css" rel="stylesheet">
