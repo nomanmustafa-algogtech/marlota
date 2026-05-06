@@ -43,10 +43,10 @@ if($this->session->userdata('user_loggedin')){
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <p class="footer-col-title">Customer Service</p>
                 <ul class="footer-links">
-                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="<?=base_url('shipping_policy');?>">Shipping Policy</a></li>
                     <li><a href="#">Returns &amp; Refunds</a></li>
-                    <li><a href="#">Terms &amp; Conditions</a></li>
-                    <li><a href="<?=base_url();?>privacy_policy">Privacy Policy</a></li>
+                    <li><a href="<?=base_url('terms_conditions');?>">Terms &amp; Conditions</a></li>
+                    <li><a href="<?=base_url('privacy_policy');?>">Privacy Policy</a></li>
                 </ul>
             </div>
 
@@ -55,11 +55,11 @@ if($this->session->userdata('user_loggedin')){
                 <p class="footer-col-title">Contact Info</p>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-map-marker"></i></span>
-                    <span><?= !empty($settings['site_address']) ? $settings['site_address'] : 'Manchester, United Kingdom'; ?></span>
+                    <span><?= !empty($settings['site_address']) ? $settings['site_address'] : 'Marlota Limited, Bealey Indsutrial Estate, Radcliffe, M26 2BD.'; ?></span>
                 </div>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-envelope"></i></span>
-                    <span><?= !empty($settings['site_email']) ? $settings['site_email'] : 'support@marlota.co.uk'; ?></span>
+                    <span><?= !empty($settings['site_email']) ? $settings['site_email'] : 'sales@marlota.co.uk'; ?></span>
                 </div>
                 <div class="footer-contact-item">
                     <span class="fc-icon"><i class="fa fa-phone"></i></span>

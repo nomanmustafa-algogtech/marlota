@@ -455,7 +455,7 @@ body {
 
 .marlota-hero .hero-image img {
     max-width: initial;
-    width: 800px;
+    width: 740px;
     object-fit: contain;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,.3));
 }
@@ -2245,7 +2245,7 @@ body {
 
 .megamenu-cat-title {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #1E1E1E !important;
     text-decoration: none;
@@ -2330,7 +2330,7 @@ body {
 
 .product-card-new .pc-image-wrap {
     position: relative;
-    background: #fafafa;
+    background: #ffffff;
     border-radius: 12px 12px 0 0;
     overflow: hidden;
     display: flex;
@@ -2641,7 +2641,7 @@ body {
 
 .pd-card-img {
     position: relative;
-    background: #f8f6fc;
+    background: #ffffff;
     height: 210px;
     display: flex;
     align-items: center;

@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 hero-image mt-4 mt-lg-0">
-                    <img src="<?= base_url(); ?>uploads/home-hero.png"
+                    <img src="<?= base_url(); ?>uploads/hero-home.png"
                          onerror="this.src='<?= base_url(); ?>webfiles/images/product-banner.jpg'"
                          alt="Premium Packaging Products" />
                 </div>
@@ -300,14 +300,7 @@
                                 <?php if ($pct_off > 0) { ?><span class="pc-badge-off"><?= $pct_off; ?>% OFF</span><?php } ?>
                             </div>
                             <div class="pc-body">
-                                <div class="pc-rating">
-                                    <div class="pc-stars">
-                                        <?php for ($s = 1; $s <= 5; $s++) { ?>
-                                        <i class="fa fa-star<?= ($s <= $filled) ? '' : ($s - 0.5 <= $row['rating'] ? '-half-o' : '-o'); ?>"></i>
-                                        <?php } ?>
-                                    </div>
-                                    <span class="pc-review-count"><?= $review_count; ?> Reviews</span>
-                                </div>
+                                
                                 <div class="pc-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= $row['name']; ?></a></div>
                                 <div class="pc-price-row">
                                     <span class="pc-price">£<?= $display_price; ?></span>
@@ -374,10 +367,7 @@
                                     </div>
                                 </div>
                                 <div class="pd-card-body">
-                                    <div class="pd-stars">
-                                        <?php for ($s=1;$s<=5;$s++): ?><i class="fa fa-star<?= ($s<=$filled)?'':($s-0.5<=$row['rating']?'-half-o':'-o'); ?>"></i><?php endfor; ?>
-                                        <span>(<?= $rc; ?>)</span>
-                                    </div>
+                                    
                                     <div class="pd-name"><a href="<?= base_url(); ?>products/view/<?= $row['slug']; ?>"><?= htmlspecialchars($row['name']); ?></a></div>
                                     <div class="pd-price-row">
                                         <span class="pd-price">£<?= number_format($price, 2); ?></span>

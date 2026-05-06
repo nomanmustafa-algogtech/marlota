@@ -52,6 +52,25 @@ class Web extends My_controller {
 	
         $this->load_web('page',$data);
 	}
+	public function terms_conditions()
+	{
+		$this->title = "Terms & Conditions";
+	
+		$data['title'] = $this->title;
+		$data['content'] = $this->db->query("SELECT * FROM app_pages where slug = 'terms-and-conditions'")->row()->content;
+	echo 'Data: <pre>' .print_r($data,true). '</pre>';
+        $this->load_web('page',$data);
+	}
+
+	public function shipping_policy()
+	{
+		$this->title = "Shipping Policy";
+	
+		$data['title'] = $this->title;
+		$data['content'] = $this->db->query("SELECT * FROM app_pages where slug = 'shipping-policy'")->row()->content;
+	
+        $this->load_web('page',$data);
+	}
 	
 	
 	

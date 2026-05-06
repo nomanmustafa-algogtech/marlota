@@ -117,14 +117,7 @@
 											<?php if ($pctOff > 0) { ?><span class="pc-badge-off"><?= $pctOff; ?>% OFF</span><?php } ?>
 										</div>
 										<div class="pc-body">
-											<div class="pc-rating">
-												<div class="pc-stars">
-													<?php for ($i = 1; $i <= 5; $i++) { ?>
-														<i class="fa fa-star<?= ($i <= $filled) ? '' : ($i - 0.5 <= $rating ? '-half-o' : '-o'); ?>"></i>
-													<?php } ?>
-												</div>
-												<span class="pc-review-count"><?= $reviews; ?> Reviews</span>
-											</div>
+									
 											<div class="pc-name">
 												<a href="<?= base_url(); ?>products/view/<?= $product['slug']; ?>"><?= $productName; ?></a>
 											</div>

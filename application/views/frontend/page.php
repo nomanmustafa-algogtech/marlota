@@ -16,9 +16,9 @@ if (!isset($page_title)) {
                 <div class="breadcrumb-hero">
                     <a href="<?= base_url(); ?>">Home</a>
                     <span>&rsaquo;</span>
-                    <span><?= htmlspecialchars($page_title); ?></span>
+                    <span><?= htmlspecialchars($title); ?></span>
                 </div>
-                <h1><?= htmlspecialchars($page_title); ?></h1>
+                <h1><?php echo htmlspecialchars($title); ?></h1>
             </div>
         </div>
     </div>

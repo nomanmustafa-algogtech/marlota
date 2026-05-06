@@ -324,6 +324,20 @@ background-color: #010101;
                                 </div>
                             </li>
                             <li>
+                                <a href="#pages" data-bs-toggle="collapse" aria-expanded="false" aria-controls="pages">
+                                    <i class="ri-pages-line"></i>
+                                    <span> Pages </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="pages">
+                                    <ul class="nav-second-level">
+                                        <li><a href="<?=base_url('admin/pages/add');?>">Add New Page</a></li>
+                                        <li><a href="<?=base_url('admin/pages');?>">All Pages</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
                                 <a href="#settings" data-bs-toggle="collapse" aria-expanded="false" aria-controls="settings">
                                     <i class="ri-settings-2-line"></i>
                                     <span> System Settings </span>
