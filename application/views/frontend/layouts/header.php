@@ -350,6 +350,55 @@ $function  = $this->uri->segment(2);
     <div class="page-wrapper">
         <!-- Start of Header -->
         <header class="header marlota-header">
+            <!-- Top Announcement Bar -->
+            <div class="top-announcement-bar">
+                <div class="top-announcement-track">
+                    <span class="top-announcement-item">🚚 FREE UK DELIVERY ON ALL ORDERS</span>
+                    <span class="top-announcement-sep">•</span>
+                    <span class="top-announcement-item">⚡ SAME‑DAY DISPATCH BEFORE 4PM</span>
+                    <span class="top-announcement-sep">•</span>
+                    <span class="top-announcement-item">🏗️ FREE NEXT‑DAY PALLET DELIVERIES</span>
+                    <span class="top-announcement-sep">•</span>
+                    <span class="top-announcement-item">🚚 FREE UK DELIVERY ON ALL ORDERS</span>
+                    <span class="top-announcement-sep">•</span>
+                    <span class="top-announcement-item">⚡ SAME‑DAY DISPATCH BEFORE 4PM</span>
+                    <span class="top-announcement-sep">•</span>
+                    <span class="top-announcement-item">🏗️ FREE NEXT‑DAY PALLET DELIVERIES</span>
+                    <span class="top-announcement-sep">•</span>
+                </div>
+            </div>
+            <style>
+                .top-announcement-bar {
+                    background: #3a1b76;
+                    color: #fff;
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 12px;
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    padding: 8px 0;
+                }
+                .top-announcement-track {
+                    display: inline-block;
+                    animation: marquee-scroll 28s linear infinite;
+                }
+                .top-announcement-item {
+                    display: inline-block;
+                    padding: 0 24px;
+                }
+                .top-announcement-sep {
+                    display: inline-block;
+                    color: #C9A646;
+                    font-size: 14px;
+                    vertical-align: middle;
+                }
+                @keyframes marquee-scroll {
+                    0%   { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+            </style>
             <!-- White Navbar -->
             <nav class="navbar navbar-expand-lg">
                 <div class="container d-flex align-items-center justify-content-between">

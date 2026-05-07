@@ -118,7 +118,7 @@ body {
    ============================================= */
 .marlota-header {
     background: #fff !important;
-    border-top: 30px solid #3a1b76;
+    border-top: 10px solid #3a1b76;
     box-shadow: 0 2px 8px rgba(0,0,0,.06);
     position: relative;
     z-index: 999;
