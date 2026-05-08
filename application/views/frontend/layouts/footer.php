@@ -44,7 +44,7 @@ if($this->session->userdata('user_loggedin')){
                 <p class="footer-col-title">Customer Service</p>
                 <ul class="footer-links">
                     <li><a href="<?=base_url('shipping_policy');?>">Shipping Policy</a></li>
-                    <li><a href="#">Returns &amp; Refunds</a></li>
+                    <li><a href="<?=base_url('refund_return_policy');?>">Returns &amp; Refunds</a></li>
                     <li><a href="<?=base_url('terms_conditions');?>">Terms &amp; Conditions</a></li>
                     <li><a href="<?=base_url('privacy_policy');?>">Privacy Policy</a></li>
                 </ul>

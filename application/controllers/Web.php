@@ -71,6 +71,15 @@ class Web extends My_controller {
 	
         $this->load_web('page',$data);
 	}
+	public function refund_return_policy()
+	{
+		$this->title = "Refund & Return Policy";
+	
+		$data['title'] = $this->title;
+		$data['content'] = $this->db->query("SELECT * FROM app_pages where slug = 'refund-return-policy'")->row()->content;
+	
+        $this->load_web('page',$data);
+	}
 	
 	
 	

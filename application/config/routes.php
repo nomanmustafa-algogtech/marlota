@@ -6,6 +6,7 @@ $route['vendors'] = "vendors/home";
 $route['privacy_policy'] = 'web/privacy_policy';
 $route['terms_conditions'] = 'web/terms_conditions';
 $route['shipping_policy'] = 'web/shipping_policy';
+$route['refund_return_policy'] = 'web/refund_return_policy';
 $route['about'] = 'web/about';
 $route['contact'] = 'web/contact';
 $route['career'] = 'web/career';
