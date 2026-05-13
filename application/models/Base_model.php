@@ -150,14 +150,21 @@ class Base_model extends CI_Model {
     			
     			// SMTP configuration
     			$mail->isSMTP();
-    			$mail->Host     	= 'smtp-relay.sendinblue.com';
-    			$mail->SMTPAuth 		= true;
-    			$mail->Username 		= 'alisoftware66@gmail.com';
-    			$mail->Password 		= 'MLJ0WhESfdtwOxK9';
-    // 			$mail->SMTPSecure 	= 'ssl';
-    			$mail->Port     	= 587;
+    			$mail->Host       = 'marlota.co.uk';
+    			$mail->SMTPAuth   = true;
+    			$mail->Username   = 'orders@marlota.co.uk';
+    			$mail->Password   = 'Mancity.123';
+    			$mail->SMTPSecure = 'ssl';
+    			$mail->Port       = 465;
+    			$mail->SMTPOptions = [
+    			    'ssl' => [
+    			        'verify_peer'       => false,
+    			        'verify_peer_name'  => false,
+    			        'allow_self_signed' => true,
+    			    ],
+    			];
     			
-    			$mail->setFrom($this->settings['smtp_username'], $this->settings['site_title']);
+    			$mail->setFrom('orders@marlota.co.uk', $this->settings['site_title']);
     			
     			$mail->addAddress($email);	
     			$mail->Subject = $subject;

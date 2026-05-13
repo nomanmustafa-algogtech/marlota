@@ -797,12 +797,224 @@ public function getAreasByCity()
 			'email'    => $this->input->post('email', true)
 		]);
 		$year = date('y');
+		$order_ref    = $year . $order_id;
+		$order_date   = date('d M Y H:i');
+		$client_email = $this->input->post('email', true);
+		$client_name  = $this->input->post('full_name', true);
+		$client_phone = $this->input->post('phone', true);
+		$client_addr  = htmlspecialchars($this->input->post('address', true));
+		$client_street= htmlspecialchars($this->input->post('street', true));
+		$client_city  = htmlspecialchars($this->input->post('city', true));
+		$client_zip   = htmlspecialchars($this->input->post('zipcode', true));
+		$client_country = htmlspecialchars($this->input->post('country', true));
+		$admin_email  = 'orders@marlota.co.uk';
+
+		$payment_labels = [1 => 'Cash on Delivery', 2 => 'Stripe', 3 => 'PayPal'];
+		$payment_label  = $payment_labels[$payment_type] ?? 'Online';
+
+		// --- Build product rows ---
+		$items_rows = '';
+		foreach ($cart as $item) {
+			$line_total = (float)$item['qty'] * (float)$item['price'];
+			$items_rows .= '
+			<tr>
+				<td style="padding:10px 12px;border-bottom:1px solid #e8e8e8;font-size:14px;color:#1E1E1E;">' . htmlspecialchars($item['name']) . '</td>
+				<td style="padding:10px 12px;border-bottom:1px solid #e8e8e8;font-size:14px;text-align:center;color:#1E1E1E;">' . (int)$item['qty'] . '</td>
+				<td style="padding:10px 12px;border-bottom:1px solid #e8e8e8;font-size:14px;text-align:right;color:#1E1E1E;">&pound;' . number_format($item['price'], 2) . '</td>
+				<td style="padding:10px 12px;border-bottom:1px solid #e8e8e8;font-size:14px;text-align:right;color:#1E1E1E;">&pound;' . number_format($line_total, 2) . '</td>
+			</tr>';
+		}
+
+		// --- Totals rows ---
+		$totals_rows = '
+			<tr>
+				<td colspan="3" style="padding:8px 12px;text-align:right;font-size:14px;color:#4A4A4A;">Subtotal:</td>
+				<td style="padding:8px 12px;text-align:right;font-size:14px;color:#1E1E1E;">&pound;' . number_format($subtotal, 2) . '</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="padding:8px 12px;text-align:right;font-size:14px;color:#4A4A4A;">VAT (20%):</td>
+				<td style="padding:8px 12px;text-align:right;font-size:14px;color:#1E1E1E;">&pound;' . number_format($vat, 2) . '</td>
+			</tr>
+			<tr style="background:#F9F6F1;">
+				<td colspan="3" style="padding:10px 12px;text-align:right;font-size:15px;font-weight:bold;color:#1E1E1E;">Total:</td>
+				<td style="padding:10px 12px;text-align:right;font-size:15px;font-weight:bold;color:#1E1E1E;">&pound;' . number_format($grand_total, 2) . '</td>
+			</tr>';
+
+		// --- Reusable: products table block ---
+		$products_table = '
+		<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;border-radius:4px;overflow:hidden;">
+			<thead>
+				<tr style="background:#f2f2f2;">
+					<th style="padding:10px 12px;text-align:left;font-size:13px;color:#4A4A4A;font-weight:600;border-bottom:2px solid #e8e8e8;">Product Name</th>
+					<th style="padding:10px 12px;text-align:center;font-size:13px;color:#4A4A4A;font-weight:600;border-bottom:2px solid #e8e8e8;">Quantity</th>
+					<th style="padding:10px 12px;text-align:right;font-size:13px;color:#4A4A4A;font-weight:600;border-bottom:2px solid #e8e8e8;">Price</th>
+					<th style="padding:10px 12px;text-align:right;font-size:13px;color:#4A4A4A;font-weight:600;border-bottom:2px solid #e8e8e8;">Subtotal</th>
+				</tr>
+			</thead>
+			<tbody>' . $items_rows . '</tbody>
+			<tfoot>' . $totals_rows . '</tfoot>
+		</table>';
+
+		// --- Reusable: shipping address block ---
+		$shipping_block = '
+		<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;">
+			<tr><td style="padding:12px 14px;font-size:14px;color:#1E1E1E;line-height:1.7;">
+				' . htmlspecialchars($client_name) . '<br>
+				' . ($client_addr ? $client_addr . '<br>' : '') . '
+				' . ($client_street ? $client_street . '<br>' : '') . '
+				' . $client_city . ($client_zip ? ', ' . $client_zip : '') . '<br>
+				' . $client_country . '
+			</td></tr>
+		</table>';
+
+		// =========================================================
+		// CLIENT CONFIRMATION EMAIL
+		// =========================================================
+		$client_payment_rows = '
+			<tr><td style="padding:10px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;width:40%;">Payment Method:</td>
+				<td style="padding:10px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . $payment_label . '</td></tr>
+			<tr><td style="padding:10px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;">Payment Status:</td>
+				<td style="padding:10px 12px;font-size:14px;border-bottom:1px solid #e8e8e8;"><span style="color:#28a745;font-weight:600;">Paid</span></td></tr>';
+
+		$client_body = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,Helvetica,sans-serif;">
+		<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:30px 0;">
+		<tr><td align="center">
+		<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+			<!-- HEADER -->
+		<tr><td style="background:#3a1b76;padding:30px 20px;text-align:center;">
+				<p style="margin:8px 0 0;color:#fff;font-size:14px;">Order ID: <strong>#ORD-' . $order_id . '</strong></p>
+				<p style="margin:4px 0 0;color:#fff;font-size:13px;">Date: ' . $order_date . '</p>
+			</td></tr>
+
+			<!-- BODY -->
+			<tr><td style="padding:28px 30px;">
+
+				<p style="font-size:15px;color:#1E1E1E;margin:0 0 20px;">Dear <strong>' . htmlspecialchars($client_name) . '</strong>,<br>
+				Thank you for shopping with <strong>Marlota Ltd.</strong> Your order has been received and is now being processed.</p>
+
+				<!-- Customer Information -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Customer Information</h3>
+				<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;margin-bottom:24px;">
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;width:35%;">Name:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . htmlspecialchars($client_name) . '</td></tr>
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;">Email:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . htmlspecialchars($client_email) . '</td></tr>
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;">Phone:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;">' . htmlspecialchars($client_phone) . '</td></tr>
+				</table>
+
+				<!-- Products Ordered -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Products Ordered</h3>
+				<div style="margin-bottom:24px;">' . $products_table . '</div>
+
+				<!-- Shipping Address -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Shipping Address</h3>
+				<div style="margin-bottom:24px;">' . $shipping_block . '</div>
+
+				<!-- Payment Information -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Payment Information</h3>
+				<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;margin-bottom:24px;">
+					' . $client_payment_rows . '
+				</table>
+
+				<p style="font-size:14px;color:#4A4A4A;margin:0;">We will notify you once your order is dispatched. If you have any questions, contact us at <a href="mailto:orders@marlota.co.uk" style="color:#3a1b76;">orders@marlota.co.uk</a></p>
+
+			</td></tr>
+
+			<!-- FOOTER -->
+			<tr><td style="background:#3a1b76;padding:16px 20px;text-align:center;">
+				<p style="margin:0;color:#C9A646;font-size:12px;">This is an automated notification. &copy; ' . date('Y') . ' Marlota Store.</p>
+			</td></tr>
+
+		</table>
+		</td></tr></table>
+		</body></html>';
+
+		$this->Base_model->sendEmail(
+			$client_email,
+			'Order Confirmation #ORD-' . $order_id . ' - Marlota Ltd.',
+			$client_body
+		);
+
+		// =========================================================
+		// ADMIN NOTIFICATION EMAIL
+		// =========================================================
+		$admin_payment_rows = '
+			<tr><td style="padding:10px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;width:40%;">Payment Method:</td>
+				<td style="padding:10px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . $payment_label . '</td></tr>
+			<tr><td style="padding:10px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;">Payment Status:</td>
+				<td style="padding:10px 12px;font-size:14px;border-bottom:1px solid #e8e8e8;"><span style="color:#28a745;font-weight:600;">Paid</span></td></tr>
+			<tr><td style="padding:10px 12px;font-size:14px;font-weight:600;color:#4A4A4A;">Transaction ID:</td>
+				<td style="padding:10px 12px;font-size:14px;color:#1E1E1E;word-break:break-all;">' . ($transaction_id ? htmlspecialchars($transaction_id) : 'N/A (COD)') . '</td></tr>';
+
+		$admin_body = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,Helvetica,sans-serif;">
+		<table width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f2;padding:30px 0;">
+		<tr><td align="center">
+		<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+			<!-- HEADER -->
+		<tr><td style="background:#3a1b76;padding:30px 20px;text-align:center;">
+				<p style="margin:8px 0 0;color:#fff;font-size:14px;">Order ID: <strong>#ORD-' . $order_id . '</strong></p>
+				<p style="margin:4px 0 0;color:#fff;font-size:13px;">Date: ' . $order_date . '</p>
+			</td></tr>
+
+			<!-- BODY -->
+			<tr><td style="padding:28px 30px;">
+
+				<!-- Customer Information -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Customer Information</h3>
+				<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;margin-bottom:24px;">
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;width:35%;">Name:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . htmlspecialchars($client_name) . '</td></tr>
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;border-bottom:1px solid #e8e8e8;">Email:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;border-bottom:1px solid #e8e8e8;">' . htmlspecialchars($client_email) . '</td></tr>
+					<tr><td style="padding:9px 12px;font-size:14px;font-weight:600;color:#4A4A4A;">Phone:</td>
+						<td style="padding:9px 12px;font-size:14px;color:#1E1E1E;">' . htmlspecialchars($client_phone) . '</td></tr>
+				</table>
+
+				<!-- Products Ordered -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Products Ordered</h3>
+				<div style="margin-bottom:24px;">' . $products_table . '</div>
+
+				<!-- Shipping Address -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Shipping Address</h3>
+				<div style="margin-bottom:24px;">' . $shipping_block . '</div>
+
+				<!-- Payment Information -->
+				<h3 style="color:#3a1b76;font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #C9A646;">Payment Information</h3>
+				<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #e8e8e8;margin-bottom:24px;">
+					' . $admin_payment_rows . '
+				</table>
+
+			</td></tr>
+
+			<!-- FOOTER -->
+			<tr><td style="background:#3a1b76;padding:16px 20px;text-align:center;">
+				<p style="margin:0;color:#C9A646;font-size:12px;">This is an automated notification. &copy; ' . date('Y') . ' Marlota Store.</p>
+			</td></tr>
+
+		</table>
+		</td></tr></table>
+		</body></html>';
+
+		$this->Base_model->sendEmail(
+			$admin_email,
+			'New Order #ORD-' . $order_id . ' — ' . htmlspecialchars($client_name),
+			$admin_body
+		);
+
 		$this->session->set_flashdata(
 			'flash_message',
 			"Thank you for shopping. Your Order No. {$year}{$order_id} is being processed."
 		);
 
-		echo json_encode(['status' => 'success', 'order_id' => $order_id]);
+		// Return JSON with order details for modal display
+		echo json_encode([
+			'status' => 'success', 
+			'order_id' => $order_id,
+			'total_amount' => $grand_total
+		]);
 		exit;
 	}
 
@@ -834,6 +1046,17 @@ public function getAreasByCity()
 		} catch (Exception $e) {
 			echo json_encode(['error' => $e->getMessage()]);
 		}	
+	}
+	
+	public function success($order_id = null, $total_amount = 0)
+	{
+		if (!$order_id) {
+			redirect('checkout');
+		}
+
+		$data['order_id'] = (int)$order_id;
+		$data['total_amount'] = (float)$total_amount;
+		$this->load_web('checkout_success', $data);
 	}
 	
 	public function stripe_card()
