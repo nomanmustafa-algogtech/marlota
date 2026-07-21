@@ -639,59 +639,59 @@ public function getAreasByCity()
 		}
 
 		// PayPal Payment
-		if ($payment_type === 3) {
-			$paypal_trx_id = $this->input->post('paypal_trx_id');
-			if (empty($paypal_trx_id)) {
-				echo json_encode(['status' => 'error', 'msg' => 'Invalid PayPal Transaction ID']);
-				exit;
-			}
+		// if ($payment_type === 3) {
+		// 	$paypal_trx_id = $this->input->post('paypal_trx_id');
+		// 	if (empty($paypal_trx_id)) {
+		// 		echo json_encode(['status' => 'error', 'msg' => 'Invalid PayPal Transaction ID']);
+		// 		exit;
+		// 	}
 
-			// PayPal OAuth
-			$curl = curl_init();
-			curl_setopt_array($curl, [
-				CURLOPT_URL            => 'https://api-m.paypal.com/v1/oauth2/token',
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_POST           => true,
-				CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
-				CURLOPT_HTTPHEADER     => [
-					'Authorization: Basic QWFSVjhJeTVnRmdvbG5zZ3dkRmF2TW9ick5CV0s4U0pWSEVwZU4yMDRNakJxR2dpaWIzZl91RFVHLWhENXJDYzZza1NVcHZJQ181Wm9pa2I6RUtqNFdwaVhuYWRqblZrM05fVERGUGRIZmpFbWlYdjRIbmM1cnhBb2RGOHdnT2NFYmFId2M3eGlXZzc0d25zeUVPODh0YlZIYUUtc1ppbXM=',
-					'Content-Type: application/x-www-form-urlencoded'
-				],
-			]);
-			$response = curl_exec($curl);
-			curl_close($curl);
-			$response = json_decode($response, true);
-			if (!isset($response['access_token'])) {
-				echo json_encode(['status' => 'error', 'msg' => 'Cannot verify PayPal payment']);
-				exit;
-			}
-			$access_token = $response['access_token'];
+		// 	// PayPal OAuth
+		// 	$curl = curl_init();
+		// 	curl_setopt_array($curl, [
+		// 		CURLOPT_URL            => 'https://api-m.paypal.com/v1/oauth2/token',
+		// 		CURLOPT_RETURNTRANSFER => true,
+		// 		CURLOPT_POST           => true,
+		// 		CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
+		// 		CURLOPT_HTTPHEADER     => [
+		// 			'Authorization: Basic QWFSVjhJeTVnRmdvbG5zZ3dkRmF2TW9ick5CV0s4U0pWSEVwZU4yMDRNakJxR2dpaWIzZl91RFVHLWhENXJDYzZza1NVcHZJQ181Wm9pa2I6RUtqNFdwaVhuYWRqblZrM05fVERGUGRIZmpFbWlYdjRIbmM1cnhBb2RGOHdnT2NFYmFId2M3eGlXZzc0d25zeUVPODh0YlZIYUUtc1ppbXM=',
+		// 			'Content-Type: application/x-www-form-urlencoded'
+		// 		],
+		// 	]);
+		// 	$response = curl_exec($curl);
+		// 	curl_close($curl);
+		// 	$response = json_decode($response, true);
+		// 	if (!isset($response['access_token'])) {
+		// 		echo json_encode(['status' => 'error', 'msg' => 'Cannot verify PayPal payment']);
+		// 		exit;
+		// 	}
+		// 	$access_token = $response['access_token'];
 
-			// Verify order
-			$curl1 = curl_init();
-			curl_setopt_array($curl1, [
-				CURLOPT_URL            => 'https://api.paypal.com/v2/checkout/orders/' . $paypal_trx_id,
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_HTTPGET        => true,
-				CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $access_token]
-			]);
-			$responseOrder = curl_exec($curl1);
-			curl_close($curl1);
-			$responseOrder = json_decode($responseOrder, true);
-			if (!isset($responseOrder['status']) || $responseOrder['status'] !== 'COMPLETED') {
-				echo json_encode(['status' => 'error', 'msg' => 'PayPal payment not completed']);
-				exit;
-			}
-			$paypal_paid = 0;
-			if (isset($responseOrder['purchase_units'][0]['amount']['value'])) {
-				$paypal_paid = (float)$responseOrder['purchase_units'][0]['amount']['value'];
-			}
-			if (abs($paypal_paid - $grand_total) > 0.01) {
-				echo json_encode(['status' => 'error', 'msg' => 'PayPal amount mismatch. Please try again.']);
-				exit;
-			}
-			$transaction_id = $paypal_trx_id;
-		}
+		// 	// Verify order
+		// 	$curl1 = curl_init();
+		// 	curl_setopt_array($curl1, [
+		// 		CURLOPT_URL            => 'https://api.paypal.com/v2/checkout/orders/' . $paypal_trx_id,
+		// 		CURLOPT_RETURNTRANSFER => true,
+		// 		CURLOPT_HTTPGET        => true,
+		// 		CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $access_token]
+		// 	]);
+		// 	$responseOrder = curl_exec($curl1);
+		// 	curl_close($curl1);
+		// 	$responseOrder = json_decode($responseOrder, true);
+		// 	if (!isset($responseOrder['status']) || $responseOrder['status'] !== 'COMPLETED') {
+		// 		echo json_encode(['status' => 'error', 'msg' => 'PayPal payment not completed']);
+		// 		exit;
+		// 	}
+		// 	$paypal_paid = 0;
+		// 	if (isset($responseOrder['purchase_units'][0]['amount']['value'])) {
+		// 		$paypal_paid = (float)$responseOrder['purchase_units'][0]['amount']['value'];
+		// 	}
+		// 	if (abs($paypal_paid - $grand_total) > 0.01) {
+		// 		echo json_encode(['status' => 'error', 'msg' => 'PayPal amount mismatch. Please try again.']);
+		// 		exit;
+		// 	}
+		// 	$transaction_id = $paypal_trx_id;
+		// }
 
 		// 4. Start DB transaction
 		$this->db->trans_begin();

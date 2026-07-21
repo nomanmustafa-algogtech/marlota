@@ -4,6 +4,10 @@ if (!isset($page_title)) {
     $raw = $this->uri->segment(1);
     $page_title = ucwords(str_replace('_', ' ', $raw));
 }
+
+if (!isset($title) || $title === '') {
+    $title = $page_title;
+}
 ?>
 
 <!-- ========================================

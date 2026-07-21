@@ -42,6 +42,7 @@ class Web extends My_controller {
 	public function privacy_policy()
 	{
 		$this->title = "Privacy Policy || ".$this->title;
+		$data['title'] = $this->title;
 		
 		$data['view_scripts']=array();
 		$data['view_css']=array(
